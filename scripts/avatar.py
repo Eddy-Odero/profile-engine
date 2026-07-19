@@ -24,7 +24,7 @@ from PIL import Image, ImageEnhance, ImageFilter, ImageOps
 
 from utils import GENERATED_DIR, github_headers
 
-GITHUB_API = "https://api.github.com/users/{username}"
+GITHUB_API = "https://api.github.com/users/Eddy-Odero"
 
 # Dense-to-sparse brightness ramp (dark chars = bright pixels, since
 # terminals are usually light-text-on-dark-background). ~70 levels
