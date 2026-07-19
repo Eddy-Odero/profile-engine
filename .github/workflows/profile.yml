@@ -2,17 +2,33 @@ name: Rebuild Profile README
 
 on:
   schedule:
-    # Every 6 hours - tune this once Phase 7 lands
     - cron: "0 */6 * * *"
   push:
     branches: [main]
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      crt_level:
+        description: "CRT effect intensity"
+        required: false
+        default: "subtle"
+        type: choice
+        options:
+          - subtle
+          - medium
+          - heavy
 
 # Without this, GITHUB_TOKEN defaults to read-only on most repos created
 # since Feb 2023, and the final "git push" step fails with a 403/permission
 # error even though everything before it succeeds.
 permissions:
   contents: write
+
+# If a push and the schedule fire close together, don't let two rebuilds
+# race each other to commit/push - only the latest run matters, so cancel
+# any run that's still in progress when a newer one starts.
+concurrency:
+  group: profile-rebuild
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -25,6 +41,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: "pip"
+          cache-dependency-path: requirements.txt
 
       - name: Install dependencies
         run: pip install -r requirements.txt
@@ -32,12 +50,20 @@ jobs:
       - name: Generate README
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # workflow_dispatch runs can override the intensity; scheduled/push
+          # runs fall back to build.py's own default ("subtle") since the
+          # input doesn't exist on those triggers.
+          CRT_LEVEL: ${{ inputs.crt_level }}
         run: python scripts/build.py
 
       - name: Commit changes
         run: |
           git config --global user.name "profile-bot"
           git config --global user.email "profile-bot@users.noreply.github.com"
-          git add README.md
+          git add README.md generated/
           git diff --cached --quiet || git commit -m "chore: auto-update README"
+          # Pull-rebase in case another push landed on main since checkout,
+          # then push. On conflict (rare - only touches generated files),
+          # fail loudly rather than force-pushing over someone's edit.
+          git pull --rebase origin main
           git push

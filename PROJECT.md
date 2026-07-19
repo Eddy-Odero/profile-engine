@@ -106,15 +106,52 @@ approach every open-source "LeetCode stats card" project relies on, but
 it's not a documented/stable contract, so keep an eye out if LeetCode ever
 changes its schema.
 
-## Phase 6 - Renderer (mostly done as part of Phase 1)
+## Phase 6 - Renderer ✅ DONE
 
-`scripts/renderer.py` already handles template + placeholder rendering.
-Will need small additions once avatar/effects output is added to the context.
+Template rendering and placeholder replacement were effectively finished as
+a side effect of Phases 1-5 (`scripts/renderer.py`, `README.template.md`).
+This pass hardened the error handling specifically:
 
-## Phase 7 - Automation (skeleton only)
+- [x] Template syntax errors now raise `RuntimeError` with the line number
+      and a plain-English description, instead of a raw Jinja traceback
+- [x] Missing context keys (e.g. someone adds `{{ new_field }}` to the
+      template without updating `build_context()`) now raise `RuntimeError`
+      pointing at exactly which key is missing and where to fix it
+- [x] Verified both error paths deliberately (missing key, broken `{% for %}`)
+      and confirmed the normal build path still works unchanged afterward
 
-`.github/workflows/profile.yml` runs `build.py` on push and every 6 hours,
-then commits the regenerated `README.md`. Not yet tested in a real repo.
+**Deliverable met:** complete, robust README generation - a bad template
+edit now fails with a message that says what's wrong and where, not a
+50-line Jinja stack trace.
+
+## Phase 7 - Automation ✅ DONE
+
+- [x] `permissions: contents: write` - required or the push step 403s
+      (this was the actual bug reported and fixed mid-project)
+- [x] `concurrency` group with `cancel-in-progress: true` - prevents a
+      scheduled run and a push-triggered run from racing to commit/push
+      at the same time
+- [x] pip dependency caching (`cache: pip` in `setup-python`) - faster runs
+- [x] `workflow_dispatch` now accepts a `crt_level` choice input (subtle/
+      medium/heavy) for manually trying a different look without editing code
+- [x] `git pull --rebase` before push - reduces (but doesn't eliminate)
+      push-conflict risk if something else touched `main` mid-run
+- [x] Commit step now stages `generated/` too, not just `README.md`, so
+      `stats.json` stays in sync with what's actually in the README
+- [x] `GITHUB_TOKEN` passed through to the build step (added in Phase 4)
+      so `github.py`'s GraphQL calls get real pinned-repos/contributions data
+
+**Deliverable met:** zero manual maintenance, once `GITHUB_USERNAME` and
+`LEETCODE_USERNAME` in `build.py` are set to your real handles and the repo's
+Settings → Actions → General → Workflow permissions is set to "Read and
+write" (see the earlier fix for the exact 403 this project hit).
+
+**Not done / known gaps:** the `git pull --rebase` step reduces race risk
+but two truly simultaneous runs could still conflict since `generated/`
+changes every build - the `concurrency` group is the real fix for that and
+should cover it in practice. Not yet tested against a real repo's Actions
+tab (only validated the YAML parses and the build step behaves correctly
+locally).
 
 ## Phase 8 - Customization (not started)
 
