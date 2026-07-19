@@ -28,6 +28,7 @@ import sys
 
 import avatar
 import effects
+import github
 import renderer
 from utils import GENERATED_DIR, build_boot_sequence, ensure_generated_dir, random_line
 
@@ -63,12 +64,26 @@ def build_avatar_ascii() -> str:
         print(f"[avatar] fetch/render failed, using fallback: {exc}", file=sys.stderr)
         return FALLBACK_AVATAR
 
-# --- Mock data for stats that later phases will fetch live -------------
+# --- Fallback data if the live GitHub fetch fails -----------------------
+# Same shape as github.fetch_github_stats() returns, so build_context()
+# doesn't need to care which one it got.
 MOCK_GITHUB_STATS = {
     "repo_count": 24,
     "stars": 37,
     "followers": 12,
+    "top_languages": ["Go", "JavaScript", "Python"],
+    "recent_activity": ["pushed to profile-engine"],
+    "pinned_repos": ["SatGate", "EDU-FLIX", "lem-in"],
+    "contributions": None,
 }
+
+
+def build_github_stats() -> dict:
+    try:
+        return github.fetch_github_stats(GITHUB_USERNAME)
+    except Exception as exc:  # noqa: BLE001 - build must never hard-fail here
+        print(f"[github] live fetch failed, using mock stats: {exc}", file=sys.stderr)
+        return MOCK_GITHUB_STATS
 
 
 def build_context() -> dict:
@@ -85,7 +100,7 @@ def build_context() -> dict:
         "status": random_line("statuses.txt"),
         "boot_sequence": build_boot_sequence("boot.txt"),
         "build_time": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
-        **MOCK_GITHUB_STATS,
+        **build_github_stats(),
     }
 
 

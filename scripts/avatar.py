@@ -17,28 +17,14 @@ Usage:
 from __future__ import annotations
 
 import io
-import os
 
 import numpy as np
 import requests
 from PIL import Image, ImageEnhance, ImageFilter
 
-from utils import GENERATED_DIR
+from utils import GENERATED_DIR, github_headers
 
 GITHUB_API = "https://api.github.com/users/{username}"
-
-
-def _github_headers() -> dict:
-    """
-    Unauthenticated GitHub API calls are capped at 60/hour per IP - easy
-    to hit in CI. If GITHUB_TOKEN is set (GitHub Actions provides one
-    automatically as secrets.GITHUB_TOKEN), use it for a 5000/hour limit.
-    """
-    token = os.environ.get("GITHUB_TOKEN")
-    headers = {"User-Agent": "profile-engine"}
-    if token:
-        headers["Authorization"] = f"Bearer {token}"
-    return headers
 
 # Dense-to-sparse brightness ramp (dark chars = bright pixels, since
 # terminals are usually light-text-on-dark-background). ~70 levels
@@ -58,7 +44,7 @@ def fetch_avatar_bytes(username: str, size: int = 460) -> bytes:
     Uses the GitHub API (not github.com/user.png) so we get a stable,
     direct CDN URL back rather than depending on a redirect.
     """
-    headers = _github_headers()
+    headers = github_headers()
 
     api_resp = requests.get(
         GITHUB_API.format(username=username), headers=headers, timeout=10

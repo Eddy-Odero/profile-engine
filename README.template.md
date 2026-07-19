@@ -46,7 +46,17 @@
 Repositories : {{ repo_count }}
 Stars        : {{ stars }}
 Followers    : {{ followers }}
+Contributions: {{ contributions if contributions is not none else "N/A" }}
+Top Languages: {{ top_languages | join(", ") }}
+Pinned       : {{ pinned_repos | join(", ") }}
 ```
+
+### `$ github --activity`
+
+```
+{% for line in recent_activity %}{{ line }}
+{% else %}no recent public activity
+{% endfor %}```
 
 ---
 

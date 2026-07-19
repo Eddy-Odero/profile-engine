@@ -10,6 +10,7 @@ without worrying about install order.
 
 from __future__ import annotations
 
+import os
 import random
 from pathlib import Path
 
@@ -17,6 +18,22 @@ from pathlib import Path
 ROOT_DIR = Path(__file__).resolve().parent.parent
 ASSETS_DIR = ROOT_DIR / "assets"
 GENERATED_DIR = ROOT_DIR / "generated"
+
+
+def github_headers() -> dict:
+    """
+    Shared auth headers for any GitHub REST or GraphQL call.
+
+    Unauthenticated REST calls are capped at 60/hour per IP (easy to hit
+    in CI, and GraphQL requires auth even for public data). If
+    GITHUB_TOKEN is set - GitHub Actions provides one automatically as
+    secrets.GITHUB_TOKEN - use it for a 5000/hour limit and GraphQL access.
+    """
+    token = os.environ.get("GITHUB_TOKEN")
+    headers = {"User-Agent": "profile-engine"}
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    return headers
 
 
 def read_lines(filename: str) -> list[str]:

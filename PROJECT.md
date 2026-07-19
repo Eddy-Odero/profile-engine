@@ -57,9 +57,27 @@ noticeable, shape fully intact), medium ~8-9%, heavy ~20-25% (visibly
 glitchy but still recognizable). Ran the full `build.py` multiple times and
 confirmed status/cursor/system-message all vary per render as expected.
 
-## Phase 4 - GitHub integration (not started)
+## Phase 4 - GitHub integration ✅ DONE
 
-Stub at `scripts/github.py`. Will replace `MOCK_GITHUB_STATS` in `build.py`.
+- [x] Repo count, followers (`github.fetch_profile`)
+- [x] Total stars, top languages, aggregated across all non-fork repos (`github.aggregate_repo_stats`)
+- [x] Recent public activity, turned into readable lines (`github.fetch_recent_activity`)
+- [x] Pinned repos + contribution count via GraphQL (`github.fetch_graphql_extras`) - requires `GITHUB_TOKEN`
+- [x] Graceful 3-tier degradation: full GraphQL stats → REST-only approximation (pinned = top-starred repos, contributions = N/A) → mock stats if REST itself fails
+- [x] Wired into `build.py` (`build_github_stats()`, same defensive pattern as `build_avatar_ascii()`)
+- [x] Template updated: stats block now shows contributions/languages/pinned, plus a new `$ github --activity` block
+
+**Deliverable met:** live profile statistics, with the same "never hard-fail
+the build" philosophy as Phase 2.
+
+**Note on testing:** this sandbox's IP is rate-limited by GitHub's REST API
+(0/60 remaining, shared across sandbox sessions), so live end-to-end calls
+couldn't be exercised here. Instead, `github.py`'s logic (pagination,
+fork-exclusion, star/language aggregation, GraphQL response parsing, and
+both fallback tiers) was verified with mocked `requests.get`/`requests.post`
+responses covering realistic repo/event/GraphQL payloads - all paths
+(with-token, without-token) produced correct output. The mock-stats
+fallback path was verified via a full `build.py` run.
 
 ## Phase 5 - LeetCode integration (not started)
 
