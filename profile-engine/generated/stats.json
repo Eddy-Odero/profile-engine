@@ -1,0 +1,24 @@
+{
+  "username": "Eddy Odero",
+  "tagline": "Full-stack developer | Go, SQLite, vanilla JS | Kisumu, Kenya",
+  "stack": [
+    "Go",
+    "JavaScript",
+    "SQLite",
+    "PostgreSQL",
+    "Docker",
+    "Python"
+  ],
+  "projects": [
+    "SatGate",
+    "EDU-FLIX",
+    "lem-in colony visualizer",
+    "Maison POS"
+  ],
+  "quote": "Make it work, make it right, make it fast.",
+  "status": "Writing Go",
+  "build_time": "2026-07-18 17:42 UTC",
+  "repo_count": 24,
+  "stars": 37,
+  "followers": 12
+}

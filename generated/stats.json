@@ -1,0 +1,24 @@
+{
+  "username": "Eddy Odero",
+  "tagline": "Full-stack developer | Go, SQLite, vanilla JS | Kisumu, Kenya",
+  "stack": [
+    "Go",
+    "JavaScript",
+    "SQLite",
+    "PostgreSQL",
+    "Docker",
+    "Python"
+  ],
+  "projects": [
+    "SatGate",
+    "EDU-FLIX",
+    "lem-in colony visualizer",
+    "Maison POS"
+  ],
+  "quote": "Code never lies, comments sometimes do.",
+  "status": "Refactoring at 2am",
+  "build_time": "2026-07-18 18:06 UTC",
+  "repo_count": 24,
+  "stars": 37,
+  "followers": 12
+}

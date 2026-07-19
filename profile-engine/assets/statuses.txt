@@ -1,0 +1,10 @@
+ONLINE
+Building APIs
+Deploying Services
+Writing Go
+Reading Documentation
+Coffee Loading...
+Refactoring at 2am
+Debugging in production (again)
+Merging feature branch
+Compiling new ideas...
