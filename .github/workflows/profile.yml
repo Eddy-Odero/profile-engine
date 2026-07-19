@@ -8,6 +8,12 @@ on:
     branches: [main]
   workflow_dispatch: {}
 
+# Without this, GITHUB_TOKEN defaults to read-only on most repos created
+# since Feb 2023, and the final "git push" step fails with a 403/permission
+# error even though everything before it succeeds.
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest

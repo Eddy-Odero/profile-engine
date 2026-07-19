@@ -6,6 +6,7 @@
 
 ```
 {{ boot_sequence }}
+{{ system_message }}
 ```
 
 </div>
@@ -14,7 +15,7 @@
 
 # {{ username }}
 
-**Status:** `{{ status }}`
+**Status:** `{{ status }}` {{ cursor }}
 
 </div>
 

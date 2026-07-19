@@ -23,9 +23,11 @@ from __future__ import annotations
 
 import datetime as dt
 import json
+import os
 import sys
 
 import avatar
+import effects
 import renderer
 from utils import GENERATED_DIR, build_boot_sequence, ensure_generated_dir, random_line
 
@@ -37,6 +39,11 @@ GITHUB_USERNAME = "octocat"  # swap for the real GitHub handle
 TAGLINE = "Full-stack developer | Go, SQLite, vanilla JS | Kisumu, Kenya"
 STACK = ["Go", "JavaScript", "SQLite", "PostgreSQL", "Docker", "Python"]
 PROJECTS = ["SatGate", "EDU-FLIX", "lem-in colony visualizer", "Maison POS"]
+
+# How aggressive the CRT effects are: "subtle" (default), "medium", "heavy".
+# Override with CRT_LEVEL=medium in the environment to try other looks
+# without touching code.
+CRT_LEVEL = os.environ.get("CRT_LEVEL", "subtle")
 
 # Shown if the avatar fetch/render fails for any reason (offline, rate
 # limited, bad username) so a build never hard-fails on Phase 2 work.
@@ -50,7 +57,8 @@ FALLBACK_AVATAR = "\n".join(
 
 def build_avatar_ascii() -> str:
     try:
-        return avatar.generate_avatar_ascii(GITHUB_USERNAME, cols=60)
+        ascii_art = avatar.generate_avatar_ascii(GITHUB_USERNAME, cols=60)
+        return effects.apply_crt_effects(ascii_art, level=CRT_LEVEL)
     except Exception as exc:  # noqa: BLE001 - build must never hard-fail here
         print(f"[avatar] fetch/render failed, using fallback: {exc}", file=sys.stderr)
         return FALLBACK_AVATAR
@@ -71,6 +79,8 @@ def build_context() -> dict:
         "stack": STACK,
         "projects": PROJECTS,
         "avatar_ascii": build_avatar_ascii(),
+        "cursor": effects.random_cursor(),
+        "system_message": effects.random_system_message(),
         "quote": random_line("quotes.txt"),
         "status": random_line("statuses.txt"),
         "boot_sequence": build_boot_sequence("boot.txt"),

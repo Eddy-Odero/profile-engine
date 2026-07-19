@@ -33,9 +33,29 @@ GitHub Actions (especially once `GITHUB_TOKEN` is set, see workflow).
 CRT effects (scanlines, glitches, corruption) are deliberately NOT part of
 this file - that's Phase 3 (`effects.py`), applied on top of this output.
 
-## Phase 3 - Effects engine (not started)
+## Phase 3 - Effects engine ✅ DONE
 
-Stub at `scripts/effects.py`. Scanlines, noise, glitches, corruption, cursor blink.
+- [x] Scanlines - dims every Nth line slightly (`apply_scanlines`)
+- [x] Screen noise - low-density random character static (`apply_noise`)
+- [x] Random glitches - short corrupted spans on random lines (`apply_glitch`)
+- [x] Brightness shifts - whole-text darker/lighter nudge (`apply_brightness_shift`)
+- [x] Character corruption - sparse glitch glyphs, heavier than noise (`apply_corruption`)
+- [x] Cursor blinking - `random_cursor()` alternates `█ / _ / ' '` each render
+- [x] Random terminal messages - `random_system_message()` reads `assets/glitches.txt`
+- [x] Composed into `apply_crt_effects(text, level="subtle"|"medium"|"heavy")`
+- [x] Wired into `build.py`: applied to `avatar_ascii` only (not the fallback message),
+      plus `cursor` and `system_message` added to the render context and template
+
+**Deliverable met:** living terminal portrait - same avatar pipeline as Phase 2,
+now with subtle randomized CRT noise that's different on every build, tunable
+via `CRT_LEVEL` env var (defaults to `subtle` so the portrait stays clearly
+readable; `medium`/`heavy` available for a rougher look).
+
+**Verified:** ran `apply_crt_effects` at all three levels against the Phase 2
+synthetic test portrait - subtle changes ~5-6% of characters (barely
+noticeable, shape fully intact), medium ~8-9%, heavy ~20-25% (visibly
+glitchy but still recognizable). Ran the full `build.py` multiple times and
+confirmed status/cursor/system-message all vary per render as expected.
 
 ## Phase 4 - GitHub integration (not started)
 
