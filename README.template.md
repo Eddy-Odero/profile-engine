@@ -58,6 +58,25 @@ Pinned       : {{ pinned_repos | join(", ") }}
 {% else %}no recent public activity
 {% endfor %}```
 
+### `$ leetcode --stats`
+
+```
+Solved       : {{ solved.total }} (Easy {{ solved.easy }} / Medium {{ solved.medium }} / Hard {{ solved.hard }})
+Rating       : {{ rating if rating is not none else "unrated" }}
+Global Rank  : {{ ranking if ranking is not none else "N/A" }}
+Top %        : {{ (top_percentage ~ "%") if top_percentage is not none else "N/A" }}
+Contests     : {{ contests_attended if contests_attended is not none else 0 }}
+Badges       : {{ badges | join(", ") if badges else "none yet" }}
+```
+
+{% if recent_submissions %}
+### `$ leetcode --recent`
+
+```
+{% for title in recent_submissions %}{{ title }}
+{% endfor %}```
+{% endif %}
+
 ---
 
 <div align="center">

@@ -79,9 +79,32 @@ responses covering realistic repo/event/GraphQL payloads - all paths
 (with-token, without-token) produced correct output. The mock-stats
 fallback path was verified via a full `build.py` run.
 
-## Phase 5 - LeetCode integration (not started)
+## Phase 5 - LeetCode integration ✅ DONE
 
-Stub at `scripts/leetcode.py`.
+- [x] Solved counts by difficulty (total/easy/medium/hard) via LeetCode's GraphQL endpoint
+- [x] Contest rating, global ranking, top percentage, contests attended
+- [x] Badges
+- [x] Recent accepted submissions
+- [x] "No contest history" handled as a normal state (`rating`/`ranking`/etc. = `None`), not an error
+- [x] Wired into `build.py` (`build_leetcode_stats()`, same defensive pattern as Phases 2 & 4)
+- [x] Template: new `$ leetcode --stats` block, plus a conditional `$ leetcode --recent`
+      block that only appears when there's submission history to show
+
+**Deliverable met:** competitive programming dashboard, degrading gracefully
+same as the GitHub integration.
+
+**Note on testing:** `leetcode.com` isn't on this sandbox's network
+allowlist, so live calls aren't reachable here (confirmed: the real
+`build.py` run got a 403 from the sandbox's egress proxy and fell back to
+mock data cleanly, exactly as intended). `leetcode.py`'s parsing logic was
+verified with mocked GraphQL responses covering three cases: a user with
+contest history, a user with none (ratings/ranking all `None`, not an
+error), and a nonexistent username (raises `ValueError`, caught by
+`build.py`'s fallback). This endpoint is unofficial (LeetCode has no public
+REST API) - it's the same one leetcode.com's own frontend uses, and the
+approach every open-source "LeetCode stats card" project relies on, but
+it's not a documented/stable contract, so keep an eye out if LeetCode ever
+changes its schema.
 
 ## Phase 6 - Renderer (mostly done as part of Phase 1)
 

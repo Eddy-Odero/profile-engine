@@ -29,6 +29,7 @@ import sys
 import avatar
 import effects
 import github
+import leetcode
 import renderer
 from utils import GENERATED_DIR, build_boot_sequence, ensure_generated_dir, random_line
 
@@ -37,6 +38,7 @@ from utils import GENERATED_DIR, build_boot_sequence, ensure_generated_dir, rand
 # but for Phase 1 it's kept here as plain constants for clarity.
 USERNAME = "Eddy Odero"
 GITHUB_USERNAME = "octocat"  # swap for the real GitHub handle
+LEETCODE_USERNAME = "leetcode"  # swap for the real LeetCode handle
 TAGLINE = "Full-stack developer | Go, SQLite, vanilla JS | Kisumu, Kenya"
 STACK = ["Go", "JavaScript", "SQLite", "PostgreSQL", "Docker", "Python"]
 PROJECTS = ["SatGate", "EDU-FLIX", "lem-in colony visualizer", "Maison POS"]
@@ -86,6 +88,27 @@ def build_github_stats() -> dict:
         return MOCK_GITHUB_STATS
 
 
+# --- Fallback data if the live LeetCode fetch fails ----------------------
+# Same shape as leetcode.fetch_leetcode_stats() returns.
+MOCK_LEETCODE_STATS = {
+    "solved": {"total": 120, "easy": 55, "medium": 50, "hard": 15},
+    "rating": None,
+    "ranking": None,
+    "top_percentage": None,
+    "contests_attended": None,
+    "badges": [],
+    "recent_submissions": [],
+}
+
+
+def build_leetcode_stats() -> dict:
+    try:
+        return leetcode.fetch_leetcode_stats(LEETCODE_USERNAME)
+    except Exception as exc:  # noqa: BLE001 - build must never hard-fail here
+        print(f"[leetcode] live fetch failed, using mock stats: {exc}", file=sys.stderr)
+        return MOCK_LEETCODE_STATS
+
+
 def build_context() -> dict:
     """Assemble everything the template needs into a single context dict."""
     return {
@@ -101,6 +124,7 @@ def build_context() -> dict:
         "boot_sequence": build_boot_sequence("boot.txt"),
         "build_time": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
         **build_github_stats(),
+        **build_leetcode_stats(),
     }
 
 
