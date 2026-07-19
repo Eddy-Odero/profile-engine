@@ -1,8 +1,36 @@
 <div align="center">
 
 ```
-      [ avatar unavailable ]
-      run: python scripts/avatar.py <github-username>
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+v@@@@@@@@@@@@@@BBBBBBBBBB%BBBBBBBB%%BBBBBBBB@@@@@@@@@@@@@@@v
+v@@@@@@@@@@@@@#c:cccO&B^BBBBBBBBBBBBBW0ccccvW@@@@@@@@@@@@@@v
+v@@@@@@@@@@@BBct!+))(vcccccccccccccccv)\1~!1cBB@@@@@@@@@@@@v
+v$$$$$$$$$$$?Bc'......1~t1_iI;;l>=)\{......lcBB$$$$$$$$$$$$v
+v@@@@@@@@@@@B%n                             vBBB@@@@@@@@@@@v
+v@@@@@@@@@@@@kc<                           ;cvB@@@@@@@@@@@@v
+v@@@@@@@@@B@qc}                             ^fcB@@@@@@@@@@@v
+v$$$$$$$$$$Bcf................................^ZBB$$$$$$$$$v
+v@@@@@@@@BBoj         .'`'        '^`.        tcBB@@@@@@@@@v
+v@@@@@@@@BBb)      >{/nnt//\\||\\//tnn/?(     +cB%@@@@@@@@@v
+v@BB@@@@@BBh/    ;/tYvcYndaaaaaaaaouuYnjf?    [cBB@@@@@@BB@v
+vW'hhhhbpwmOc'...~tbvU~.vvhkahhakkvZ~_fvbr[...~cqmwpbhhhhoWv
+v&#**#*akkbdXx   <rkCX/\UxhkmmZqkhQtf\Znkjl   }ddbkka*#**#&v
+vWhha*oo*###*x+   ;,funxrhah'JOdhahYnxufr`   1x#*##*oo#ahhWv
+vW&kkkkbkhbccccnr. `)n[(|tfj())\jff||1'j,  fnch*aahkbkhkk&Wv
+v@@@B$$BBBM#|u}vcv(x?>I!_!i~_*__*<<]~><=t{vcZB$BBBBBB$$B@@@v
+v@@@@@@@B@*QL- -[ccccccn<          <jvcccJMBBBB@BBBB@@@@@@@v
+v@@@@@@@@@8*uc>  |]trt/~            {c%BBBBBB@@@@@@@@@@@@@@v
+v@@@@@@@@@B%B#c)          '          cB%BB@@@@@@@@@@@@@@@@@v
+v$$$$$^$$$$$BB#cv*\_><>..._......=..:vBB$$$$$$$$$$$$$$$$$$$v
+v@@@@@@@@@@@@BBBacccccc'  ~      ~  .cB@@@@@@@@@@@@@@@@@@@@v
+v@@@@@@@@@@@@@@@%&#okcv.  >  ..  >  .cvwba#&@@@@@@@@@@@@@@@v
+v@@@@@@@@@@@@BWhph**wX1  ?'  --  '?  1Ypo#okb*%@@@@@@@@@@@@v
+v$$$$$$$$$$$$&##kbbdJ|l]ll..[))[..ll]l|UdbbbaW#$$$$$$$$$$$$v
+v@@@@@@@@@@@@W#pbbppU|)-]c(~1//1~(c[-)|Uppbbdk#B@@@@@@@,@@@v
+v@@@@@@@@@@@@8h#akbbbdwQUX{CU00UC{zUQmdbdbbh*a#@@@@@@@@@@@@v
+v@@@@@@@@@@@@@8*bda*#oamQ0pCJZZJCp0LZaa*#akdhWB@@@@@@@@@`@@v
+v$$$$$$$$$$$$$$$$@^#hbwQCQLQ0QQQ0CQJQwdka%&B$$$$$$$$$$$$$$$v
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 ```
 
 ```
@@ -16,7 +44,7 @@ Connecting to GitHub...
 Syncing repositories...
 Calibrating terminal...
 READY
-> uptime: 3 days, 14 hours, still debugging
+[INFO] compiling thoughts.go
 ```
 
 </div>
@@ -25,7 +53,7 @@ READY
 
 # Eddy Odero
 
-**Status:** `ONLINE` _
+**Status:** `Reading Documentation` █
 
 </div>
 
@@ -81,10 +109,10 @@ pushed to profile-engine
 
 **Today's Quote**
 
-> Programs must be written for people to read, and only incidentally for machines to execute.
+> It's not a bug, it's an undocumented feature.
 
 </div>
 
 ---
 
-<sub>Last rendered: 2026-07-19 07:11 UTC · auto-generated, do not edit by hand</sub>
+<sub>Last rendered: 2026-07-19 06:55 UTC · auto-generated, do not edit by hand</sub>
