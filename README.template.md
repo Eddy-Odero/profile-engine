@@ -1,13 +1,6 @@
 <div align="center">
 
-```
-{{ avatar_ascii }}
-```
-
-```
-{{ boot_sequence }}
-{{ system_message }}
-```
+![{{ username }} terminal]({{ terminal_svg_path }})
 
 </div>
 
@@ -16,6 +9,8 @@
 # {{ username }}
 
 **Status:** `{{ status }}` {{ cursor }}
+
+{{ stat_badges | join(" ") }}
 
 </div>
 
@@ -89,4 +84,4 @@ Badges       : {{ badges | join(", ") if badges else "none yet" }}
 
 ---
 
-<sub>Last rendered: {{ build_time }} · auto-generated, do not edit by hand</sub>
+<sub>Last rendered: {{ build_time }} · theme: {{ theme }} · auto-generated, do not edit by hand</sub>

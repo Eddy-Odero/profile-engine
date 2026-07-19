@@ -20,7 +20,7 @@ import io
 
 import numpy as np
 import requests
-from PIL import Image, ImageEnhance, ImageFilter
+from PIL import Image, ImageEnhance, ImageFilter, ImageOps
 
 from utils import GENERATED_DIR, github_headers
 
@@ -69,13 +69,32 @@ def resize_for_terminal(image: Image.Image, cols: int) -> Image.Image:
     return image.resize((cols, rows), Image.LANCZOS)
 
 
-def enhance_contrast(image: Image.Image, factor: float = 1.35) -> Image.Image:
-    """Boost contrast so mid-tones spread out and detail doesn't wash out."""
-    return ImageEnhance.Contrast(image).enhance(factor)
-
-
 def to_grayscale(image: Image.Image) -> Image.Image:
     return image.convert("L")
+
+
+def enhance_contrast(
+    gray_image: Image.Image, autocontrast_cutoff: float = 1.0, boost: float = 1.15
+) -> Image.Image:
+    """
+    Stretch whatever luminance range IS present in the image to fill the
+    full 0-255 range, then apply a mild extra boost on top.
+
+    A fixed multiplier (the old approach) only helps if the source image
+    already spans close to the full brightness range. Low-contrast source
+    photos - soft gradients, sunsets, flat lighting, a silhouette against
+    a similarly-toned sky - often only use a narrow middle band of
+    brightness values. Without stretching that band out first, the ASCII
+    ramp ends up using only a handful of its ~70 characters, which all
+    look visually similar in a code block - the portrait reads as a
+    blurry wall of texture instead of a recognizable shape.
+
+    `autocontrast_cutoff` clips the most extreme ~1% of pixels at each
+    end before stretching, so a single stray very-bright/dark pixel can't
+    dominate the whole stretch.
+    """
+    stretched = ImageOps.autocontrast(gray_image, cutoff=autocontrast_cutoff)
+    return ImageEnhance.Contrast(stretched).enhance(boost)
 
 
 def blend_edges(gray_image: Image.Image, edge_strength: float = 0.45) -> Image.Image:
@@ -122,8 +141,8 @@ def generate_avatar_ascii(
     raw = fetch_avatar_bytes(username)
     image = load_image(raw)
     image = resize_for_terminal(image, cols)
-    image = enhance_contrast(image)
     gray = to_grayscale(image)
+    gray = enhance_contrast(gray)
     gray = blend_edges(gray)
     ascii_art = pixels_to_ascii(gray)
 

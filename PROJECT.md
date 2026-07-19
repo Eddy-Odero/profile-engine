@@ -22,16 +22,24 @@
 
 **Deliverable met:** high-quality ASCII portrait, with graceful degradation.
 
-**Note on testing:** this sandbox's network egress can't reach
-`avatars.githubusercontent.com` (not on the allowlist) and hit GitHub's
-60/req/hr unauthenticated API rate limit besides. The full pipeline
-(resize → grayscale → contrast → edges → ASCII) was verified against a
-synthetic locally-generated test image and produces correct, well-structured
-output. `fetch_avatar_bytes` itself will work in a normal environment or in
-GitHub Actions (especially once `GITHUB_TOKEN` is set, see workflow).
+**Real bug hit and fixed:** the initial `enhance_contrast()` used a fixed
+1.35x multiplier applied to the RGB image before grayscale conversion.
+That only helps if the source photo already spans close to the full
+brightness range. A soft/low-contrast source image (reported: a sunset +
+tree silhouette avatar) only used a **60-194** luminance band out of
+0-255 after resize+grayscale - narrow enough that most of the 70-char
+ASCII ramp never got used, so the portrait read as a blurry wall of
+similar-looking texture instead of a recognizable shape.
 
-CRT effects (scanlines, glitches, corruption) are deliberately NOT part of
-this file - that's Phase 3 (`effects.py`), applied on top of this output.
+Fixed by switching to `ImageOps.autocontrast()` (histogram stretch,
+applied to the grayscale image, with a 1% cutoff so a stray extreme
+pixel can't dominate the stretch) before a much milder 1.15x boost on
+top, and reordering the pipeline so grayscale conversion happens before
+the contrast step (previously contrast ran on RGB first). Verified with
+a synthetic reproduction of the reported issue - confirmed the luminance
+range goes from 60-194 to the full 0-255 after the fix, and the
+tree/silhouette shape becomes clearly distinguishable in the ASCII output
+that was previously flat and hard to read.
 
 ## Phase 3 - Effects engine ✅ DONE
 
@@ -164,9 +172,85 @@ the rebase again. One-time manual cleanup still needed on the actual repo
 (the already-tracked pycache files won't untrack themselves just because
 `.gitignore` now exists) - see the note sent alongside this update.
 
-## Phase 8 - Customization (not started)
+## Phase 8 - Customization ✅ DONE (badges), plugin system not started
 
-Themes (Cyberpunk, CRT, Hacker, Minimal, Matrix) - no plugin system yet.
+- [x] 5 themes: Cyberpunk, CRT, Hacker, Minimal, Matrix (`scripts/themes.py`)
+- [x] Each theme is a shields.io color palette (badge color, label color, badge style)
+- [x] `scripts/badges.py` builds a themed badge row (repos, stars, followers,
+      LeetCode solved, LeetCode rating) as markdown image links
+- [x] Wired into `build.py` via `THEME` env var (default `cyberpunk`), same
+      pattern as `CRT_LEVEL`; unknown theme name falls back cleanly
+- [x] Workflow's `workflow_dispatch` now has a `theme` choice input too, so
+      you can preview any theme from the Actions tab without editing code
+- [x] Footer now records which theme rendered the current README
+
+**Why badges, not colored ASCII/SVG:** this directly answers the earlier
+"why does it look plain" question. GitHub renders code-block text as flat
+monospace - no color, no matter what characters go inside it. Shields.io
+badges are markdown *images*, which GitHub renders with full color, so
+they're the only piece of this README that will actually look colorful
+and "themed" rather than just differently-textured plain text. The ASCII
+avatar and CRT effects stay monospace/textual by design (that's Phase 2/3's
+job) - badges are the visual-styling layer on top.
+
+**Not built:** a real plugin system (arbitrary user-defined themes/rendering
+modules) - out of scope for now, flagged as a stretch goal in the original
+spec, not a Phase 8 requirement. Also not built: an SVG-rendered colored
+terminal image (the "Live SVG terminal" stretch goal) - that would be the
+next step if actual colored terminal visuals (not just badges) are wanted
+later.
+
+**Verified:** ran the build across all 5 themes via `THEME=<name>` and
+confirmed each produces correctly-colored, correctly-styled badge URLs;
+confirmed an unknown theme name falls back to the default instead of
+crashing.
+
+---
+
+## Stretch Goal - Live SVG Terminal ✅ DONE
+
+This is the actual answer to "why does it look plain, not styled." Every
+other piece of this project (ASCII avatar, CRT text-noise, boot sequence,
+even the Phase 8 badges) is either flat monospace text or a static colored
+pill. None of it is a real dark terminal window with glowing colored text.
+
+- [x] `scripts/svg_terminal.py` renders the avatar + boot sequence + status
+      line as an actual SVG image: rounded dark window, macOS-style traffic-
+      light dots, theme-colored monospace text, a soft glow filter
+      (`feGaussianBlur` + `feMerge`), and a **real blinking cursor** using
+      SVG's native `<animate>` (SMIL) - not simulated by changing content
+      between builds like the old text-only cursor, an actual animation
+      that plays continuously in the browser
+- [x] Written to `generated/terminal.svg` each build, referenced from
+      `README.md` via a relative path - GitHub serves same-repo relative
+      image paths as raw files, not through its script-stripping proxy
+      (that's only for external URLs), so the SMIL animation survives
+- [x] Uses the same `THEME` palette as the Phase 8 badges, so the whole
+      README stays visually consistent under one theme choice
+- [x] `README.template.md`'s old plain-text avatar/boot code blocks
+      replaced with a single `![...](generated/terminal.svg)` embed
+
+**Verified:** rendered the SVG to PNG locally (via `cairosvg`, a
+dev-only tool used just for this visual check - **not** a project
+dependency, `svg_terminal.py` only builds markup strings) and inspected
+it directly across multiple themes and both a small fallback-text case
+and a realistic 60-column avatar. Confirmed layout, spacing, and text
+don't clip or overlap in either case.
+
+**Honest caveats:**
+- SMIL (`<animate>`) is what makes the cursor blink for real. It's been
+  deprecated-then-undeprecated in browser engines before and Chrome has
+  floated removing it again in the past - if it ever actually gets pulled,
+  the cursor would just render as a solid non-blinking block, not break
+  anything.
+- This hasn't been seen rendered in an actual GitHub-hosted README yet -
+  only locally via `cairosvg`, which is a different SVG renderer than
+  what browsers use. Worth checking your real GitHub profile page after
+  the next push to confirm it looks right there specifically.
+- No dark/light-mode awareness - GitHub READMEs can be viewed in either,
+  and this SVG always renders with its own fixed background regardless
+  of the visitor's GitHub theme. That's normal for embedded images (badges
+  have the same limitation) but worth knowing.
 
 ---
 

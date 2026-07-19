@@ -1,23 +1,6 @@
 <div align="center">
 
-```
-      [ avatar unavailable ]
-      run: python scripts/avatar.py <github-username>
-```
-
-```
-Initializing kernel...
-Loading Docker...
-Loading Redis...
-Loading AI Modules...
-Mounting filesystems...
-Starting SSH daemon...
-Connecting to GitHub...
-Syncing repositories...
-Calibrating terminal...
-READY
-[INFO] compiling thoughts.go
-```
+![Eddy Odero terminal](generated/terminal.svg)
 
 </div>
 
@@ -25,7 +8,9 @@ READY
 
 # Eddy Odero
 
-**Status:** `Refactoring at 2am` _
+**Status:** `Merging feature branch` █
+
+![Repos: 23](https://img.shields.io/badge/Repos-23-ff2079?style=for-the-badge&labelColor=0d0221) ![Stars: 1](https://img.shields.io/badge/Stars-1-ff2079?style=for-the-badge&labelColor=0d0221) ![Followers: 10](https://img.shields.io/badge/Followers-10-ff2079?style=for-the-badge&labelColor=0d0221) ![LC Solved: 45](https://img.shields.io/badge/LC_Solved-45-ff2079?style=for-the-badge&labelColor=0d0221)
 
 </div>
 
@@ -61,18 +46,22 @@ Maison POS
 ### `$ github --stats`
 
 ```
-Repositories : 8
-Stars        : 20580
-Followers    : 23323
-Contributions: 0
-Top Languages: CSS, HTML
-Pinned       : Spoon-Knife, Hello-World, octocat.github.io
+Repositories : 23
+Stars        : 1
+Followers    : 10
+Contributions: N/A
+Top Languages: Go, HTML, Python
+Pinned       : Eddy-Odero, admin-dashboard-php, Fumigation-website
 ```
 
 ### `$ github --activity`
 
 ```
-no recent public activity
+did something on Eddy-Odero/admin-dashboard-php
+pushed to Eddy-Odero/profile-engine
+pushed to Eddy-Odero/profile-engine
+pushed to Eddy-Odero/profile-engine
+pushed to Eddy-Odero/profile-engine
 ```
 
 ### `$ leetcode --stats`
@@ -93,10 +82,10 @@ Badges       : none yet
 
 **Today's Quote**
 
-> Make it work, make it right, make it fast.
+> First, solve the problem. Then, write the code.
 
 </div>
 
 ---
 
-<sub>Last rendered: 2026-07-19 13:19 UTC · auto-generated, do not edit by hand</sub>
+<sub>Last rendered: 2026-07-19 17:43 UTC · theme: cyberpunk · auto-generated, do not edit by hand</sub>

@@ -27,17 +27,19 @@ import os
 import sys
 
 import avatar
+import badges
 import effects
 import github
 import leetcode
 import renderer
+import svg_terminal
 from utils import GENERATED_DIR, build_boot_sequence, ensure_generated_dir, random_line
 
 # --- Static profile info -----------------------------------------------
 # This will eventually move to a config file (profile.yml / config.json),
 # but for Phase 1 it's kept here as plain constants for clarity.
 USERNAME = "Eddy Odero"
-GITHUB_USERNAME = "octocat"  # swap for the real GitHub handle
+GITHUB_USERNAME = "Eddy-Odero"  # swap for the real GitHub handle
 LEETCODE_USERNAME = "leetcode"  # swap for the real LeetCode handle
 TAGLINE = "Full-stack developer | Go, SQLite, vanilla JS | Kisumu, Kenya"
 STACK = ["Go", "JavaScript", "SQLite", "PostgreSQL", "Docker", "Python"]
@@ -47,6 +49,11 @@ PROJECTS = ["SatGate", "EDU-FLIX", "lem-in colony visualizer", "Maison POS"]
 # Override with CRT_LEVEL=medium in the environment to try other looks
 # without touching code.
 CRT_LEVEL = os.environ.get("CRT_LEVEL", "subtle")
+
+# Which shields.io color palette to use for the stat badges: cyberpunk
+# (default), crt, hacker, minimal, matrix. Override with THEME=matrix in
+# the environment - see scripts/themes.py for the full palette list.
+THEME = os.environ.get("THEME", "cyberpunk")
 
 # Shown if the avatar fetch/render fails for any reason (offline, rate
 # limited, bad username) so a build never hard-fails on Phase 2 work.
@@ -109,22 +116,53 @@ def build_leetcode_stats() -> dict:
         return MOCK_LEETCODE_STATS
 
 
+def build_terminal_svg(avatar_ascii: str, boot_sequence: str, system_message: str, status: str) -> str:
+    """
+    Render the terminal window SVG and save it to generated/terminal.svg.
+    Returns the path as the template should reference it (relative to
+    the repo root, since that's where README.md lives).
+    """
+    boot_text = f"{boot_sequence}\n{system_message}"
+    svg_markup = svg_terminal.render_terminal_svg(
+        avatar_ascii=avatar_ascii,
+        boot_sequence=boot_text,
+        status=status,
+        username=USERNAME,
+        theme_name=THEME,
+    )
+    GENERATED_DIR.mkdir(parents=True, exist_ok=True)
+    svg_path = GENERATED_DIR / "terminal.svg"
+    svg_path.write_text(svg_markup, encoding="utf-8")
+    return "generated/terminal.svg"
+
+
 def build_context() -> dict:
     """Assemble everything the template needs into a single context dict."""
+    github_stats = build_github_stats()
+    leetcode_stats = build_leetcode_stats()
+    combined_stats = {**github_stats, **leetcode_stats}
+
+    avatar_ascii = build_avatar_ascii()
+    system_message = effects.random_system_message()
+    status = random_line("statuses.txt")
+    boot_sequence = build_boot_sequence("boot.txt")
+
     return {
         "username": USERNAME,
         "tagline": TAGLINE,
         "stack": STACK,
         "projects": PROJECTS,
-        "avatar_ascii": build_avatar_ascii(),
+        "avatar_ascii": avatar_ascii,
         "cursor": effects.random_cursor(),
-        "system_message": effects.random_system_message(),
+        "system_message": system_message,
         "quote": random_line("quotes.txt"),
-        "status": random_line("statuses.txt"),
-        "boot_sequence": build_boot_sequence("boot.txt"),
+        "status": status,
+        "boot_sequence": boot_sequence,
+        "terminal_svg_path": build_terminal_svg(avatar_ascii, boot_sequence, system_message, status),
         "build_time": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
-        **build_github_stats(),
-        **build_leetcode_stats(),
+        "stat_badges": badges.build_stat_badges(combined_stats, THEME),
+        "theme": THEME,
+        **combined_stats,
     }
 
 
