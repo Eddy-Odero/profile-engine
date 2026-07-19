@@ -1,6 +1,11 @@
 <div align="center">
 
 ```
+      [ avatar unavailable ]
+      run: python scripts/avatar.py <github-username>
+```
+
+```
 Initializing kernel...
 Loading Docker...
 Loading Redis...
@@ -19,7 +24,7 @@ READY
 
 # Eddy Odero
 
-**Status:** `Refactoring at 2am`
+**Status:** `Writing Go`
 
 </div>
 
@@ -66,10 +71,10 @@ Followers    : 12
 
 **Today's Quote**
 
-> Code never lies, comments sometimes do.
+> Talk is cheap. Show me the code.
 
 </div>
 
 ---
 
-<sub>Last rendered: 2026-07-18 18:06 UTC · auto-generated, do not edit by hand</sub>
+<sub>Last rendered: 2026-07-19 06:41 UTC · auto-generated, do not edit by hand</sub>

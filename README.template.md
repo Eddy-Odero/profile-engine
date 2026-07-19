@@ -1,6 +1,10 @@
 <div align="center">
 
 ```
+{{ avatar_ascii }}
+```
+
+```
 {{ boot_sequence }}
 ```
 

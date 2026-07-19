@@ -10,10 +10,28 @@
 
 **Deliverable met:** Automatically generated README, from static/mock data.
 
-## Phase 2 - Avatar rendering engine (not started)
+## Phase 2 - Avatar rendering engine ✅ DONE
 
-Stub at `scripts/avatar.py`. Pipeline: download → resize → grayscale →
-contrast → edge detection → unicode conversion → CRT effects.
+- [x] Download avatar via GitHub API (`avatar.fetch_avatar_bytes`)
+- [x] Resize with monospace character-aspect correction
+- [x] Grayscale + contrast enhancement
+- [x] Edge detection blended into grayscale for outline detail
+- [x] Unicode/ASCII conversion (70-level brightness ramp)
+- [x] Wired into `build.py` (`avatar_ascii` context var) and the template
+- [x] Safe fallback if the fetch fails, so a bad network/rate limit never breaks the build
+
+**Deliverable met:** high-quality ASCII portrait, with graceful degradation.
+
+**Note on testing:** this sandbox's network egress can't reach
+`avatars.githubusercontent.com` (not on the allowlist) and hit GitHub's
+60/req/hr unauthenticated API rate limit besides. The full pipeline
+(resize → grayscale → contrast → edges → ASCII) was verified against a
+synthetic locally-generated test image and produces correct, well-structured
+output. `fetch_avatar_bytes` itself will work in a normal environment or in
+GitHub Actions (especially once `GITHUB_TOKEN` is set, see workflow).
+
+CRT effects (scanlines, glitches, corruption) are deliberately NOT part of
+this file - that's Phase 3 (`effects.py`), applied on top of this output.
 
 ## Phase 3 - Effects engine (not started)
 

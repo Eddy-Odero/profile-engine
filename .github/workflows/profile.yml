@@ -24,6 +24,8 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Generate README
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python scripts/build.py
 
       - name: Commit changes
