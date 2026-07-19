@@ -153,6 +153,17 @@ should cover it in practice. Not yet tested against a real repo's Actions
 tab (only validated the YAML parses and the build step behaves correctly
 locally).
 
+**Real bug hit and fixed:** the first live run committed fine but then
+`git pull --rebase` failed with "You have unstaged changes" - caused by
+`scripts/__pycache__/*.pyc` having been committed to the repo before a
+`.gitignore` existed, so every build left those tracked files modified but
+unstaged. Fixed two ways: added `.gitignore` (`__pycache__/`, `*.pyc`, etc.)
+to stop tracking them going forward, and changed the commit step to
+`git add -A` as a safety net so no stray tracked-file change can ever block
+the rebase again. One-time manual cleanup still needed on the actual repo
+(the already-tracked pycache files won't untrack themselves just because
+`.gitignore` now exists) - see the note sent alongside this update.
+
 ## Phase 8 - Customization (not started)
 
 Themes (Cyberpunk, CRT, Hacker, Minimal, Matrix) - no plugin system yet.
