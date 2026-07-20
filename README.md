@@ -1,14 +1,10 @@
 <div align="center">
 
-![Eddy Odero terminal](generated/terminal.svg)
-
-</div>
-
-<div align="center">
+![Eddy Odero - Full-stack developer | Go, SQLite, vanilla JS | Kisumu, Kenya](generated/hero.svg)
 
 # Eddy Odero
 
-**Status:** `ONLINE` █
+### Full-stack developer | Go, SQLite, vanilla JS | Kisumu, Kenya
 
 ![Repos: 23](https://img.shields.io/badge/Repos-23-ff2079?style=for-the-badge&labelColor=0d0221) ![Stars: 1](https://img.shields.io/badge/Stars-1-ff2079?style=for-the-badge&labelColor=0d0221) ![Followers: 10](https://img.shields.io/badge/Followers-10-ff2079?style=for-the-badge&labelColor=0d0221) ![LC Solved: 45](https://img.shields.io/badge/LC_Solved-45-ff2079?style=for-the-badge&labelColor=0d0221)
 
@@ -16,32 +12,44 @@
 
 ---
 
-### `$ whoami`
+<div align="center">
 
-```
-Eddy Odero
-Full-stack developer | Go, SQLite, vanilla JS | Kisumu, Kenya
-```
+<sub>The terminal below is just flavor - here's the plain-language version first.</sub>
 
-### `$ stack`
+</div>
 
-```
-Go
-JavaScript
-SQLite
-PostgreSQL
-Docker
-Python
-```
+### Tech Stack
 
-### `$ projects`
+`Go` `JavaScript` `SQLite` `PostgreSQL` `Docker` `Python` 
+### Projects
 
-```
-SatGate
-EDU-FLIX
-lem-in colony visualizer
-Maison POS
-```
+<div align="center">
+
+![Projects](generated/project_cards.svg)
+
+</div>
+
+### A quote I like
+
+<div align="center">
+
+![Quote](generated/quote.svg)
+
+</div>
+
+---
+
+<div align="center">
+
+**Status:** `Writing Go` █
+
+![Eddy Odero terminal](generated/terminal.svg)
+
+<sub>Live-ish terminal flair - avatar, boot log, and status re-render every build.</sub>
+
+</div>
+
+---
 
 ### `$ github --stats`
 
@@ -49,17 +57,17 @@ Maison POS
 Repositories : 23
 Stars        : 1
 Followers    : 10
-Contributions: 1016
+Contributions: N/A
 Top Languages: Go, HTML, Python
-Pinned       : SatGate
+Pinned       : Eddy-Odero, admin-dashboard-php, Fumigation-website
 ```
 
 ### `$ github --activity`
 
 ```
 pushed to Eddy-Odero/profile-engine
-did something on Eddy-Odero/admin-dashboard-php
 pushed to Eddy-Odero/profile-engine
+did something on Eddy-Odero/admin-dashboard-php
 pushed to Eddy-Odero/profile-engine
 pushed to Eddy-Odero/profile-engine
 ```
@@ -78,14 +86,4 @@ Badges       : none yet
 
 ---
 
-<div align="center">
-
-**Today's Quote**
-
-> Code never lies, comments sometimes do.
-
-</div>
-
----
-
-<sub>Last rendered: 2026-07-19 17:46 UTC · theme:  · auto-generated, do not edit by hand</sub>
+<sub>Last rendered: 2026-07-20 05:56 UTC · theme: cyberpunk · auto-generated, do not edit by hand</sub>

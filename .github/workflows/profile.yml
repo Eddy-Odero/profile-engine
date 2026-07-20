@@ -2,7 +2,11 @@ name: Rebuild Profile README
 
 on:
   schedule:
-    - cron: "0 */6 * * *"
+    # Once a day - a personal profile doesn't need hourly freshness, and
+    # fewer runs means fewer GitHub/LeetCode API calls, which matters
+    # since even the authenticated GITHUB_TOKEN rate limit is shared
+    # across everything the workflow does in one run.
+    - cron: "0 6 * * *"
   push:
     branches: [main]
   workflow_dispatch:

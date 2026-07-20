@@ -1,14 +1,10 @@
 <div align="center">
 
-![{{ username }} terminal]({{ terminal_svg_path }})
-
-</div>
-
-<div align="center">
+![{{ username }} - {{ tagline }}]({{ hero_svg_path }})
 
 # {{ username }}
 
-**Status:** `{{ status }}` {{ cursor }}
+### {{ tagline }}
 
 {{ stat_badges | join(" ") }}
 
@@ -16,24 +12,45 @@
 
 ---
 
-### `$ whoami`
+<div align="center">
 
-```
-{{ username }}
-{{ tagline }}
-```
+<sub>The terminal below is just flavor - here's the plain-language version first.</sub>
 
-### `$ stack`
+</div>
 
-```
-{% for tech in stack %}{{ tech }}
-{% endfor %}```
+### Tech Stack
 
-### `$ projects`
+{% for tech in stack %}`{{ tech }}` {% endfor %}
 
-```
-{% for project in projects %}{{ project }}
-{% endfor %}```
+### Projects
+
+<div align="center">
+
+![Projects]({{ project_cards_svg_path }})
+
+</div>
+
+### A quote I like
+
+<div align="center">
+
+![Quote]({{ quote_svg_path }})
+
+</div>
+
+---
+
+<div align="center">
+
+**Status:** `{{ status }}` {{ cursor }}
+
+![{{ username }} terminal]({{ terminal_svg_path }})
+
+<sub>Live-ish terminal flair - avatar, boot log, and status re-render every build.</sub>
+
+</div>
+
+---
 
 ### `$ github --stats`
 
@@ -71,16 +88,6 @@ Badges       : {{ badges | join(", ") if badges else "none yet" }}
 {% for title in recent_submissions %}{{ title }}
 {% endfor %}```
 {% endif %}
-
----
-
-<div align="center">
-
-**Today's Quote**
-
-> {{ quote }}
-
-</div>
 
 ---
 

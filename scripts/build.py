@@ -30,7 +30,10 @@ import avatar
 import badges
 import effects
 import github
+import hero_card
 import leetcode
+import project_cards
+import quote_card
 import renderer
 import svg_terminal
 from utils import GENERATED_DIR, build_boot_sequence, ensure_generated_dir, random_line
@@ -42,6 +45,8 @@ USERNAME = "Eddy Odero"
 GITHUB_USERNAME = "Eddy-Odero"  # swap for the real GitHub handle
 LEETCODE_USERNAME = "leetcode"  # swap for the real LeetCode handle
 TAGLINE = "Full-stack developer | Go, SQLite, vanilla JS | Kisumu, Kenya"
+ROLE = "Full-Stack Developer"  # used by the hero card - kept separate from
+LOCATION = "Kisumu, Kenya"  # TAGLINE so the card doesn't have to parse a string
 STACK = ["Go", "JavaScript", "SQLite", "PostgreSQL", "Docker", "Python"]
 PROJECTS = ["SatGate", "EDU-FLIX", "lem-in colony visualizer", "Maison POS"]
 
@@ -116,6 +121,13 @@ def build_leetcode_stats() -> dict:
         return MOCK_LEETCODE_STATS
 
 
+def _write_svg(markup: str, filename: str) -> str:
+    """Write SVG markup to generated/<filename> and return the template-relative path."""
+    GENERATED_DIR.mkdir(parents=True, exist_ok=True)
+    (GENERATED_DIR / filename).write_text(markup, encoding="utf-8")
+    return f"generated/{filename}"
+
+
 def build_terminal_svg(avatar_ascii: str, boot_sequence: str, system_message: str, status: str) -> str:
     """
     Render the terminal window SVG and save it to generated/terminal.svg.
@@ -130,10 +142,7 @@ def build_terminal_svg(avatar_ascii: str, boot_sequence: str, system_message: st
         username=USERNAME,
         theme_name=THEME,
     )
-    GENERATED_DIR.mkdir(parents=True, exist_ok=True)
-    svg_path = GENERATED_DIR / "terminal.svg"
-    svg_path.write_text(svg_markup, encoding="utf-8")
-    return "generated/terminal.svg"
+    return _write_svg(svg_markup, "terminal.svg")
 
 
 def build_context() -> dict:
@@ -146,6 +155,7 @@ def build_context() -> dict:
     system_message = effects.random_system_message()
     status = random_line("statuses.txt")
     boot_sequence = build_boot_sequence("boot.txt")
+    quote = random_line("quotes.txt")
 
     return {
         "username": USERNAME,
@@ -155,10 +165,17 @@ def build_context() -> dict:
         "avatar_ascii": avatar_ascii,
         "cursor": effects.random_cursor(),
         "system_message": system_message,
-        "quote": random_line("quotes.txt"),
+        "quote": quote,
         "status": status,
         "boot_sequence": boot_sequence,
         "terminal_svg_path": build_terminal_svg(avatar_ascii, boot_sequence, system_message, status),
+        "project_cards_svg_path": _write_svg(
+            project_cards.render_project_cards_svg(PROJECTS, THEME), "project_cards.svg"
+        ),
+        "hero_svg_path": _write_svg(
+            hero_card.render_hero_svg(USERNAME, ROLE, LOCATION, THEME), "hero.svg"
+        ),
+        "quote_svg_path": _write_svg(quote_card.render_quote_svg(quote, THEME), "quote.svg"),
         "build_time": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
         "stat_badges": badges.build_stat_badges(combined_stats, THEME),
         "theme": THEME,

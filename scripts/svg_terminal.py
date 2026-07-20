@@ -8,11 +8,14 @@ some color, but only for stat pills, not the terminal window itself.
 
 This module renders the avatar + boot sequence + status line as an
 actual SVG image: dark window chrome, theme-colored monospace text, a
-soft glow filter, and a real blinking cursor using SVG's native <animate>
-(SMIL). Since the README embeds this as a same-repo relative path, GitHub
-serves it as a raw file rather than routing it through its script-
-stripping image proxy (that proxy is for external URLs) - so the
-animation actually plays in a browser, unlike anything else in this repo.
+soft glow filter, a static scanline texture, a scan-glow band that
+sweeps top-to-bottom on a loop, an occasional glitch jitter on the whole
+body, and a real blinking cursor - all using SVG's native <animate>/
+<animateTransform> (SMIL), so they play continuously in a browser rather
+than only changing once per build like the old text-based CRT effects.
+Since the README embeds this as a same-repo relative path, GitHub serves
+it as a raw file rather than routing it through its script-stripping
+image proxy (that proxy is for external URLs), so the animation survives.
 
 Usage:
     from svg_terminal import render_terminal_svg
@@ -32,6 +35,9 @@ PADDING = 16
 TITLE_BAR_HEIGHT = 32
 DESCENDER_MARGIN = 5  # room for characters like g/y/j that dip below the baseline
 TRAFFIC_LIGHT_COLORS = ["#ff5f56", "#ffbd2e", "#27c93f"]
+SCAN_BAND_HEIGHT = 50
+SCAN_LOOP_SECONDS = 4
+GLITCH_LOOP_SECONDS = 6
 
 
 def _esc(text: str) -> str:
@@ -50,6 +56,52 @@ def _title_bar(width: int, accent: str, username: str) -> str:
         + f'<text x="{width / 2}" y="{TITLE_BAR_HEIGHT // 2 + 4}" '
         f'font-family="Consolas, Menlo, monospace" font-size="12" '
         f'fill="{accent}" fill-opacity="0.7" text-anchor="middle">{label}</text>'
+    )
+
+
+def _scanline_texture(width: int, height: int) -> str:
+    """
+    A static repeating pattern of thin dark lines every 3px - the classic
+    CRT scanline *texture*, always visible (as opposed to the scan band
+    below, which is the moving *sweep*). Uses explicit pixel dimensions
+    (not percentages) inside the pattern - percentage sizing inside
+    <pattern> isn't well-defined and breaks some SVG renderers.
+    """
+    return f"""
+  <defs>
+    <pattern id="scanlines" width="4" height="3" patternUnits="userSpaceOnUse">
+      <rect width="4" height="1" fill="black" fill-opacity="0.15"/>
+    </pattern>
+  </defs>
+  <rect x="0" y="{TITLE_BAR_HEIGHT}" width="{width}" height="{height - TITLE_BAR_HEIGHT}" fill="url(#scanlines)"/>"""
+
+
+def _scan_band(width: int, height: int, accent: str) -> str:
+    """A soft light band that continuously sweeps top-to-bottom, like a CRT beam."""
+    return f"""
+  <defs>
+    <linearGradient id="scanGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="{accent}" stop-opacity="0"/>
+      <stop offset="50%" stop-color="{accent}" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="{accent}" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="{-SCAN_BAND_HEIGHT}" width="{width}" height="{SCAN_BAND_HEIGHT}" fill="url(#scanGrad)">
+    <animate attributeName="y" values="{-SCAN_BAND_HEIGHT};{height}" dur="{SCAN_LOOP_SECONDS}s" repeatCount="indefinite"/>
+  </rect>"""
+
+
+def _glitch_jitter() -> str:
+    """
+    A brief horizontal jump applied to the whole body-text group, twice
+    per loop, simulating an occasional signal glitch. Subtle and
+    infrequent by design - most of the loop it sits still at (0,0).
+    """
+    return (
+        '<animateTransform attributeName="transform" type="translate" '
+        'values="0 0;0 0;2 0;-2 0;0 0;0 0;0 0;0 0;-1 0;1 0;0 0;0 0" '
+        'keyTimes="0;0.30;0.31;0.32;0.33;0.34;0.65;0.66;0.67;0.68;0.69;1" '
+        f'dur="{GLITCH_LOOP_SECONDS}s" repeatCount="indefinite"/>'
     )
 
 
@@ -115,9 +167,19 @@ xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(username)} termi
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
+    <clipPath id="bodyClip">
+      <rect x="0" y="{TITLE_BAR_HEIGHT}" width="{width}" height="{height - TITLE_BAR_HEIGHT}"/>
+    </clipPath>
   </defs>
   <rect width="{width}" height="{height}" rx="10" fill="{bg}"/>
   {_title_bar(width, accent, username)}
-  {''.join(text_elements)}
-  {cursor}
+  <g clip-path="url(#bodyClip)">
+    <g>
+      {''.join(text_elements)}
+      {cursor}
+      {_glitch_jitter()}
+    </g>
+    {_scan_band(width, height, accent)}
+    {_scanline_texture(width, height)}
+  </g>
 </svg>"""

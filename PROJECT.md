@@ -254,6 +254,92 @@ don't clip or overlap in either case.
 
 ---
 
+## Revision - Accessibility/readability redesign ✅ DONE
+
+Feedback after the SVG terminal landed: the whole README had drifted into
+a "hacker terminal" aesthetic that's a specific style choice, not
+necessarily one that reads well to someone like an HR reviewer skimming
+quickly for name, role, and project names. Four concrete changes:
+
+1. **Real continuous animation on the terminal**, not just per-build
+   text randomization: `svg_terminal.py` now has a static scanline
+   texture, a scan-glow band that continuously sweeps top-to-bottom
+   (`<animate>` on a gradient rect, 4s loop), and a periodic glitch
+   jitter on the whole body text (`<animateTransform>`, brief jumps twice
+   per 6s loop). All genuine SMIL animation, playing continuously in a
+   browser - not something that only changes when the workflow reruns.
+2. **Name and tagline pulled out of the terminal entirely** and put at
+   the very top of the README as a plain `#` heading + subtitle - no
+   terminal styling, no monospace, just normal markdown text any screen
+   reader or quick skim can parse instantly. The terminal (avatar/boot/
+   status) now sits further down, explicitly framed as "flavor" via a
+   `<sub>` note, not the first thing anyone has to parse.
+3. **`project_cards.py`** - a real card layout for projects: light
+   background (not dark terminal), rounded corners, a theme-colored
+   accent bar, drop shadow, wraps into a grid if there are more projects
+   than fit in one row. Replaces the old `$ projects` plain-text block.
+4. **`quote_card.py`** - a light card with a genuine sequential
+   typewriter reveal: each line types out in turn (via per-line
+   clip-path width `<animate>`s sharing one clock, offset so line 2
+   doesn't start until line 1 finishes), holds fully visible, then the
+   whole card resets and loops. Replaces the old static blockquote.
+
+**A real bug caught during this work:** the initial scanline `<pattern>`
+used `width="100%"`, which isn't well-defined inside an SVG `<pattern>`
+and made `cairosvg` fail outright with "The SVG size is undefined."
+Fixed by switching to explicit pixel dimensions (`width="4" height="3"`).
+Also caught and fixed: the quote card and the `quote` context value were
+independently calling `random_line("quotes.txt")`, so the image could
+show a *different* quote than any other part of the README referencing
+`{{ quote }}` - fixed by computing the quote once and reusing it.
+
+**Testing method and its limits:** `cairosvg` (used only for my own
+visual checks, not a project dependency) doesn't execute SMIL - it only
+renders whatever the *initial* keyframe state is, which for these
+animations is mostly "not yet visible" (clip width 0, scan band off-
+screen). To actually verify layout, I rendered "debug" copies with the
+`<animate>` tags stripped and clip widths forced open, confirming text
+wrapping, spacing, and card layout are all correct. Separately confirmed
+the real animated files parse and render without errors at their true
+initial state. **None of this has been seen playing as an actual
+animation in a real browser yet** - only reasoned through the keyframe
+math and checked static snapshots. Worth watching the real GitHub-hosted
+version after the next push to confirm the scan sweep, glitch jitter, and
+typewriter reveal all look right in motion, not just correct on paper.
+
+---
+
+## Revision - Rebuild frequency + hero card
+
+**Schedule change:** rebuild frequency reduced from every 6 hours to
+once daily (`cron: "0 6 * * *"`). Rationale: even hosted live-rendering
+services (github-readme-stats, capsule-render, etc.) have downtime,
+which is exactly the failure mode this project's static-pre-render
+architecture avoids - but that architecture still makes real API calls
+on every run, so fewer runs means less exposure to rate limits
+regardless of `GITHUB_TOKEN` authentication status.
+
+**`hero_card.py`** - a gradient banner card for the "who am I" section:
+initials avatar badge (not the real photo - see the module's own
+docstring for why), name, role, and location with a small pin icon.
+Placed above the existing plain-text `# {{ username }}` heading, not
+replacing it - the plain heading stays for accessibility/screen readers/
+quick-scan purposes, the hero card is additional visual polish layered
+on top, not a replacement for the readable text version.
+
+**Real bug confirmed, not yet fixed:** the avatar fallback ("avatar
+unavailable") has now been confirmed to trigger on an actual GitHub
+Actions run against the real repo, not just in this sandbox. Root cause
+not yet identified - most likely candidate is the live workflow file not
+having the `GITHUB_TOKEN` env var under the "Generate README" step
+(added in Phase 4 here, but the live repo may be running an older copy
+of the workflow file that predates it), which would make `avatar.py`'s
+GitHub API calls unauthenticated and vulnerable to rate limiting from
+GitHub Actions' shared runner IP pool. Needs the actual Actions log line
+(`[avatar] fetch/render failed, using fallback: ...`) to confirm.
+
+---
+
 ## How to run locally
 
 ```bash
