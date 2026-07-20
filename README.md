@@ -4,7 +4,7 @@
 
 # Eddy Odero
 
-**Status:** `ONLINE` █
+### Full-stack developer | Go, SQLite, vanilla JS | Kisumu, Kenya
 
 ![Repos: 23](https://img.shields.io/badge/Repos-23-ff2079?style=for-the-badge&labelColor=0d0221) ![Stars: 1](https://img.shields.io/badge/Stars-1-ff2079?style=for-the-badge&labelColor=0d0221) ![Followers: 10](https://img.shields.io/badge/Followers-10-ff2079?style=for-the-badge&labelColor=0d0221) ![LC Solved: 45](https://img.shields.io/badge/LC_Solved-45-ff2079?style=for-the-badge&labelColor=0d0221)
 
@@ -41,7 +41,7 @@
 
 <div align="center">
 
-**Status:** `Writing Go` █
+**Status:** `Reading Documentation` █
 
 ![Eddy Odero terminal](generated/terminal.svg)
 
@@ -57,9 +57,9 @@
 Repositories : 23
 Stars        : 1
 Followers    : 10
-Contributions: 1016
+Contributions: 1023
 Top Languages: Go, HTML, Python
-Pinned       : Eddy-Odero, admin-dashboard-php, Fumigation-website
+Pinned       : SatGate
 ```
 
 ### `$ github --activity`
@@ -67,8 +67,8 @@ Pinned       : Eddy-Odero, admin-dashboard-php, Fumigation-website
 ```
 pushed to Eddy-Odero/profile-engine
 pushed to Eddy-Odero/profile-engine
-did something on Eddy-Odero/admin-dashboard-php
 pushed to Eddy-Odero/profile-engine
+did something on Eddy-Odero/admin-dashboard-php
 pushed to Eddy-Odero/profile-engine
 ```
 
@@ -86,14 +86,4 @@ Badges       : none yet
 
 ---
 
-<div align="center">
-
-**Today's Quote**
-
-> Code never lies, comments sometimes do.
-
-</div>
-
----
-
-<sub>Last rendered: 2026-07-19 17:46 UTC · theme:  · auto-generated, do not edit by hand</sub>
+<sub>Last rendered: 2026-07-20 06:03 UTC · theme:  · auto-generated, do not edit by hand</sub>
