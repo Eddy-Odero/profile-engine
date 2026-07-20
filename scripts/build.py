@@ -53,12 +53,22 @@ PROJECTS = ["SatGate", "EDU-FLIX", "lem-in colony visualizer", "Maison POS"]
 # How aggressive the CRT effects are: "subtle" (default), "medium", "heavy".
 # Override with CRT_LEVEL=medium in the environment to try other looks
 # without touching code.
-CRT_LEVEL = os.environ.get("CRT_LEVEL", "subtle")
+#
+# Using `or` instead of os.environ.get(key, default) matters here: the
+# workflow passes CRT_LEVEL/THEME from `${{ inputs.crt_level }}`, which
+# only has a real value on manual workflow_dispatch runs. On scheduled/
+# push-triggered runs, GitHub Actions sets the env var to an EMPTY
+# STRING, not unset - and os.environ.get()'s default only kicks in when
+# the key is missing entirely, not when it's present-but-empty. That
+# left CRT_LEVEL="" on every non-manual run, which apply_crt_effects()
+# correctly rejected as an unknown level, which surfaced (confusingly)
+# as the avatar step failing, since that's the function that called it.
+CRT_LEVEL = os.environ.get("CRT_LEVEL") or "subtle"
 
 # Which shields.io color palette to use for the stat badges: cyberpunk
 # (default), crt, hacker, minimal, matrix. Override with THEME=matrix in
 # the environment - see scripts/themes.py for the full palette list.
-THEME = os.environ.get("THEME", "cyberpunk")
+THEME = os.environ.get("THEME") or "cyberpunk"
 
 # Shown if the avatar fetch/render fails for any reason (offline, rate
 # limited, bad username) so a build never hard-fails on Phase 2 work.

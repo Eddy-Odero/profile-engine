@@ -340,6 +340,51 @@ GitHub Actions' shared runner IP pool. Needs the actual Actions log line
 
 ---
 
+## Bug fixed: the real cause of the persistent "avatar unavailable"
+
+**Root cause found** (from the actual Actions log line, finally):
+`Unknown effects level: ''`.
+
+The workflow passes `CRT_LEVEL: ${{ inputs.crt_level }}` and
+`THEME: ${{ inputs.theme }}`, which only have real values on a manual
+`workflow_dispatch` run. On every scheduled or push-triggered run - i.e.
+the normal case - GitHub Actions sets those env vars to an **empty
+string**, not unset. `os.environ.get("CRT_LEVEL", "subtle")` only
+supplies its default when the key is missing entirely; a present-but-
+empty value passes straight through as `""`. That empty string reached
+`effects.apply_crt_effects()`, which correctly didn't recognize `""` as
+a valid level and raised - and since that call happens inside
+`build_avatar_ascii()`'s try/except, the error surfaced as an avatar
+failure, even though the avatar fetch itself was never the problem.
+
+This explains everything reported earlier: it looked identical to a
+network/rate-limit failure (same fallback message, same code path) but
+had a completely different cause, and it hit on *every* scheduled run
+regardless of GitHub API status.
+
+**Fixed two ways:**
+1. `build.py`: `os.environ.get("CRT_LEVEL", "subtle")` -> 
+   `os.environ.get("CRT_LEVEL") or "subtle"` (same for `THEME`) - `or`
+   treats empty string the same as missing, `.get()`'s default doesn't.
+2. `effects.apply_crt_effects()`: now treats a falsy `level` as "use the
+   default" rather than raising, as defense in depth - a real typo like
+   `"subtel"` still raises loudly, only emptiness is forgiven.
+
+**Verified:** reproduced the exact bug by explicitly setting
+`CRT_LEVEL="" THEME=""` (matching what GitHub Actions actually sets on
+non-dispatch runs) and confirmed the error is gone and both resolve to
+their correct defaults (`subtle` / `cyberpunk`). Also confirmed real
+manual-dispatch values (`CRT_LEVEL=heavy THEME=matrix`) still flow
+through correctly - the fix doesn't break the feature it was protecting.
+
+**Lesson for next time:** `themes.get_theme()` was already immune to
+this exact bug, since dict `.get(name, default)` treats an empty string
+as simply "not a valid key" and falls through correctly - the bug was
+specific to `os.environ.get(key, default)`'s different semantics
+(missing vs. falsy), not the theme-lookup pattern in general.
+
+---
+
 ## How to run locally
 
 ```bash

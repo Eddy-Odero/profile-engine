@@ -123,7 +123,14 @@ def apply_crt_effects(text: str, level: str = "subtle") -> str:
         subtle  - barely noticeable, portrait stays clearly readable (default)
         medium  - visibly glitchy but still recognizable
         heavy   - deliberately trashed, for a "signal lost" look
+
+    An empty/falsy `level` (e.g. an env var that's set-but-blank rather
+    than truly unset - the exact bug that hit build.py's CRT_LEVEL/THEME
+    reads) is treated as "use the default", not as an error. A real typo
+    like "subtel" still raises, since that's worth catching loudly.
     """
+    level = level or "subtle"
+
     params = {
         "subtle": dict(noise=0.006, corruption=0.001, glitches=1, steps=0, scan_interval=4),
         "medium": dict(noise=0.02, corruption=0.008, glitches=2, steps=1, scan_interval=3),
