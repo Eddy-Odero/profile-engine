@@ -1,25 +1,32 @@
 """
-svg_terminal.py  (real colored terminal visual)
+svg_terminal.py  (real colored terminal visual - neofetch-style two-column layout)
 
 Everything else in this project - the ASCII avatar, CRT text-noise
 effects, the boot sequence - is plain text, and GitHub renders code-block
 text as flat monospace with no color. Shields.io badges (Phase 8) added
 some color, but only for stat pills, not the terminal window itself.
 
-This module renders the avatar + boot sequence + status line as an
-actual SVG image: dark window chrome, theme-colored monospace text, a
-soft glow filter, a static scanline texture, a scan-glow band that
-sweeps top-to-bottom on a loop, an occasional glitch jitter on the whole
-body, and a real blinking cursor - all using SVG's native <animate>/
-<animateTransform> (SMIL), so they play continuously in a browser rather
-than only changing once per build like the old text-based CRT effects.
-Since the README embeds this as a same-repo relative path, GitHub serves
-it as a raw file rather than routing it through its script-stripping
-image proxy (that proxy is for external URLs), so the animation survives.
+Layout is deliberately modeled on the classic `neofetch` terminal tool
+(and profiles that borrow its look, e.g. Andrew6rant/Andrew6rant): the
+ASCII avatar sits on the left, unchanged, and a dotted key/value info
+panel sits to its right - role, location, and stats aligned with dot
+leaders, the same visual language as neofetch's OS/Shell/Uptime rows.
+The boot log and status line move into that same right column, below
+the stats.
+
+Real, continuous SVG animation (not per-build text randomization):
+a static scanline texture, a scan-glow band that sweeps top-to-bottom
+on a loop, an occasional glitch jitter on the whole body, and a real
+blinking cursor - all via SVG's native <animate>/<animateTransform>
+(SMIL), so they play continuously in a browser. Since the README embeds
+this as a same-repo relative path, GitHub serves it as a raw file rather
+than routing it through its script-stripping image proxy (that's for
+external URLs), so the animation survives.
 
 Usage:
     from svg_terminal import render_terminal_svg
-    svg_markup = render_terminal_svg(avatar_ascii, boot_sequence, status, username, theme_name)
+    svg_markup = render_terminal_svg(
+        avatar_ascii, boot_sequence, status, username, stats, theme_name)
 """
 
 from __future__ import annotations
@@ -38,6 +45,9 @@ TRAFFIC_LIGHT_COLORS = ["#ff5f56", "#ffbd2e", "#27c93f"]
 SCAN_BAND_HEIGHT = 50
 SCAN_LOOP_SECONDS = 4
 GLITCH_LOOP_SECONDS = 6
+COLUMN_GAP = 28
+RIGHT_COL_CHARS = 44  # neofetch-style column width, in characters, for dot-leader alignment
+MIN_DOTS = 3
 
 
 def _esc(text: str) -> str:
@@ -60,13 +70,7 @@ def _title_bar(width: int, accent: str, username: str) -> str:
 
 
 def _scanline_texture(width: int, height: int) -> str:
-    """
-    A static repeating pattern of thin dark lines every 3px - the classic
-    CRT scanline *texture*, always visible (as opposed to the scan band
-    below, which is the moving *sweep*). Uses explicit pixel dimensions
-    (not percentages) inside the pattern - percentage sizing inside
-    <pattern> isn't well-defined and breaks some SVG renderers.
-    """
+    """Static repeating pattern of thin dark lines - the CRT scanline texture."""
     return f"""
   <defs>
     <pattern id="scanlines" width="4" height="3" patternUnits="userSpaceOnUse">
@@ -92,11 +96,7 @@ def _scan_band(width: int, height: int, accent: str) -> str:
 
 
 def _glitch_jitter() -> str:
-    """
-    A brief horizontal jump applied to the whole body-text group, twice
-    per loop, simulating an occasional signal glitch. Subtle and
-    infrequent by design - most of the loop it sits still at (0,0).
-    """
+    """A brief horizontal jump applied to the whole body, twice per loop."""
     return (
         '<animateTransform attributeName="transform" type="translate" '
         'values="0 0;0 0;2 0;-2 0;0 0;0 0;0 0;0 0;-1 0;1 0;0 0;0 0" '
@@ -105,49 +105,130 @@ def _glitch_jitter() -> str:
     )
 
 
+def _dotted_row(key: str, value: str, total_chars: int = RIGHT_COL_CHARS) -> tuple[str, str, str]:
+    """Split a key/value pair into (key, dot-leader, value) sized to align at total_chars."""
+    value = str(value)
+    used = len(key) + len(value) + 2
+    dots = max(MIN_DOTS, total_chars - used)
+    return key, "." * dots, value
+
+
+def _build_stat_rows(stats: dict) -> list[tuple[str, str]]:
+    """Turn the stats dict into an ordered list of (key, value) pairs for the dotted panel."""
+    rows = [
+        ("Role", stats.get("role", "")),
+        ("Location", stats.get("location", "")),
+        ("Repos", stats.get("repo_count", "?")),
+        ("Stars", stats.get("stars", "?")),
+        ("Followers", stats.get("followers", "?")),
+    ]
+    top_languages = stats.get("top_languages") or []
+    if top_languages:
+        rows.append(("Languages", ", ".join(top_languages)))
+
+    solved = stats.get("solved")
+    if solved:
+        rows.append(("LC Solved", solved.get("total", "?")))
+    rating = stats.get("rating")
+    rows.append(("LC Rating", rating if rating is not None else "unrated"))
+
+    return rows
+
+
 def render_terminal_svg(
     avatar_ascii: str,
     boot_sequence: str,
     status: str,
     username: str,
+    stats: dict,
     theme_name: str = DEFAULT_THEME,
 ) -> str:
     """
-    Build the SVG markup for the terminal window. Returns a full <svg>...
-    </svg> string ready to write straight to a file.
+    Build the SVG markup for the terminal window: ASCII avatar on the
+    left, a neofetch-style dotted key/value panel + boot log + status
+    on the right. Returns a full <svg>...</svg> string.
     """
     theme = get_theme(theme_name)
     bg = f"#{theme['label_color']}"
     accent = f"#{theme['color']}"
 
     avatar_lines = avatar_ascii.split("\n")
+    avatar_cols = max((len(line) for line in avatar_lines), default=40)
+    avatar_col_width = avatar_cols * CHAR_WIDTH
+    avatar_height = len(avatar_lines) * LINE_HEIGHT
+
     boot_lines = boot_sequence.split("\n")
     status_line = f"$ status: {status}"
-    body_lines = avatar_lines + [""] + boot_lines + ["", status_line]
+    stat_rows = _build_stat_rows(stats)
 
-    cols = max((len(line) for line in body_lines), default=40)
-    rows = len(body_lines)
+    # Right column row count: separator + stat rows + blank + boot lines + blank + status
+    right_row_count = 1 + len(stat_rows) + 1 + len(boot_lines) + 1 + 1
+    right_col_height = right_row_count * LINE_HEIGHT
+    right_col_width = RIGHT_COL_CHARS * CHAR_WIDTH
 
-    width = int(cols * CHAR_WIDTH + PADDING * 2)
-    height = int(rows * LINE_HEIGHT + PADDING * 2 + TITLE_BAR_HEIGHT + DESCENDER_MARGIN)
+    content_height = max(avatar_height, right_col_height)
+    width = int(PADDING + avatar_col_width + COLUMN_GAP + right_col_width + PADDING)
+    height = int(TITLE_BAR_HEIGHT + PADDING + content_height + PADDING + DESCENDER_MARGIN)
 
-    text_elements = []
-    baseline_y = TITLE_BAR_HEIGHT + PADDING + FONT_SIZE
-    status_baseline_y = baseline_y  # overwritten on the last iteration below
-    for i, line in enumerate(body_lines):
-        is_avatar = i < len(avatar_lines)
-        opacity = 1.0 if is_avatar else 0.85
-        text_elements.append(
-            f'<text x="{PADDING}" y="{baseline_y}" filter="url(#glow)" '
+    avatar_x = PADDING
+    right_x = PADDING + avatar_col_width + COLUMN_GAP
+    top_y = TITLE_BAR_HEIGHT + PADDING + FONT_SIZE
+
+    # --- Left column: the ASCII avatar, vertically centered against the taller column
+    avatar_y_offset = (content_height - avatar_height) / 2 if content_height > avatar_height else 0
+    avatar_elements = []
+    y = top_y + avatar_y_offset
+    for line in avatar_lines:
+        avatar_elements.append(
+            f'<text x="{avatar_x}" y="{y:.1f}" filter="url(#glow)" '
             f'font-family="Consolas, Menlo, monospace" font-size="{FONT_SIZE}" '
-            f'fill="{accent}" fill-opacity="{opacity}" xml:space="preserve">'
+            f'fill="{accent}" xml:space="preserve">{_esc(line)}</text>'
+        )
+        y += LINE_HEIGHT
+
+    # --- Right column: separator, dotted stats, boot log, status
+    right_elements = []
+    status_baseline_y = top_y
+    right_y_offset = (content_height - right_col_height) / 2 if right_col_height > avatar_height else 0
+    y = top_y + right_y_offset
+
+    right_elements.append(
+        f'<text x="{right_x}" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
+        f'font-size="{FONT_SIZE}" fill="{accent}" fill-opacity="0.4" xml:space="preserve">'
+        f'{"-" * RIGHT_COL_CHARS}</text>'
+    )
+    y += LINE_HEIGHT
+
+    for key, value in stat_rows:
+        k, dots, v = _dotted_row(key, value)
+        right_elements.append(
+            f'<text x="{right_x}" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
+            f'font-size="{FONT_SIZE}" xml:space="preserve">'
+            f'<tspan fill="{accent}" font-weight="700">{_esc(k)}</tspan>'
+            f'<tspan fill="{accent}" fill-opacity="0.35">{dots}</tspan>'
+            f'<tspan fill="white" fill-opacity="0.9">{_esc(v)}</tspan></text>'
+        )
+        y += LINE_HEIGHT
+
+    y += LINE_HEIGHT  # blank spacer
+
+    for line in boot_lines:
+        right_elements.append(
+            f'<text x="{right_x}" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
+            f'font-size="{FONT_SIZE}" fill="{accent}" fill-opacity="0.55" xml:space="preserve">'
             f"{_esc(line)}</text>"
         )
-        if line is status_line:
-            status_baseline_y = baseline_y
-        baseline_y += LINE_HEIGHT
+        y += LINE_HEIGHT
 
-    cursor_x = PADDING + CHAR_WIDTH * len(status_line)
+    y += LINE_HEIGHT  # blank spacer
+
+    right_elements.append(
+        f'<text x="{right_x}" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
+        f'font-size="{FONT_SIZE}" fill="{accent}" xml:space="preserve">{_esc(status_line)}</text>'
+    )
+    status_baseline_y = y
+
+    cursor_x = right_x + CHAR_WIDTH * len(status_line)
     cursor_y = status_baseline_y - FONT_SIZE + 2
     cursor = (
         f'<rect x="{cursor_x:.1f}" y="{cursor_y:.1f}" width="{CHAR_WIDTH:.1f}" '
@@ -175,7 +256,8 @@ xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(username)} termi
   {_title_bar(width, accent, username)}
   <g clip-path="url(#bodyClip)">
     <g>
-      {''.join(text_elements)}
+      {''.join(avatar_elements)}
+      {''.join(right_elements)}
       {cursor}
       {_glitch_jitter()}
     </g>

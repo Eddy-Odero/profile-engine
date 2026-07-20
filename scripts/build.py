@@ -138,7 +138,9 @@ def _write_svg(markup: str, filename: str) -> str:
     return f"generated/{filename}"
 
 
-def build_terminal_svg(avatar_ascii: str, boot_sequence: str, system_message: str, status: str) -> str:
+def build_terminal_svg(
+    avatar_ascii: str, boot_sequence: str, system_message: str, status: str, stats: dict
+) -> str:
     """
     Render the terminal window SVG and save it to generated/terminal.svg.
     Returns the path as the template should reference it (relative to
@@ -150,6 +152,7 @@ def build_terminal_svg(avatar_ascii: str, boot_sequence: str, system_message: st
         boot_sequence=boot_text,
         status=status,
         username=USERNAME,
+        stats={**stats, "role": ROLE, "location": LOCATION},
         theme_name=THEME,
     )
     return _write_svg(svg_markup, "terminal.svg")
@@ -178,7 +181,9 @@ def build_context() -> dict:
         "quote": quote,
         "status": status,
         "boot_sequence": boot_sequence,
-        "terminal_svg_path": build_terminal_svg(avatar_ascii, boot_sequence, system_message, status),
+        "terminal_svg_path": build_terminal_svg(
+            avatar_ascii, boot_sequence, system_message, status, combined_stats
+        ),
         "project_cards_svg_path": _write_svg(
             project_cards.render_project_cards_svg(PROJECTS, THEME), "project_cards.svg"
         ),

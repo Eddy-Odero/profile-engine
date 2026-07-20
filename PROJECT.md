@@ -385,6 +385,59 @@ specific to `os.environ.get(key, default)`'s different semantics
 
 ---
 
+## Revision - Neofetch-style two-column terminal layout
+
+Prompted by looking at a reference profile (Andrew6rant/Andrew6rant) for
+inspiration. Investigated the actual source and found it's **not** a
+photo-to-ASCII avatar at all - it's a `neofetch`-style info panel:
+`user@host` header, then dotted key/value rows (`OS: ..... Windows`,
+`Languages.Programming: ..... Java, Python`) next to a small logo.
+Same static-pre-render architecture as this project (Python script +
+GitHub Actions + committed SVG), different visual content.
+
+Decision made: keep the existing photo-to-ASCII avatar as-is (it's a
+deliberate feature, not a mistake), but adopt the neofetch two-column
+*layout* around it - ASCII avatar unchanged on the left, a dotted
+key/value stats panel on the right, in the same visual language as the
+reference without copying its content.
+
+**`svg_terminal.py` rewritten** with:
+- Two-column layout: avatar column width computed from the actual ASCII
+  content, right column fixed at 44 characters for consistent dot-leader
+  alignment regardless of stat value lengths
+- `_dotted_row()` - given a key/value pair, computes how many `.`
+  characters are needed to align at the column width, minimum 3 dots
+- Right column now shows: Role, Location, Repos, Stars, Followers,
+  Languages, LC Solved, LC Rating - as accent-colored bold keys, dimmed
+  dot leaders, and light-colored values - then the boot log (dimmed),
+  then the status line + blinking cursor
+- Both columns vertically centered against whichever is taller, so a
+  short fallback avatar and a short stats panel don't look lopsided
+- All the existing continuous animation kept exactly as before per
+  explicit request: scan-glow sweep, periodic glitch jitter, scanline
+  texture, blinking cursor - none of that changed, only the layout
+  and content of what's inside it
+
+**Verified:** stress-tested the new layout with synthetic avatar/stats
+data (valid XML confirmed via `ET.fromstring`, not just eyeballed),
+then pixel-scanned the rendered PNG to confirm content actually
+occupies both the left and right column regions with no overlap.
+Re-ran `build.py` end to end and confirmed the real generated
+`terminal.svg` is valid XML and renders with correctly-separated
+columns (left content ending ~848-1096px, right column consistently
+at ~916-1584px across many rows).
+
+**Not yet done:** the plain-text `$ github --stats` / `$ leetcode --stats`
+code blocks elsewhere in the README are now partially redundant with the
+new stats panel inside the terminal SVG (though they still carry detail
+the compact panel doesn't show - pinned repos, recent activity, recent
+submissions). Left them in place rather than removing, to avoid losing
+that detail without discussing it first. Styling those sections better,
+plus the tech-stack chips, was explicitly flagged as a next step, not
+done in this pass.
+
+---
+
 ## How to run locally
 
 ```bash
