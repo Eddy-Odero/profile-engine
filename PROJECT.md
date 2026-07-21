@@ -438,6 +438,38 @@ done in this pass.
 
 ---
 
+## Revision - Static hacker-in-hoodie ASCII art
+
+Request: photo-to-ASCII conversion inherently looks noisy (established
+earlier), so switch the default avatar to a hand-crafted, high-contrast
+static piece instead - keep the photo pipeline available, don't remove it.
+
+**`assets/ascii/hacker.txt`** - a 40-char-wide, 22-row hooded silhouette
+facing a bordered terminal screen. Built with a `centered_core()`
+construction helper (not hand-typed spacing) that asserts every row's
+padding splits evenly left/right - this caught and fixed a real
+asymmetry in the first draft (eyes were off-center: 3-char margin one
+side, 5 the other, from manual space-counting). Every row's length is
+asserted equal before writing the file, so misalignment is caught at
+construction time rather than only visible after rendering.
+
+**`build.py`**: new `AVATAR_MODE` env var, defaulting to `"static"`
+(loads the file above, no CRT text-noise applied - kept clean on
+purpose). `AVATAR_MODE=photo` runs the original Phase 2 pipeline
+unchanged - verified both paths work correctly, the photo pipeline
+isn't deprecated, just not the default.
+
+**Verified:** confirmed the generated `terminal.svg` is valid XML and
+actually contains the new art (not silently falling back). Confirmed
+`AVATAR_MODE=photo` still triggers `avatar.py`'s real fetch logic
+(falls back the same way it always has in this sandbox, for the same
+network-restriction reasons as every previous test - not a new issue).
+Symmetry was verified at construction time via assertions, which is a
+stronger guarantee than eyeballing a rendered image - every row's
+left/right padding is mathematically equal, not just visually close.
+
+---
+
 ## How to run locally
 
 ```bash

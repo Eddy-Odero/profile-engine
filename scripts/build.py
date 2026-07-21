@@ -36,7 +36,7 @@ import project_cards
 import quote_card
 import renderer
 import svg_terminal
-from utils import GENERATED_DIR, build_boot_sequence, ensure_generated_dir, random_line
+from utils import ASSETS_DIR, GENERATED_DIR, build_boot_sequence, ensure_generated_dir, random_line
 
 # --- Static profile info -----------------------------------------------
 # This will eventually move to a config file (profile.yml / config.json),
@@ -70,6 +70,16 @@ CRT_LEVEL = os.environ.get("CRT_LEVEL") or "subtle"
 # the environment - see scripts/themes.py for the full palette list.
 THEME = os.environ.get("THEME") or "cyberpunk"
 
+# "static" (default) uses the hand-drawn hacker-in-hoodie ASCII art at
+# assets/ascii/hacker.txt - clean, high-contrast, looks the same every
+# render. "photo" uses the Phase 2 pipeline (avatar.py): fetches the real
+# GitHub avatar and converts it to ASCII, which is inherently noisier -
+# a real photo's soft gradients don't map cleanly onto a character ramp.
+# The photo pipeline is untouched and fully working; this is a content
+# choice, not a deprecation. Override with AVATAR_MODE=photo to switch.
+AVATAR_MODE = os.environ.get("AVATAR_MODE") or "static"
+STATIC_AVATAR_FILE = "hacker.txt"
+
 # Shown if the avatar fetch/render fails for any reason (offline, rate
 # limited, bad username) so a build never hard-fails on Phase 2 work.
 FALLBACK_AVATAR = "\n".join(
@@ -81,6 +91,13 @@ FALLBACK_AVATAR = "\n".join(
 
 
 def build_avatar_ascii() -> str:
+    if AVATAR_MODE == "static":
+        try:
+            return (ASSETS_DIR / "ascii" / STATIC_AVATAR_FILE).read_text(encoding="utf-8").rstrip("\n")
+        except Exception as exc:  # noqa: BLE001 - build must never hard-fail here
+            print(f"[avatar] static art load failed, using fallback: {exc}", file=sys.stderr)
+            return FALLBACK_AVATAR
+
     try:
         ascii_art = avatar.generate_avatar_ascii(GITHUB_USERNAME, cols=60)
         return effects.apply_crt_effects(ascii_art, level=CRT_LEVEL)
