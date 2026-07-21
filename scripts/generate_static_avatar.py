@@ -3,20 +3,30 @@ generate_static_avatar.py
 
 Generates assets/ascii/hacker.txt: a photo-style (not flat-block) ASCII
 portrait of a hooded figure, in the same density-gradient style as real
-photo-to-ASCII art - lots of midtone character variation, not just a
-handful of solid fill characters.
+photo-to-ASCII art - lots of fine-grained character variation, not a
+smooth gradient blob.
 
 Why a synthetic image instead of a real photo: this sandbox's network
 can't fetch arbitrary photos (locked to package repositories only), and
 more importantly, a hand-built synthetic image gives full control over
-the one thing that actually matters for this style - dramatic
-directional lighting. A flat, evenly-lit real photo is exactly what made
-the original photo-avatar pipeline look noisy/muddy; a source image with
-a bright hood, a properly dark (not just "somewhat dim") face void, and
-a black background reuses that SAME pipeline (avatar.py's resize/
-grayscale/contrast/edge functions, completely unchanged) and gets a much
-better result, because the input finally has the tonal range the
-technique needs.
+the things that actually matter for this style:
+    1. A deliberately-drawn, recognizable hoodie silhouette (pointed
+       hood, hood flaps hanging past the shoulder line) with SHARP,
+       unblurred mask edges - a soft/blurred silhouette boundary reads
+       as a fuzzy blob, not a defined shape.
+    2. Real per-pixel grain (numpy random noise), not a smooth
+       brightness gradient - smooth gradients produce smooth arcs of
+       repeated characters ("banding"), which look nothing like a real
+       photo's texture. Fine grain is what produces the varied,
+       scattered density mix real photo-to-ASCII art has.
+    3. A distinctly darker, smoother face void, separated from the
+       grainy hood texture around it.
+
+This reuses avatar.py's pipeline functions completely unchanged
+(resize/grayscale/contrast/edge-blend) - the earlier "photo-ASCII looks
+noisy" problem was never the pipeline's fault, it was that a flat,
+evenly-lit real photo doesn't have the tonal range or grain this
+technique needs. A properly-lit, properly-textured source image does.
 
 This is a one-time generator, not part of the build pipeline - run it
 by hand when the art needs re-tuning, then commit the resulting
@@ -28,63 +38,85 @@ assets/ascii/hacker.txt like any other asset:
 from __future__ import annotations
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageFilter
+from PIL import Image, ImageDraw
 
 import avatar
 from utils import ASSETS_DIR
 
-CANVAS_W, CANVAS_H = 700, 620
+CANVAS_W, CANVAS_H = 800, 900
 ASCII_COLS = 64
+GRAIN_SEED = 7
 OUTPUT_FILE = ASSETS_DIR / "ascii" / "hacker.txt"
 
 
-def build_synthetic_source() -> Image.Image:
+def _hood_and_shoulders_mask() -> np.ndarray:
     """
-    Build a grayscale image of a hooded figure lit from the front-upper
-    area (like a monitor's glow), with a dark face void and a pure black
-    background - deliberately mimicking dramatic studio/monitor lighting
-    rather than flat ambient light.
+    A deliberately-drawn hoodie silhouette: pointed hood with two flaps
+    that hang down past the neckline (the shape that actually reads as
+    "hood" rather than a generic rounded blob), plus a wide shoulder/
+    chest block below. No blur - sharp edges are what make the final
+    silhouette read as a defined shape instead of a soft gradient.
     """
-    yy, xx = np.mgrid[0:CANVAS_H, 0:CANVAS_W]
-
-    light_x, light_y = CANVAS_W * 0.5, CANVAS_H * 0.30
-    dist = np.sqrt((xx - light_x) ** 2 + (yy - light_y) ** 2)
-    max_dist = np.sqrt(CANVAS_W**2 + CANVAS_H**2) / 2
-    brightness = np.clip(1 - (dist / max_dist) * 0.95, 0, 1) ** 1.1 * 255
-
     mask_img = Image.new("L", (CANVAS_W, CANVAS_H), 0)
     d = ImageDraw.Draw(mask_img)
+
+    W, H = CANVAS_W, CANVAS_H
     d.polygon(
         [
-            (CANVAS_W * 0.50, CANVAS_H * 0.04),
-            (CANVAS_W * 0.22, CANVAS_H * 0.20),
-            (CANVAS_W * 0.12, CANVAS_H * 0.38),
-            (CANVAS_W * 0.08, CANVAS_H * 0.55),
-            (CANVAS_W * 0.00, CANVAS_H * 0.68),
-            (CANVAS_W * 0.00, CANVAS_H * 1.00),
-            (CANVAS_W * 1.00, CANVAS_H * 1.00),
-            (CANVAS_W * 1.00, CANVAS_H * 0.68),
-            (CANVAS_W * 0.92, CANVAS_H * 0.55),
-            (CANVAS_W * 0.88, CANVAS_H * 0.38),
-            (CANVAS_W * 0.78, CANVAS_H * 0.20),
+            (W * 0.50, H * 0.03),
+            (W * 0.30, H * 0.10),
+            (W * 0.20, H * 0.22),
+            (W * 0.16, H * 0.38),
+            (W * 0.18, H * 0.50),  # left hood flap tip
+            (W * 0.26, H * 0.42),
+            (W * 0.30, H * 0.30),
+            (W * 0.70, H * 0.30),
+            (W * 0.74, H * 0.42),
+            (W * 0.82, H * 0.50),  # right hood flap tip
+            (W * 0.84, H * 0.38),
+            (W * 0.80, H * 0.22),
+            (W * 0.70, H * 0.10),
         ],
         fill=255,
     )
-    mask_img = mask_img.filter(ImageFilter.GaussianBlur(2))
-    mask = np.array(mask_img, dtype=np.float64) / 255.0
-
-    lit = brightness * mask
-
-    face_mask_img = Image.new("L", (CANVAS_W, CANVAS_H), 0)
-    fd = ImageDraw.Draw(face_mask_img)
-    fd.ellipse(
-        [CANVAS_W * 0.33, CANVAS_H * 0.24, CANVAS_W * 0.67, CANVAS_H * 0.52], fill=255
+    d.polygon(
+        [
+            (W * 0.28, H * 0.42),
+            (W * 0.72, H * 0.42),
+            (W * 0.92, H * 0.62),
+            (W * 0.98, H * 1.00),
+            (W * 0.02, H * 1.00),
+            (W * 0.08, H * 0.62),
+        ],
+        fill=255,
     )
-    face_mask_img = face_mask_img.filter(ImageFilter.GaussianBlur(8))
-    face = np.array(face_mask_img, dtype=np.float64) / 255.0
-    lit = lit * (1 - face * 0.88)
+    return np.array(mask_img, dtype=np.float64) / 255.0
 
-    result = np.clip(lit, 0, 255).astype(np.uint8)
+
+def build_synthetic_source() -> Image.Image:
+    """Build the full lit + grained + masked grayscale source image."""
+    rng = np.random.default_rng(GRAIN_SEED)
+    W, H = CANVAS_W, CANVAS_H
+
+    mask = _hood_and_shoulders_mask()
+
+    yy, xx = np.mgrid[0:H, 0:W]
+    light_x, light_y = W * 0.5, H * 0.25
+    dist = np.sqrt((xx - light_x) ** 2 + (yy - light_y) ** 2)
+    max_dist = np.sqrt(W**2 + H**2) / 2
+    base_brightness = np.clip(1 - (dist / max_dist) * 0.6, 0.15, 1) * 210
+
+    grain = rng.normal(loc=0, scale=55, size=(H, W))
+    textured = base_brightness + grain
+
+    face_mask_img = Image.new("L", (W, H), 0)
+    fd = ImageDraw.Draw(face_mask_img)
+    fd.ellipse([W * 0.34, H * 0.14, W * 0.66, H * 0.40], fill=255)
+    face = np.array(face_mask_img, dtype=np.float64) / 255.0
+    textured = textured * (1 - face * 0.85)
+
+    result = np.clip(textured, 0, 255) * mask  # hard cutoff = sharp silhouette edge
+    result = np.clip(result, 0, 255).astype(np.uint8)
     return Image.fromarray(result, mode="L").convert("RGB")
 
 
@@ -104,3 +136,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
