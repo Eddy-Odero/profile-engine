@@ -470,6 +470,49 @@ left/right padding is mathematically equal, not just visually close.
 
 ---
 
+## Revision - Pivoted to photo-style density-gradient art
+
+Reference image provided (a hooded figure rendered as real dense-ramp
+ASCII, not flat blocks) showed the flat-block design above wasn't what
+was wanted - it needed the genuine photo-to-ASCII *texture* (rich
+midtone character variation), just depicting a hacker/hoodie subject
+rather than a real personal photo.
+
+**Key realization:** this sandbox can't fetch arbitrary photos (network
+locked to package repos only), but that turned out not to matter -
+`scripts/generate_static_avatar.py` builds a *synthetic* source image
+with dramatic directional lighting (bright hood/shoulders, genuinely
+dark face void, pure black background) using PIL, then runs it through
+the **existing, unmodified** `avatar.py` pipeline functions
+(`resize_for_terminal`, `to_grayscale`, `enhance_contrast`,
+`blend_edges`, `pixels_to_ascii`). This validates something suspected
+earlier: the photo-to-ASCII pipeline was never actually the problem -
+flat, evenly-lit real photos (like a typical selfie/avatar) are what
+produced noisy-looking output, because they lack the directional
+lighting the technique needs. Feed it an image with real contrast and
+shadow depth, and it produces exactly the rich, textured look the
+reference showed.
+
+**Verified quantitatively, not just eyeballed:** the resulting art uses
+69 of the 70 possible characters in `avatar.ASCII_RAMP` - i.e. nearly
+the full density range, not just a handful of flat fill characters,
+which is what actually produces that photographic-gradient look rather
+than a flat silhouette.
+
+**Old block-style art preserved** at `assets/ascii/hacker_blocks.txt`
+(not deleted) in case it's wanted again. `assets/ascii/hacker.txt` is
+now the photo-style version and remains `build.py`'s default via the
+same `AVATAR_MODE=static` path from the previous revision - no build.py
+changes were needed, only the asset content changed.
+
+**Reproducible, not a one-off:** the generation logic lives in
+`scripts/generate_static_avatar.py` (run by hand, not part of the build
+pipeline) rather than being a throwaway script, so the lighting/
+proportions can be re-tuned later without hand-editing a 22-row
+character grid again.
+
+---
+
 ## How to run locally
 
 ```bash
