@@ -48,6 +48,7 @@ GLITCH_LOOP_SECONDS = 6
 COLUMN_GAP = 28
 RIGHT_COL_CHARS = 44  # neofetch-style column width, in characters, for dot-leader alignment
 MIN_DOTS = 3
+MAX_HEIGHT_RATIO = 1.05  # scale taller column if more than 5% taller than the other
 
 
 def _esc(text: str) -> str:
@@ -155,7 +156,6 @@ def render_terminal_svg(
     avatar_lines = avatar_ascii.split("\n")
     avatar_cols = max((len(line) for line in avatar_lines), default=40)
     avatar_col_width = avatar_cols * CHAR_WIDTH
-    avatar_height = len(avatar_lines) * LINE_HEIGHT
 
     boot_lines = boot_sequence.split("\n")
     status_line = f"$ status: {status}"
@@ -163,10 +163,27 @@ def render_terminal_svg(
 
     # Right column row count: separator + stat rows + blank + boot lines + blank + status
     right_row_count = 1 + len(stat_rows) + 1 + len(boot_lines) + 1 + 1
-    right_col_height = right_row_count * LINE_HEIGHT
     right_col_width = RIGHT_COL_CHARS * CHAR_WIDTH
 
-    content_height = max(avatar_height, right_col_height)
+    # --- Height balancing: scale the taller column to match the shorter one ---
+    natural_avatar_h = len(avatar_lines) * LINE_HEIGHT
+    natural_right_h = right_row_count * LINE_HEIGHT
+
+    avatar_scale = 1.0
+    right_scale = 1.0
+
+    if natural_avatar_h > natural_right_h * MAX_HEIGHT_RATIO:
+        avatar_scale = natural_right_h / natural_avatar_h
+        content_height = natural_right_h
+    elif natural_right_h > natural_avatar_h * MAX_HEIGHT_RATIO:
+        right_scale = natural_avatar_h / natural_right_h
+        content_height = natural_avatar_h
+    else:
+        content_height = max(natural_avatar_h, natural_right_h)
+
+    scaled_avatar_h = natural_avatar_h * avatar_scale
+    scaled_right_h = natural_right_h * right_scale
+
     width = int(PADDING + avatar_col_width + COLUMN_GAP + right_col_width + PADDING)
     height = int(TITLE_BAR_HEIGHT + PADDING + content_height + PADDING + DESCENDER_MARGIN)
 
@@ -174,8 +191,8 @@ def render_terminal_svg(
     right_x = PADDING + avatar_col_width + COLUMN_GAP
     top_y = TITLE_BAR_HEIGHT + PADDING + FONT_SIZE
 
-    # --- Left column: the ASCII avatar, vertically centered against the taller column
-    avatar_y_offset = (content_height - avatar_height) / 2 if content_height > avatar_height else 0
+    # --- Left column: the ASCII avatar, vertically centered ---
+    avatar_y_offset = (content_height - scaled_avatar_h) / 2
     avatar_elements = []
     y = top_y + avatar_y_offset
     for line in avatar_lines:
@@ -186,10 +203,20 @@ def render_terminal_svg(
         )
         y += LINE_HEIGHT
 
-    # --- Right column: separator, dotted stats, boot log, status
+    # Compute transform to scale avatar around its center (if scaling is needed)
+    avatar_transform = ""
+    if avatar_scale != 1.0:
+        avatar_cx = avatar_x + avatar_col_width / 2
+        avatar_cy = top_y + avatar_y_offset + scaled_avatar_h / 2
+        avatar_transform = (
+            f' transform="translate({avatar_cx:.1f}, {avatar_cy:.1f}) '
+            f'scale(1, {avatar_scale:.4f}) '
+            f'translate({-avatar_cx:.1f}, {-avatar_cy:.1f})"'
+        )
+
+    # --- Right column: separator, dotted stats, boot log, status ---
     right_elements = []
-    status_baseline_y = top_y
-    right_y_offset = (content_height - right_col_height) / 2 if right_col_height > avatar_height else 0
+    right_y_offset = (content_height - scaled_right_h) / 2
     y = top_y + right_y_offset
 
     right_elements.append(
@@ -228,6 +255,17 @@ def render_terminal_svg(
     )
     status_baseline_y = y
 
+    # Compute right-column transform (if scaling is needed)
+    right_transform = ""
+    if right_scale != 1.0:
+        right_cx = right_x + right_col_width / 2
+        right_cy = top_y + right_y_offset + scaled_right_h / 2
+        right_transform = (
+            f' transform="translate({right_cx:.1f}, {right_cy:.1f}) '
+            f'scale(1, {right_scale:.4f}) '
+            f'translate({-right_cx:.1f}, {-right_cy:.1f})"'
+        )
+
     cursor_x = right_x + CHAR_WIDTH * len(status_line)
     cursor_y = status_baseline_y - FONT_SIZE + 2
     cursor = (
@@ -256,8 +294,12 @@ xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(username)} termi
   {_title_bar(width, accent, username)}
   <g clip-path="url(#bodyClip)">
     <g>
-      {''.join(avatar_elements)}
-      {''.join(right_elements)}
+      <g{avatar_transform}>
+        {''.join(avatar_elements)}
+      </g>
+      <g{right_transform}>
+        {''.join(right_elements)}
+      </g>
       {cursor}
       {_glitch_jitter()}
     </g>
