@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <svg width="297" height="100" viewBox="0 0 297 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Quote">
   <defs>
     <clipPath id="reveal0">
@@ -8,30 +7,15 @@
     </clipPath>
     <clipPath id="reveal1">
       <rect x="0" y="33" width="0" height="30">
-        <animate attributeName="width" values="0;0;101.2;101.2;0" keyTimes="0;0.300;0.600;0.92;1" dur="7s" repeatCount="indefinite"/>
+        <animate attributeName="width" values="0;0;118.9;118.9;0" keyTimes="0;0.300;0.600;0.92;1" dur="7s" repeatCount="indefinite"/>
       </rect>
     </clipPath>
   </defs>
   <rect width="297" height="100" rx="12" fill="#f8f9fa"/>
   <rect width="6" height="100" rx="3" fill="#ff2079"/>
   <text x="16" y="38" font-family="Georgia, serif" font-size="42" fill="#ff2079" fill-opacity="0.35">&#8220;</text>
-  <text x="48" y="37" clip-path="url(#reveal0)" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="17" fill="#212529">Simplicity is the soul of</text><text x="48" y="63" clip-path="url(#reveal1)" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="17" fill="#212529">efficiency.</text>
-  <rect x="145.2" y="49" width="2.5" height="19" fill="#ff2079">
-=======
-<svg width="358" height="74" viewBox="0 0 358 74" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Quote">
-  <defs>
-    <clipPath id="reveal0">
-      <rect x="0" y="7" width="0" height="30">
-        <animate attributeName="width" values="0;0;286.9;286.9;0" keyTimes="0;0.000;0.600;0.92;1" dur="7s" repeatCount="indefinite"/>
-      </rect>
-    </clipPath>
-  </defs>
-  <rect width="358" height="74" rx="12" fill="#f8f9fa"/>
-  <rect width="6" height="74" rx="3" fill="#ff2079"/>
-  <text x="16" y="38" font-family="Georgia, serif" font-size="42" fill="#ff2079" fill-opacity="0.35">&#8220;</text>
-  <text x="48" y="37" clip-path="url(#reveal0)" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="17" fill="#212529">Talk is cheap. Show me the code.</text>
-  <rect x="330.9" y="23" width="2.5" height="19" fill="#ff2079">
->>>>>>> 29d808cad462e4af90c0c741ca3f67e9b8cb9953
+  <text x="48" y="37" clip-path="url(#reveal0)" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="17" fill="#212529">Code never lies, comments</text><text x="48" y="63" clip-path="url(#reveal1)" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="17" fill="#212529">sometimes do.</text>
+  <rect x="162.9" y="49" width="2.5" height="19" fill="#ff2079">
     <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.770;0.780;0.92;1" dur="7s" repeatCount="indefinite"/>
   </rect>
 </svg>
