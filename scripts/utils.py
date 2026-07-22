@@ -68,6 +68,26 @@ def build_boot_sequence(filename: str = "boot.txt") -> str:
     return "\n".join(lines)
 
 
+def random_ascii_art(subdir: str = "ascii/avatars") -> str:
+    """
+    Pick a random .txt file from an assets subdirectory (default:
+    assets/ascii/avatars/) and return its content.
+
+    This is the rotation-pool pattern: any .txt file dropped into that
+    folder is automatically eligible next time this runs - no code
+    changes needed to add a new avatar art piece. Naming doesn't matter
+    (avatar_01.txt, my_cool_art.txt, whatever) since the folder is
+    globbed, not hardcoded.
+    """
+    pool_dir = ASSETS_DIR / subdir
+    candidates = sorted(pool_dir.glob("*.txt"))
+    if not candidates:
+        raise FileNotFoundError(f"No .txt files found in {pool_dir}")
+
+    chosen = random.choice(candidates)
+    return chosen.read_text(encoding="utf-8").rstrip("\n")
+
+
 def ensure_generated_dir() -> None:
     """Make sure generated/ exists before anything tries to write to it."""
     GENERATED_DIR.mkdir(parents=True, exist_ok=True)

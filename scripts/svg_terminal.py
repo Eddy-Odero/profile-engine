@@ -4,7 +4,11 @@ svg_terminal.py  — Fixed-size terminal with CSS typewriter reveal.
 Uses SVG transform="scale()" on <g> elements for proper column scaling,
 while preserving the exact positioning and centering of the original.
 
-No SMIL — all CSS @keyframes for GitHub README compatibility.
+No SMIL — all CSS @keyframes for GitHub README compatibility. SMIL
+(<animate>/<animateTransform>, the previous approach) has a spottier
+long-term browser-support history; CSS @keyframes embedded in <style>
+is the more robust choice for something meant to keep working for years
+in a README.
 """
 
 from __future__ import annotations
@@ -91,7 +95,15 @@ def _css_block(accent: str, total_lines: int) -> str:
   .scan-band {{ animation: scan-sweep {SCAN_LOOP_SECONDS}s linear infinite; }}
   .cursor    {{ animation: cursor-blink 1s step-end infinite; animation-delay: {print_duration}s; }}
   .glitch    {{ animation: glitch-jitter {GLITCH_LOOP_SECONDS}s linear infinite; }}
-  .line      {{ opacity: 0; animation: print-line 0.08s ease-out forwards; }}
+  /* animation-fill-mode: both (not a static opacity:0 rule) is what makes
+     this degrade safely. "both" means the animation's own first keyframe
+     (opacity:0) only applies WHILE the animation is actually running
+     (during its delay + duration). If CSS animation doesn't execute at
+     all for any reason, there's no separate static rule holding opacity
+     at 0 - text falls back to its normal default (fully opaque), so a
+     non-animating renderer shows the complete terminal content instead
+     of a blank one. */
+  .line      {{ animation: print-line 0.08s ease-out both; }}
 """
     for i in range(total_lines):
         delay = i * PRINT_DELAY_PER_LINE
@@ -151,6 +163,23 @@ def _build_stat_rows(stats: dict) -> list[tuple[str, str]]:
     return rows
 
 
+def _fit_scale(natural_w: float, natural_h: float, max_w: float, max_h: float) -> float:
+    """
+    Compute the scale factor needed so content fits BOTH max_w and max_h -
+    not just height. The original version only checked height overflow,
+    which meant a wide-but-short art piece could overflow its column
+    horizontally with no correction (verified: a 120x20-char piece would
+    render at ~900px inside a ~322px column). Taking the min of both
+    axis constraints fixes that for any aspect ratio.
+    """
+    scale = 1.0
+    if natural_h > max_h:
+        scale = min(scale, max_h / natural_h)
+    if natural_w > max_w:
+        scale = min(scale, max_w / natural_w)
+    return max(scale, MIN_SCALE)
+
+
 def render_terminal_svg(
     avatar_ascii: str,
     boot_sequence: str,
@@ -192,21 +221,17 @@ def render_terminal_svg(
 
     right_row_count = 1 + len(stat_rows) + 1 + len(boot_lines) + 1 + 1
     right_natural_h = right_row_count * LINE_HEIGHT
+    right_natural_w = RIGHT_COL_CHARS * CHAR_WIDTH
 
     # Cap content height, scale taller column if needed
     natural_content_h = max(avatar_natural_h, right_natural_h)
     content_height = min(natural_content_h, MAX_CONTENT_HEIGHT)
 
-    avatar_scale = 1.0
-    right_scale = 1.0
-
-    if avatar_natural_h > MAX_CONTENT_HEIGHT:
-        avatar_scale = MAX_CONTENT_HEIGHT / avatar_natural_h
-    if right_natural_h > MAX_CONTENT_HEIGHT:
-        right_scale = MAX_CONTENT_HEIGHT / right_natural_h
-
-    avatar_scale = max(avatar_scale, MIN_SCALE)
-    right_scale = max(right_scale, MIN_SCALE)
+    # Scale each column to fit BOTH its column width AND the shared max
+    # height - not height alone (see _fit_scale docstring for the bug
+    # this fixes).
+    avatar_scale = _fit_scale(avatar_natural_w, avatar_natural_h, left_col_w, MAX_CONTENT_HEIGHT)
+    right_scale = _fit_scale(right_natural_w, right_natural_h, right_col_w, MAX_CONTENT_HEIGHT)
 
     scaled_avatar_h = avatar_natural_h * avatar_scale
     scaled_right_h = right_natural_h * right_scale
@@ -216,12 +241,11 @@ def render_terminal_svg(
     right_y_offset = (content_height - scaled_right_h) / 2
 
     # ── Build avatar column with transform scaling ────────────────────
-    # Group origin positioned so that first text baseline matches original
     avatar_base_x = left_col_x + (left_col_w - avatar_natural_w * avatar_scale) / 2
     avatar_base_y = top_y + avatar_y_offset - FONT_SIZE * avatar_scale
 
     avatar_elements = []
-    y = FONT_SIZE  # First text baseline at FONT_SIZE from group origin
+    y = FONT_SIZE
     for i, line in enumerate(avatar_lines):
         avatar_elements.append(
             f'<text class="line line-{i}" x="0" y="{y:.1f}" filter="url(#glow)" '
@@ -258,7 +282,7 @@ def render_terminal_svg(
         y += LINE_HEIGHT
         line_idx += 1
 
-    y += LINE_HEIGHT  # spacer
+    y += LINE_HEIGHT
     line_idx += 1
 
     for line in boot_lines:
@@ -270,7 +294,7 @@ def render_terminal_svg(
         y += LINE_HEIGHT
         line_idx += 1
 
-    y += LINE_HEIGHT  # spacer
+    y += LINE_HEIGHT
     line_idx += 1
 
     right_elements.append(
@@ -279,7 +303,6 @@ def render_terminal_svg(
     )
     line_idx += 1
 
-    # Cursor (natural coords, scaled with right column)
     cursor_x = CHAR_WIDTH * len(status_line)
     cursor_y = y - FONT_SIZE + 2
     cursor = (
@@ -290,7 +313,6 @@ def render_terminal_svg(
 
     total_lines = line_idx
 
-    # ── Assemble SVG ────────────────────────────────────────────────────
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(username)} terminal">
   {_css_block(accent, total_lines)}
@@ -310,11 +332,9 @@ xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(username)} termi
   {_title_bar(width, accent, username)}
   <g clip-path="url(#bodyClip)">
     <g class="glitch">
-      <!-- Avatar column -->
       <g transform="translate({avatar_base_x:.1f}, {avatar_base_y:.1f}) scale({avatar_scale:.4f})">
         {''.join(avatar_elements)}
       </g>
-      <!-- Right column -->
       <g transform="translate({right_base_x:.1f}, {right_base_y:.1f}) scale({right_scale:.4f})">
         {''.join(right_elements)}
         {cursor}

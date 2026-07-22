@@ -548,6 +548,90 @@ than re-asserting success.
 
 ---
 
+## Revision - Switched svg_terminal.py from SMIL to CSS @keyframes
+
+User-authored rewrite of `svg_terminal.py`, adopted after review rather
+than accepted blind. Three real changes:
+
+1. **SMIL (`<animate>`/`<animateTransform>`) replaced with CSS
+   `@keyframes`** - a more robust long-term choice; SMIL has a spottier
+   browser-support history (previously flagged as a risk in this
+   project). Scan sweep, glitch jitter, and cursor blink all reimplemented
+   as CSS animations.
+2. **Fixed 820x380 frame** instead of dynamically-sized-to-content -
+   keeps the embedded image a consistent size in the README regardless
+   of how long the avatar art or stats happen to be, using
+   `transform="scale()"` on the avatar/stats column groups to fit.
+3. **Genuine typewriter reveal** - each line gets a staggered
+   `animation-delay` (0.06s apart) so content visibly "prints" in
+   sequence, satisfying the original "print the ASCII in real time" ask
+   properly for the first time.
+
+**Bug found in review, fixed before adopting:** the column-fit scaling
+only checked height overflow, never width. Verified concretely: a
+120x20-char (wide-but-short) art piece would render at ~900px inside a
+~322px-wide column - our actual art happened to avoid this by
+coincidence (its height-driven scale-down incidentally also fixed its
+width), but it wasn't guaranteed for other aspect ratios. Fixed by
+adding `_fit_scale()`, which takes the min of height-based and
+width-based scale factors instead of height alone.
+
+**Graceful-degradation gap found and fixed:** the typewriter effect
+worked by giving every line a static `opacity: 0` CSS rule, revealed via
+animation. If CSS animation didn't execute for any reason, there was no
+fallback - unlike the old SMIL version (which only animated the scan/
+glitch/cursor on top of always-visible text), a non-animating renderer
+would see an almost entirely blank terminal. Fixed by removing the
+static `opacity: 0` rule and using `animation-fill-mode: both` instead,
+so the "start invisible" behavior comes entirely from the animation
+itself - if animation doesn't run, there's no separate rule holding
+opacity at 0, and SVG's own default (fully opaque) takes over.
+
+**Verified concretely, not just reasoned about:** used `cairosvg` (which
+doesn't execute CSS animations at all) as a real proxy for the "no
+animation" failure mode. Before the fix: 0.27% of pixels showed any
+content (~blank). After the fix: 5.9%, and critically, IDENTICAL to a
+version with the entire `<style>` block surgically removed (proving the
+fallback genuinely matches "no CSS at all", not just "improved somewhat").
+Cross-checked against the old SMIL module rendered with the exact same
+avatar/stats content: 6.89% visible - close enough (small gap is just
+the fixed-frame's different margin proportions, not a content
+regression) to confirm the fallback now matches previous known-good
+behavior instead of the near-total blankness found before this fix.
+
+Old SMIL version preserved at `scripts/svg_terminal_smil_backup.py` for
+reference/rollback, not deleted.
+
+---
+
+## Revision - Avatar art rotation pool
+
+Request: support multiple avatar art pieces that rotate randomly per
+build, same pattern as quotes.txt/statuses.txt/boot.txt.
+
+**`assets/ascii/avatars/`** - a new folder, globbed (not hardcoded) by
+`utils.random_ascii_art()`. Any `.txt` file dropped in here is
+automatically eligible next build - no code changes needed to add one.
+Naming doesn't matter (`avatar_01.txt`, `my_cool_art.txt`, whatever);
+the folder is the only thing that matters.
+
+Seeded with two entries: `avatar_01.txt` (the photo-style hooded-figure
+art from the previous revision) and `avatar_02.txt` (a user-uploaded
+ASCII art, trimmed of surrounding blank padding lines before saving).
+
+**`build.py`**: `build_avatar_ascii()`'s static-mode branch now calls
+`random_ascii_art()` instead of reading one fixed path.
+
+**Verified:** ran the build 4 times in a row and confirmed the
+generated `terminal.svg`'s size alternated between two distinct values
+matching the two source files (not stuck on one). Sampled the picker
+directly 10 times and confirmed a genuinely random mix of both files,
+not a fixed alternating pattern. Validated both files individually
+render as well-formed XML through the actual `svg_terminal.py` renderer
+before considering this done.
+
+---
+
 ## How to run locally
 
 ```bash
