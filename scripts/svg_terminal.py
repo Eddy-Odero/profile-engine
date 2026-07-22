@@ -1,9 +1,10 @@
 """
 svg_terminal.py  — Fixed-size terminal with CSS typewriter reveal.
 
-Content is scaled via transform="scale()" from top-left origin to fit
-within a fixed 820x380 frame. Nothing gets clipped because the scale
-ensures all content fits inside the viewBox.
+Uses SVG transform="scale()" on <g> elements for proper column scaling,
+while preserving the exact positioning and centering of the original.
+
+No SMIL — all CSS @keyframes for GitHub README compatibility.
 """
 
 from __future__ import annotations
@@ -18,7 +19,8 @@ TERM_HEIGHT = 380
 TITLE_BAR_HEIGHT = 32
 PADDING = 16
 
-# Layout ratios
+MAX_CONTENT_HEIGHT = TERM_HEIGHT - TITLE_BAR_HEIGHT - PADDING - 5  # 327
+
 LEFT_COL_RATIO = 0.42
 RIGHT_COL_RATIO = 0.52
 COLUMN_GAP = 20
@@ -35,6 +37,7 @@ GLITCH_LOOP_SECONDS = 6
 
 RIGHT_COL_CHARS = 44
 MIN_DOTS = 3
+MIN_SCALE = 0.35
 
 # Print speed: seconds per line
 PRINT_DELAY_PER_LINE = 0.06
@@ -60,12 +63,13 @@ def _title_bar(width: int, accent: str, username: str) -> str:
 
 def _css_block(accent: str, total_lines: int) -> str:
     """CSS animations: scan sweep, cursor blink, glitch jitter, line reveal."""
+    h = TERM_HEIGHT
     print_duration = max(total_lines * PRINT_DELAY_PER_LINE + 0.5, SCAN_LOOP_SECONDS)
 
     css = f"""<style>
   @keyframes scan-sweep {{
     0%   {{ transform: translateY(0); }}
-    100% {{ transform: translateY({TERM_HEIGHT + SCAN_BAND_HEIGHT}px); }}
+    100% {{ transform: translateY({h + SCAN_BAND_HEIGHT}px); }}
   }}
   @keyframes cursor-blink {{
     0%,49% {{ opacity: 1; }}
@@ -156,23 +160,23 @@ def render_terminal_svg(
     theme_name: str = DEFAULT_THEME,
 ) -> str:
     """
-    Build a fixed-size 820x380 SVG terminal.
-    Content is scaled to fit using transform="scale()" from top-left.
+    Build a fixed-size 820x380 SVG terminal with typewriter reveal.
+    Uses transform="scale()" on <g> for proper scaling while preserving
+    the original positioning and centering behavior.
     """
     theme = get_theme(theme_name)
     bg = f"#{theme['label_color']}"
     accent = f"#{theme['color']}"
 
-    avatar_lines = [line.rstrip() for line in avatar_ascii.split("\n")]
+    avatar_lines = avatar_ascii.split("\n")
     boot_lines = boot_sequence.split("\n")
     status_line = f"$ status: {status}"
     stat_rows = _build_stat_rows(stats)
 
-    # ── Fixed layout ──────────────────────────────────────────────────
+    # ── Layout (matching original exactly) ────────────────────────────
     width = TERM_WIDTH
     height = TERM_HEIGHT
-    body_top = TITLE_BAR_HEIGHT + PADDING
-    body_height = height - TITLE_BAR_HEIGHT - PADDING - DESCENDER_MARGIN
+    top_y = TITLE_BAR_HEIGHT + PADDING + FONT_SIZE  # = 61, first baseline
 
     usable_width = width - 2 * PADDING - COLUMN_GAP
     left_col_w = int(usable_width * LEFT_COL_RATIO)
@@ -180,7 +184,7 @@ def render_terminal_svg(
     left_col_x = PADDING
     right_col_x = width - PADDING - right_col_w
 
-    # ── Compute content natural size ──────────────────────────────────
+    # ── Compute natural heights ───────────────────────────────────────
     avatar_cols = max((len(line) for line in avatar_lines), default=40)
     avatar_rows = len(avatar_lines)
     avatar_natural_w = avatar_cols * CHAR_WIDTH
@@ -189,61 +193,61 @@ def render_terminal_svg(
     right_row_count = 1 + len(stat_rows) + 1 + len(boot_lines) + 1 + 1
     right_natural_h = right_row_count * LINE_HEIGHT
 
-    # ── Compute scale to fit BOTH columns in the body ─────────────────
-    # We need both columns to fit in body_height
-    max_natural_h = max(avatar_natural_h, right_natural_h)
-    scale_y = body_height / max_natural_h if max_natural_h > 0 else 1
+    # Cap content height, scale taller column if needed
+    natural_content_h = max(avatar_natural_h, right_natural_h)
+    content_height = min(natural_content_h, MAX_CONTENT_HEIGHT)
 
-    # And avatar must fit in left_col_w width
-    scale_x = left_col_w / avatar_natural_w if avatar_natural_w > 0 else 1
+    avatar_scale = 1.0
+    right_scale = 1.0
 
-    # Use the smaller scale so everything fits
-    scale = min(scale_x, scale_y)
-    # Don't scale up too much (max 1.5x to avoid pixelation)
-    scale = min(scale, 1.5)
-    # Don't scale below 0.25 (unreadable)
-    scale = max(scale, 0.25)
+    if avatar_natural_h > MAX_CONTENT_HEIGHT:
+        avatar_scale = MAX_CONTENT_HEIGHT / avatar_natural_h
+    if right_natural_h > MAX_CONTENT_HEIGHT:
+        right_scale = MAX_CONTENT_HEIGHT / right_natural_h
 
-    # ── Position columns ──────────────────────────────────────────────
-    # Both columns use the SAME scale so they align visually
-    # Center each column in its allocated width
-    scaled_avatar_w = avatar_natural_w * scale
-    avatar_offset_x = left_col_x + (left_col_w - scaled_avatar_w) / 2
+    avatar_scale = max(avatar_scale, MIN_SCALE)
+    right_scale = max(right_scale, MIN_SCALE)
 
-    # Center both columns vertically in the body
-    scaled_avatar_h = avatar_natural_h * scale
-    scaled_right_h = right_natural_h * scale
-    content_height = max(scaled_avatar_h, scaled_right_h)
-    content_y_offset = (body_height - content_height) / 2
+    scaled_avatar_h = avatar_natural_h * avatar_scale
+    scaled_right_h = right_natural_h * right_scale
 
-    # ── Build avatar column ───────────────────────────────────────────
-    # Use a group with transform: translate to position, scale to fit
+    # ── Centering (matching original formula) ─────────────────────────
+    avatar_y_offset = (content_height - scaled_avatar_h) / 2
+    right_y_offset = (content_height - scaled_right_h) / 2
+
+    # ── Build avatar column with transform scaling ────────────────────
+    # Group origin positioned so that first text baseline matches original
+    avatar_base_x = left_col_x + (left_col_w - avatar_natural_w * avatar_scale) / 2
+    avatar_base_y = top_y + avatar_y_offset - FONT_SIZE * avatar_scale
+
     avatar_elements = []
-    y = 0
+    y = FONT_SIZE  # First text baseline at FONT_SIZE from group origin
     for i, line in enumerate(avatar_lines):
-        y += LINE_HEIGHT
         avatar_elements.append(
             f'<text class="line line-{i}" x="0" y="{y:.1f}" filter="url(#glow)" '
             f'font-family="Consolas, Menlo, monospace" font-size="{FONT_SIZE}" '
             f'fill="{accent}" xml:space="preserve">{_esc(line)}</text>'
         )
+        y += LINE_HEIGHT
 
-    # ── Build right column ────────────────────────────────────────────
+    # ── Build right column with transform scaling ───────────────────
+    right_base_x = right_col_x
+    right_base_y = top_y + right_y_offset - FONT_SIZE * right_scale
+
     line_idx = len(avatar_lines)
     right_elements = []
-    y = 0
+    y = FONT_SIZE
 
-    y += LINE_HEIGHT
     right_elements.append(
         f'<text class="line line-{line_idx}" x="0" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
         f'font-size="{FONT_SIZE}" fill="{accent}" fill-opacity="0.4" xml:space="preserve">'
         f'{"-" * RIGHT_COL_CHARS}</text>'
     )
+    y += LINE_HEIGHT
     line_idx += 1
 
     for key, value in stat_rows:
         k, dots, v = _dotted_row(key, value)
-        y += LINE_HEIGHT
         right_elements.append(
             f'<text class="line line-{line_idx}" x="0" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
             f'font-size="{FONT_SIZE}" xml:space="preserve">'
@@ -251,31 +255,31 @@ def render_terminal_svg(
             f'<tspan fill="{accent}" fill-opacity="0.35">{dots}</tspan>'
             f'<tspan fill="white" fill-opacity="0.9">{_esc(v)}</tspan></text>'
         )
+        y += LINE_HEIGHT
         line_idx += 1
 
-    y += LINE_HEIGHT * 2  # spacer
+    y += LINE_HEIGHT  # spacer
     line_idx += 1
 
     for line in boot_lines:
-        y += LINE_HEIGHT
         right_elements.append(
             f'<text class="line line-{line_idx}" x="0" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
             f'font-size="{FONT_SIZE}" fill="{accent}" fill-opacity="0.55" xml:space="preserve">'
             f"{_esc(line)}</text>"
         )
+        y += LINE_HEIGHT
         line_idx += 1
 
-    y += LINE_HEIGHT * 2  # spacer
+    y += LINE_HEIGHT  # spacer
     line_idx += 1
 
-    y += LINE_HEIGHT
     right_elements.append(
         f'<text class="line line-{line_idx}" x="0" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
         f'font-size="{FONT_SIZE}" fill="{accent}" xml:space="preserve">{_esc(status_line)}</text>'
     )
     line_idx += 1
 
-    # Cursor
+    # Cursor (natural coords, scaled with right column)
     cursor_x = CHAR_WIDTH * len(status_line)
     cursor_y = y - FONT_SIZE + 2
     cursor = (
@@ -287,7 +291,6 @@ def render_terminal_svg(
     total_lines = line_idx
 
     # ── Assemble SVG ────────────────────────────────────────────────────
-    # Both columns scaled by the same factor, positioned independently
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(username)} terminal">
   {_css_block(accent, total_lines)}
@@ -299,17 +302,20 @@ xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(username)} termi
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
+    <clipPath id="bodyClip">
+      <rect x="0" y="{TITLE_BAR_HEIGHT}" width="{width}" height="{height - TITLE_BAR_HEIGHT}"/>
+    </clipPath>
   </defs>
   <rect width="{width}" height="{height}" rx="10" fill="{bg}"/>
   {_title_bar(width, accent, username)}
-  <g>
+  <g clip-path="url(#bodyClip)">
     <g class="glitch">
-      <!-- Avatar column: scaled and positioned -->
-      <g transform="translate({avatar_offset_x:.1f} {body_top + content_y_offset:.1f}) scale({scale:.4f})">
+      <!-- Avatar column -->
+      <g transform="translate({avatar_base_x:.1f}, {avatar_base_y:.1f}) scale({avatar_scale:.4f})">
         {''.join(avatar_elements)}
       </g>
-      <!-- Right column: same scale, positioned in right column -->
-      <g transform="translate({right_col_x:.1f} {body_top + content_y_offset:.1f}) scale({scale:.4f})">
+      <!-- Right column -->
+      <g transform="translate({right_base_x:.1f}, {right_base_y:.1f}) scale({right_scale:.4f})">
         {''.join(right_elements)}
         {cursor}
       </g>
