@@ -1,12 +1,11 @@
 """
-svg_terminal.py  — Fixed-size terminal with CSS animations for GitHub README compatibility.
+svg_terminal.py  — Fixed-size terminal with CSS typewriter reveal + scan band.
 
-Replaces SMIL (<animate>, <animateTransform>) with CSS @keyframes inside the SVG <style> tag.
-GitHub's SVG sanitizer strips scripts and sometimes SMIL, but typically preserves CSS.
+On first load, content prints line-by-line from top to bottom with staggered
+CSS delays, synced visually with the scan band sweep. After the reveal
+completes, everything stays visible and the cursor blinks.
 
-The terminal is a fixed 820×380px frame. Both ASCII avatar and text stats are
-independently scaled to fit their allocated column boxes. Content never overflows
-and the frame size is constant regardless of input.
+No SMIL — all CSS @keyframes for GitHub README compatibility.
 """
 
 from __future__ import annotations
@@ -21,7 +20,6 @@ TERM_HEIGHT = 380
 TITLE_BAR_HEIGHT = 32
 PADDING = 16
 
-# Column widths as ratios of the body area (width minus padding/gap)
 LEFT_COL_RATIO = 0.42
 RIGHT_COL_RATIO = 0.52
 COLUMN_GAP = 20
@@ -38,13 +36,13 @@ GLITCH_LOOP_SECONDS = 6
 
 RIGHT_COL_CHARS = 44
 MIN_DOTS = 3
-
-# Minimum scale so text stays readable even for huge ASCII art
 MIN_SCALE = 0.35
+
+# Print speed: seconds per line
+PRINT_DELAY_PER_LINE = 0.06
 
 
 def _esc(text: str) -> str:
-    """Escape text for safe placement inside SVG <text> content."""
     return html.escape(text, quote=True)
 
 
@@ -62,10 +60,14 @@ def _title_bar(width: int, accent: str, username: str) -> str:
     )
 
 
-def _css_block(accent: str) -> str:
-    """CSS animations inside the SVG. GitHub typically preserves these."""
+def _css_block(accent: str, total_lines: int) -> str:
+    """CSS animations: scan sweep, cursor blink, glitch jitter, and line-by-line reveal."""
     h = TERM_HEIGHT
-    return f"""<style>
+    body_h = h - TITLE_BAR_HEIGHT
+    # Total print duration = all lines print + hold visible
+    print_duration = max(total_lines * PRINT_DELAY_PER_LINE + 0.5, SCAN_LOOP_SECONDS)
+
+    css = f"""<style>
   @keyframes scan-sweep {{
     0%   {{ transform: translateY(0); }}
     100% {{ transform: translateY({h + SCAN_BAND_HEIGHT}px); }}
@@ -83,10 +85,22 @@ def _css_block(accent: str) -> str:
     67%     {{ transform: translate(1px,0); }}
     68%,100%{{ transform: translate(0,0); }}
   }}
+  @keyframes print-line {{
+    0%   {{ opacity: 0; }}
+    100% {{ opacity: 1; }}
+  }}
   .scan-band {{ animation: scan-sweep {SCAN_LOOP_SECONDS}s linear infinite; }}
-  .cursor    {{ animation: cursor-blink 1s step-end infinite; }}
+  .cursor    {{ animation: cursor-blink 1s step-end infinite; animation-delay: {print_duration}s; }}
   .glitch    {{ animation: glitch-jitter {GLITCH_LOOP_SECONDS}s linear infinite; }}
-</style>"""
+  .line      {{ opacity: 0; animation: print-line 0.08s ease-out forwards; }}
+"""
+    # Generate staggered delays for each line index
+    for i in range(total_lines):
+        delay = i * PRINT_DELAY_PER_LINE
+        css += f"  .line-{i} {{ animation-delay: {delay:.3f}s; }}\n"
+
+    css += "</style>"
+    return css
 
 
 def _scanline_texture(width: int, height: int) -> str:
@@ -148,10 +162,7 @@ def render_terminal_svg(
     theme_name: str = DEFAULT_THEME,
 ) -> str:
     """
-    Build a fixed-size 820×380 SVG terminal.
-
-    Avatar and stats are independently scaled to fit their column boxes.
-    Uses CSS animations for GitHub README compatibility.
+    Build a fixed-size 820×380 SVG terminal with line-by-line typewriter reveal.
     """
     theme = get_theme(theme_name)
     bg = f"#{theme['label_color']}"
@@ -190,11 +201,12 @@ def render_terminal_svg(
     avatar_offset_x = left_col_x + (left_col_w - scaled_avatar_w) / 2
     avatar_offset_y = body_top + (body_height - scaled_avatar_h) / 2
 
+    # ── Build avatar elements with line classes ───────────────────────
     avatar_elements = []
     for i, line in enumerate(avatar_lines):
         y = avatar_offset_y + (i + 1) * LINE_HEIGHT * avatar_scale
         avatar_elements.append(
-            f'<text x="{avatar_offset_x:.1f}" y="{y:.1f}" filter="url(#glow)" '
+            f'<text class="line line-{i}" x="{avatar_offset_x:.1f}" y="{y:.1f}" filter="url(#glow)" '
             f'font-family="Consolas, Menlo, monospace" font-size="{FONT_SIZE * avatar_scale:.1f}" '
             f'fill="{accent}" xml:space="preserve">{_esc(line)}</text>'
         )
@@ -207,48 +219,57 @@ def render_terminal_svg(
     scaled_right_h = right_natural_h * right_scale
     right_offset_y = body_top + (body_height - scaled_right_h) / 2
 
+    # Line counter for global stagger (avatar lines print first, then right column)
+    line_idx = len(avatar_lines)
+
     right_elements = []
     y = right_offset_y
 
     # Separator
     right_elements.append(
-        f'<text x="{right_col_x}" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
+        f'<text class="line line-{line_idx}" x="{right_col_x}" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
         f'font-size="{FONT_SIZE * right_scale:.1f}" fill="{accent}" fill-opacity="0.4" xml:space="preserve">'
         f'{"-" * RIGHT_COL_CHARS}</text>'
     )
     y += LINE_HEIGHT * right_scale
+    line_idx += 1
 
     # Stat rows
     for key, value in stat_rows:
         k, dots, v = _dotted_row(key, value)
         right_elements.append(
-            f'<text x="{right_col_x}" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
+            f'<text class="line line-{line_idx}" x="{right_col_x}" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
             f'font-size="{FONT_SIZE * right_scale:.1f}" xml:space="preserve">'
             f'<tspan fill="{accent}" font-weight="700">{_esc(k)}</tspan>'
             f'<tspan fill="{accent}" fill-opacity="0.35">{dots}</tspan>'
             f'<tspan fill="white" fill-opacity="0.9">{_esc(v)}</tspan></text>'
         )
         y += LINE_HEIGHT * right_scale
+        line_idx += 1
 
     y += LINE_HEIGHT * right_scale  # spacer
+    line_idx += 1
 
     for line in boot_lines:
         right_elements.append(
-            f'<text x="{right_col_x}" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
+            f'<text class="line line-{line_idx}" x="{right_col_x}" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
             f'font-size="{FONT_SIZE * right_scale:.1f}" fill="{accent}" fill-opacity="0.55" xml:space="preserve">'
             f"{_esc(line)}</text>"
         )
         y += LINE_HEIGHT * right_scale
+        line_idx += 1
 
     y += LINE_HEIGHT * right_scale  # spacer
+    line_idx += 1
 
     right_elements.append(
-        f'<text x="{right_col_x}" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
+        f'<text class="line line-{line_idx}" x="{right_col_x}" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
         f'font-size="{FONT_SIZE * right_scale:.1f}" fill="{accent}" xml:space="preserve">{_esc(status_line)}</text>'
     )
     status_baseline_y = y
+    line_idx += 1
 
-    # Cursor
+    # Cursor (appears after all lines printed)
     cursor_x = right_col_x + CHAR_WIDTH * right_scale * len(status_line)
     cursor_y = status_baseline_y - FONT_SIZE * right_scale + 2
     cursor = (
@@ -257,10 +278,12 @@ def render_terminal_svg(
         f'fill="{accent}"/>'
     )
 
+    total_lines = line_idx  # for CSS delay generation
+
     # ── Assemble SVG ────────────────────────────────────────────────────
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(username)} terminal">
-  {_css_block(accent)}
+  {_css_block(accent, total_lines)}
   <defs>
     <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
       <feGaussianBlur stdDeviation="0.6" result="blur"/>
