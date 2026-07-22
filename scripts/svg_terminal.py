@@ -1,9 +1,9 @@
 """
-svg_terminal.py  — Fixed-size terminal with CSS typewriter reveal + scan band.
+svg_terminal.py  — Fixed-size terminal with CSS typewriter reveal.
 
-On first load, content prints line-by-line from top to bottom with staggered
-CSS delays, synced visually with the scan band sweep. After the reveal
-completes, everything stays visible and the cursor blinks.
+Uses SVG transform="scale()" on <g> elements for proper column scaling.
+Content height grows up to MAX_CONTENT_HEIGHT, then scales down.
+Each line fades in with staggered CSS delays for a typewriter boot effect.
 
 No SMIL — all CSS @keyframes for GitHub README compatibility.
 """
@@ -14,11 +14,13 @@ import html
 
 from themes import DEFAULT_THEME, get_theme
 
-# ── Fixed terminal frame ──────────────────────────────────────────────
+# ── Terminal dimensions ─────────────────────────────────────────────
 TERM_WIDTH = 820
 TERM_HEIGHT = 380
 TITLE_BAR_HEIGHT = 32
 PADDING = 16
+
+MAX_CONTENT_HEIGHT = TERM_HEIGHT - TITLE_BAR_HEIGHT - PADDING - 5  # 327
 
 LEFT_COL_RATIO = 0.42
 RIGHT_COL_RATIO = 0.52
@@ -61,10 +63,8 @@ def _title_bar(width: int, accent: str, username: str) -> str:
 
 
 def _css_block(accent: str, total_lines: int) -> str:
-    """CSS animations: scan sweep, cursor blink, glitch jitter, and line-by-line reveal."""
+    """CSS animations: scan sweep, cursor blink, glitch jitter, line reveal."""
     h = TERM_HEIGHT
-    body_h = h - TITLE_BAR_HEIGHT
-    # Total print duration = all lines print + hold visible
     print_duration = max(total_lines * PRINT_DELAY_PER_LINE + 0.5, SCAN_LOOP_SECONDS)
 
     css = f"""<style>
@@ -94,7 +94,6 @@ def _css_block(accent: str, total_lines: int) -> str:
   .glitch    {{ animation: glitch-jitter {GLITCH_LOOP_SECONDS}s linear infinite; }}
   .line      {{ opacity: 0; animation: print-line 0.08s ease-out forwards; }}
 """
-    # Generate staggered delays for each line index
     for i in range(total_lines):
         delay = i * PRINT_DELAY_PER_LINE
         css += f"  .line-{i} {{ animation-delay: {delay:.3f}s; }}\n"
@@ -162,7 +161,8 @@ def render_terminal_svg(
     theme_name: str = DEFAULT_THEME,
 ) -> str:
     """
-    Build a fixed-size 820×380 SVG terminal with line-by-line typewriter reveal.
+    Build a fixed-size 820x380 SVG terminal with typewriter reveal.
+    Uses transform="scale()" on <g> for proper column scaling.
     """
     theme = get_theme(theme_name)
     bg = f"#{theme['label_color']}"
@@ -173,11 +173,10 @@ def render_terminal_svg(
     status_line = f"$ status: {status}"
     stat_rows = _build_stat_rows(stats)
 
-    # ── Layout geometry ───────────────────────────────────────────────
+    # ── Layout (matching original top_y formula) ──────────────────────
     width = TERM_WIDTH
     height = TERM_HEIGHT
-    body_top = TITLE_BAR_HEIGHT + PADDING
-    body_height = height - TITLE_BAR_HEIGHT - PADDING - DESCENDER_MARGIN
+    top_y = TITLE_BAR_HEIGHT + PADDING + FONT_SIZE  # = 61, first baseline
 
     usable_width = width - 2 * PADDING - COLUMN_GAP
     left_col_w = int(usable_width * LEFT_COL_RATIO)
@@ -185,100 +184,111 @@ def render_terminal_svg(
     left_col_x = PADDING
     right_col_x = width - PADDING - right_col_w
 
-    # ── Scale avatar to fit left column box ───────────────────────────
+    # ── Compute natural heights ───────────────────────────────────────
     avatar_cols = max((len(line) for line in avatar_lines), default=40)
     avatar_rows = len(avatar_lines)
     avatar_natural_w = avatar_cols * CHAR_WIDTH
     avatar_natural_h = avatar_rows * LINE_HEIGHT
 
-    scale_x = left_col_w / avatar_natural_w if avatar_natural_w > 0 else 1
-    scale_y = body_height / avatar_natural_h if avatar_natural_h > 0 else 1
-    avatar_scale = max(min(scale_x, scale_y), MIN_SCALE)
-
-    scaled_avatar_w = avatar_natural_w * avatar_scale
-    scaled_avatar_h = avatar_natural_h * avatar_scale
-
-    avatar_offset_x = left_col_x + (left_col_w - scaled_avatar_w) / 2
-    avatar_offset_y = body_top + (body_height - scaled_avatar_h) / 2
-
-    # ── Build avatar elements with line classes ───────────────────────
-    avatar_elements = []
-    for i, line in enumerate(avatar_lines):
-        y = avatar_offset_y + (i + 1) * LINE_HEIGHT * avatar_scale
-        avatar_elements.append(
-            f'<text class="line line-{i}" x="{avatar_offset_x:.1f}" y="{y:.1f}" filter="url(#glow)" '
-            f'font-family="Consolas, Menlo, monospace" font-size="{FONT_SIZE * avatar_scale:.1f}" '
-            f'fill="{accent}" xml:space="preserve">{_esc(line)}</text>'
-        )
-
-    # ── Scale right column to fit right column box ────────────────────
     right_row_count = 1 + len(stat_rows) + 1 + len(boot_lines) + 1 + 1
     right_natural_h = right_row_count * LINE_HEIGHT
-    right_scale = max(body_height / right_natural_h, MIN_SCALE) if right_natural_h > 0 else 1
 
+    # Cap content height, scale taller column if needed
+    natural_content_h = max(avatar_natural_h, right_natural_h)
+    content_height = min(natural_content_h, MAX_CONTENT_HEIGHT)
+
+    avatar_scale = 1.0
+    right_scale = 1.0
+
+    if avatar_natural_h > MAX_CONTENT_HEIGHT:
+        avatar_scale = MAX_CONTENT_HEIGHT / avatar_natural_h
+    if right_natural_h > MAX_CONTENT_HEIGHT:
+        right_scale = MAX_CONTENT_HEIGHT / right_natural_h
+
+    avatar_scale = max(avatar_scale, MIN_SCALE)
+    right_scale = max(right_scale, MIN_SCALE)
+
+    scaled_avatar_h = avatar_natural_h * avatar_scale
     scaled_right_h = right_natural_h * right_scale
-    right_offset_y = body_top + (body_height - scaled_right_h) / 2
 
-    # Line counter for global stagger (avatar lines print first, then right column)
+    # Center both columns vertically within the content area
+    avatar_y_offset = (content_height - scaled_avatar_h) / 2
+    right_y_offset = (content_height - scaled_right_h) / 2
+
+    # Base position for each column (where the <g> transform places the group)
+    # The group's local y=0 corresponds to top_y + offset in absolute space
+    avatar_base_x = left_col_x + (left_col_w - avatar_natural_w * avatar_scale) / 2
+    avatar_base_y = top_y + avatar_y_offset
+    right_base_x = right_col_x
+    right_base_y = top_y + right_y_offset
+
+    # ── Build avatar elements (natural coordinates, scaled via <g>) ────
+    avatar_elements = []
+    y = 0
+    for i, line in enumerate(avatar_lines):
+        avatar_elements.append(
+            f'<text class="line line-{i}" x="0" y="{y + FONT_SIZE}" filter="url(#glow)" '
+            f'font-family="Consolas, Menlo, monospace" font-size="{FONT_SIZE}" '
+            f'fill="{accent}" xml:space="preserve">{_esc(line)}</text>'
+        )
+        y += LINE_HEIGHT
+
+    # ── Build right column elements ───────────────────────────────────
     line_idx = len(avatar_lines)
-
     right_elements = []
-    y = right_offset_y
+    y = 0
 
-    # Separator
     right_elements.append(
-        f'<text class="line line-{line_idx}" x="{right_col_x}" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
-        f'font-size="{FONT_SIZE * right_scale:.1f}" fill="{accent}" fill-opacity="0.4" xml:space="preserve">'
+        f'<text class="line line-{line_idx}" x="0" y="{y + FONT_SIZE}" font-family="Consolas, Menlo, monospace" '
+        f'font-size="{FONT_SIZE}" fill="{accent}" fill-opacity="0.4" xml:space="preserve">'
         f'{"-" * RIGHT_COL_CHARS}</text>'
     )
-    y += LINE_HEIGHT * right_scale
+    y += LINE_HEIGHT
     line_idx += 1
 
-    # Stat rows
     for key, value in stat_rows:
         k, dots, v = _dotted_row(key, value)
         right_elements.append(
-            f'<text class="line line-{line_idx}" x="{right_col_x}" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
-            f'font-size="{FONT_SIZE * right_scale:.1f}" xml:space="preserve">'
+            f'<text class="line line-{line_idx}" x="0" y="{y + FONT_SIZE}" font-family="Consolas, Menlo, monospace" '
+            f'font-size="{FONT_SIZE}" xml:space="preserve">'
             f'<tspan fill="{accent}" font-weight="700">{_esc(k)}</tspan>'
             f'<tspan fill="{accent}" fill-opacity="0.35">{dots}</tspan>'
             f'<tspan fill="white" fill-opacity="0.9">{_esc(v)}</tspan></text>'
         )
-        y += LINE_HEIGHT * right_scale
+        y += LINE_HEIGHT
         line_idx += 1
 
-    y += LINE_HEIGHT * right_scale  # spacer
+    y += LINE_HEIGHT
     line_idx += 1
 
     for line in boot_lines:
         right_elements.append(
-            f'<text class="line line-{line_idx}" x="{right_col_x}" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
-            f'font-size="{FONT_SIZE * right_scale:.1f}" fill="{accent}" fill-opacity="0.55" xml:space="preserve">'
+            f'<text class="line line-{line_idx}" x="0" y="{y + FONT_SIZE}" font-family="Consolas, Menlo, monospace" '
+            f'font-size="{FONT_SIZE}" fill="{accent}" fill-opacity="0.55" xml:space="preserve">'
             f"{_esc(line)}</text>"
         )
-        y += LINE_HEIGHT * right_scale
+        y += LINE_HEIGHT
         line_idx += 1
 
-    y += LINE_HEIGHT * right_scale  # spacer
+    y += LINE_HEIGHT
     line_idx += 1
 
     right_elements.append(
-        f'<text class="line line-{line_idx}" x="{right_col_x}" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
-        f'font-size="{FONT_SIZE * right_scale:.1f}" fill="{accent}" xml:space="preserve">{_esc(status_line)}</text>'
+        f'<text class="line line-{line_idx}" x="0" y="{y + FONT_SIZE}" font-family="Consolas, Menlo, monospace" '
+        f'font-size="{FONT_SIZE}" fill="{accent}" xml:space="preserve">{_esc(status_line)}</text>'
     )
-    status_baseline_y = y
     line_idx += 1
 
-    # Cursor (appears after all lines printed)
-    cursor_x = right_col_x + CHAR_WIDTH * right_scale * len(status_line)
-    cursor_y = status_baseline_y - FONT_SIZE * right_scale + 2
+    # Cursor (natural coords, scaled with right column)
+    cursor_x = CHAR_WIDTH * len(status_line)
+    cursor_y = y + 2
     cursor = (
         f'<rect class="cursor" x="{cursor_x:.1f}" y="{cursor_y:.1f}" '
-        f'width="{CHAR_WIDTH * right_scale:.1f}" height="{FONT_SIZE * right_scale + 2:.1f}" '
+        f'width="{CHAR_WIDTH:.1f}" height="{FONT_SIZE + 2:.1f}" '
         f'fill="{accent}"/>'
     )
 
-    total_lines = line_idx  # for CSS delay generation
+    total_lines = line_idx
 
     # ── Assemble SVG ────────────────────────────────────────────────────
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
@@ -300,9 +310,15 @@ xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(username)} termi
   {_title_bar(width, accent, username)}
   <g clip-path="url(#bodyClip)">
     <g class="glitch">
-      {''.join(avatar_elements)}
-      {''.join(right_elements)}
-      {cursor}
+      <!-- Avatar column -->
+      <g transform="translate({avatar_base_x:.1f}, {avatar_base_y:.1f}) scale({avatar_scale:.4f})">
+        {''.join(avatar_elements)}
+      </g>
+      <!-- Right column -->
+      <g transform="translate({right_base_x:.1f}, {right_base_y:.1f}) scale({right_scale:.4f})">
+        {''.join(right_elements)}
+        {cursor}
+      </g>
     </g>
     {_scan_band(width, accent)}
     {_scanline_texture(width, height)}
