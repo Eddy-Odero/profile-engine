@@ -1,9 +1,8 @@
 """
 svg_terminal.py  — Fixed-size terminal with CSS typewriter reveal.
 
-Uses SVG transform="scale()" on <g> elements for proper column scaling.
-Content height grows up to MAX_CONTENT_HEIGHT, then scales down.
-Each line fades in with staggered CSS delays for a typewriter boot effect.
+Uses SVG transform="scale()" on <g> elements for proper column scaling,
+while preserving the exact positioning and centering of the original.
 
 No SMIL — all CSS @keyframes for GitHub README compatibility.
 """
@@ -14,7 +13,7 @@ import html
 
 from themes import DEFAULT_THEME, get_theme
 
-# ── Terminal dimensions ─────────────────────────────────────────────
+# ── Fixed terminal frame ──────────────────────────────────────────────
 TERM_WIDTH = 820
 TERM_HEIGHT = 380
 TITLE_BAR_HEIGHT = 32
@@ -162,7 +161,8 @@ def render_terminal_svg(
 ) -> str:
     """
     Build a fixed-size 820x380 SVG terminal with typewriter reveal.
-    Uses transform="scale()" on <g> for proper column scaling.
+    Uses transform="scale()" on <g> for proper scaling while preserving
+    the original positioning and centering behavior.
     """
     theme = get_theme(theme_name)
     bg = f"#{theme['label_color']}"
@@ -173,7 +173,7 @@ def render_terminal_svg(
     status_line = f"$ status: {status}"
     stat_rows = _build_stat_rows(stats)
 
-    # ── Layout (matching original top_y formula) ──────────────────────
+    # ── Layout (matching original exactly) ────────────────────────────
     width = TERM_WIDTH
     height = TERM_HEIGHT
     top_y = TITLE_BAR_HEIGHT + PADDING + FONT_SIZE  # = 61, first baseline
@@ -211,35 +211,35 @@ def render_terminal_svg(
     scaled_avatar_h = avatar_natural_h * avatar_scale
     scaled_right_h = right_natural_h * right_scale
 
-    # Center both columns vertically within the content area
+    # ── Centering (matching original formula) ─────────────────────────
     avatar_y_offset = (content_height - scaled_avatar_h) / 2
     right_y_offset = (content_height - scaled_right_h) / 2
 
-    # Base position for each column (where the <g> transform places the group)
-    # The group's local y=0 corresponds to top_y + offset in absolute space
+    # ── Build avatar column with transform scaling ────────────────────
+    # Group origin positioned so that first text baseline matches original
     avatar_base_x = left_col_x + (left_col_w - avatar_natural_w * avatar_scale) / 2
-    avatar_base_y = top_y + avatar_y_offset
-    right_base_x = right_col_x
-    right_base_y = top_y + right_y_offset
+    avatar_base_y = top_y + avatar_y_offset - FONT_SIZE * avatar_scale
 
-    # ── Build avatar elements (natural coordinates, scaled via <g>) ────
     avatar_elements = []
-    y = 0
+    y = FONT_SIZE  # First text baseline at FONT_SIZE from group origin
     for i, line in enumerate(avatar_lines):
         avatar_elements.append(
-            f'<text class="line line-{i}" x="0" y="{y + FONT_SIZE}" filter="url(#glow)" '
+            f'<text class="line line-{i}" x="0" y="{y:.1f}" filter="url(#glow)" '
             f'font-family="Consolas, Menlo, monospace" font-size="{FONT_SIZE}" '
             f'fill="{accent}" xml:space="preserve">{_esc(line)}</text>'
         )
         y += LINE_HEIGHT
 
-    # ── Build right column elements ───────────────────────────────────
+    # ── Build right column with transform scaling ───────────────────
+    right_base_x = right_col_x
+    right_base_y = top_y + right_y_offset - FONT_SIZE * right_scale
+
     line_idx = len(avatar_lines)
     right_elements = []
-    y = 0
+    y = FONT_SIZE
 
     right_elements.append(
-        f'<text class="line line-{line_idx}" x="0" y="{y + FONT_SIZE}" font-family="Consolas, Menlo, monospace" '
+        f'<text class="line line-{line_idx}" x="0" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
         f'font-size="{FONT_SIZE}" fill="{accent}" fill-opacity="0.4" xml:space="preserve">'
         f'{"-" * RIGHT_COL_CHARS}</text>'
     )
@@ -249,7 +249,7 @@ def render_terminal_svg(
     for key, value in stat_rows:
         k, dots, v = _dotted_row(key, value)
         right_elements.append(
-            f'<text class="line line-{line_idx}" x="0" y="{y + FONT_SIZE}" font-family="Consolas, Menlo, monospace" '
+            f'<text class="line line-{line_idx}" x="0" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
             f'font-size="{FONT_SIZE}" xml:space="preserve">'
             f'<tspan fill="{accent}" font-weight="700">{_esc(k)}</tspan>'
             f'<tspan fill="{accent}" fill-opacity="0.35">{dots}</tspan>'
@@ -258,30 +258,30 @@ def render_terminal_svg(
         y += LINE_HEIGHT
         line_idx += 1
 
-    y += LINE_HEIGHT
+    y += LINE_HEIGHT  # spacer
     line_idx += 1
 
     for line in boot_lines:
         right_elements.append(
-            f'<text class="line line-{line_idx}" x="0" y="{y + FONT_SIZE}" font-family="Consolas, Menlo, monospace" '
+            f'<text class="line line-{line_idx}" x="0" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
             f'font-size="{FONT_SIZE}" fill="{accent}" fill-opacity="0.55" xml:space="preserve">'
             f"{_esc(line)}</text>"
         )
         y += LINE_HEIGHT
         line_idx += 1
 
-    y += LINE_HEIGHT
+    y += LINE_HEIGHT  # spacer
     line_idx += 1
 
     right_elements.append(
-        f'<text class="line line-{line_idx}" x="0" y="{y + FONT_SIZE}" font-family="Consolas, Menlo, monospace" '
+        f'<text class="line line-{line_idx}" x="0" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
         f'font-size="{FONT_SIZE}" fill="{accent}" xml:space="preserve">{_esc(status_line)}</text>'
     )
     line_idx += 1
 
     # Cursor (natural coords, scaled with right column)
     cursor_x = CHAR_WIDTH * len(status_line)
-    cursor_y = y + 2
+    cursor_y = y - FONT_SIZE + 2
     cursor = (
         f'<rect class="cursor" x="{cursor_x:.1f}" y="{cursor_y:.1f}" '
         f'width="{CHAR_WIDTH:.1f}" height="{FONT_SIZE + 2:.1f}" '
