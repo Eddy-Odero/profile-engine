@@ -1,8 +1,8 @@
 """
 svg_terminal.py  — Fixed-size terminal with CSS typewriter reveal.
 
-Uses SVG transform with center-origin scaling to prevent clipping.
-Content is scaled from its center point, not from (0,0).
+Uses SVG transform="scale()" on <g> elements for proper column scaling,
+while preserving the exact positioning and centering of the original.
 
 No SMIL — all CSS @keyframes for GitHub README compatibility.
 """
@@ -161,7 +161,8 @@ def render_terminal_svg(
 ) -> str:
     """
     Build a fixed-size 820x380 SVG terminal with typewriter reveal.
-    Uses center-origin scaling to prevent clipping.
+    Uses transform="scale()" on <g> for proper scaling while preserving
+    the original positioning and centering behavior.
     """
     theme = get_theme(theme_name)
     bg = f"#{theme['label_color']}"
@@ -172,10 +173,10 @@ def render_terminal_svg(
     status_line = f"$ status: {status}"
     stat_rows = _build_stat_rows(stats)
 
-    # ── Layout ────────────────────────────────────────────────────────
+    # ── Layout (matching original exactly) ────────────────────────────
     width = TERM_WIDTH
     height = TERM_HEIGHT
-    top_y = TITLE_BAR_HEIGHT + PADDING + FONT_SIZE  # = 61
+    top_y = TITLE_BAR_HEIGHT + PADDING + FONT_SIZE  # = 61, first baseline
 
     usable_width = width - 2 * PADDING - COLUMN_GAP
     left_col_w = int(usable_width * LEFT_COL_RATIO)
@@ -210,49 +211,17 @@ def render_terminal_svg(
     scaled_avatar_h = avatar_natural_h * avatar_scale
     scaled_right_h = right_natural_h * right_scale
 
-    # ── Centering ─────────────────────────────────────────────────────
+    # ── Centering (matching original formula) ─────────────────────────
     avatar_y_offset = (content_height - scaled_avatar_h) / 2
     right_y_offset = (content_height - scaled_right_h) / 2
 
-    # ── Build avatar column ───────────────────────────────────────────
-    # Center-origin scaling: translate to center, scale, translate back
-    avatar_cx = avatar_natural_w / 2  # center of content (natural coords)
-    avatar_cy = avatar_natural_h / 2
-
-    # Where the center should be in absolute space:
-    avatar_center_x = left_col_x + left_col_w / 2
-    avatar_center_y = top_y + avatar_y_offset + scaled_avatar_h / 2 - FONT_SIZE * avatar_scale / 2
-
-    # Simpler: position the group so the visual center aligns
-    # The content spans from y=FONT_SIZE to y=avatar_natural_h+FONT_SIZE in natural coords
-    # We want the middle of this span to be at top_y + avatar_y_offset + scaled_avatar_h/2
+    # ── Build avatar column with transform scaling ────────────────────
+    # Group origin positioned so that first text baseline matches original
     avatar_base_x = left_col_x + (left_col_w - avatar_natural_w * avatar_scale) / 2
-    avatar_base_y = top_y + avatar_y_offset
-
-    # Use center-origin transform:
-    # translate(base_x + cx*scale, base_y + cy*scale) scale(s) translate(-cx, -cy)
-    # But actually simpler: just position the group at the right place
-    # and let the content be at natural coords. The scale shrinks toward (0,0).
-    # To shrink toward center: translate(cx, cy) scale(s) translate(-cx, -cy)
-    # Then position the result.
-
-    # Actually the cleanest: content is at natural coords with origin at top-left
-    # We want to scale it from its center. So:
-    # 1. Move origin to center of content: translate(-cx, -cy)
-    # 2. Scale: scale(s)
-    # 3. Move back to where center should be: translate(target_x, target_y)
-
-    avatar_target_cx = left_col_x + left_col_w / 2
-    avatar_target_cy = top_y + avatar_y_offset + scaled_avatar_h / 2
-
-    avatar_transform = (
-        f'translate({avatar_target_cx:.1f} {avatar_target_cy:.1f}) '
-        f'scale({avatar_scale:.4f}) '
-        f'translate({-avatar_cx:.1f} {-avatar_cy:.1f})'
-    )
+    avatar_base_y = top_y + avatar_y_offset - FONT_SIZE * avatar_scale
 
     avatar_elements = []
-    y = FONT_SIZE
+    y = FONT_SIZE  # First text baseline at FONT_SIZE from group origin
     for i, line in enumerate(avatar_lines):
         avatar_elements.append(
             f'<text class="line line-{i}" x="0" y="{y:.1f}" filter="url(#glow)" '
@@ -261,18 +230,9 @@ def render_terminal_svg(
         )
         y += LINE_HEIGHT
 
-    # ── Build right column ────────────────────────────────────────────
-    right_cx = right_col_w / 2  # approximate center (dot leaders vary slightly)
-    right_cy = right_natural_h / 2
-
-    right_target_cx = right_col_x + right_col_w / 2
-    right_target_cy = top_y + right_y_offset + scaled_right_h / 2
-
-    right_transform = (
-        f'translate({right_target_cx:.1f} {right_target_cy:.1f}) '
-        f'scale({right_scale:.4f}) '
-        f'translate({-right_cx:.1f} {-right_cy:.1f})'
-    )
+    # ── Build right column with transform scaling ───────────────────
+    right_base_x = right_col_x
+    right_base_y = top_y + right_y_offset - FONT_SIZE * right_scale
 
     line_idx = len(avatar_lines)
     right_elements = []
@@ -298,7 +258,7 @@ def render_terminal_svg(
         y += LINE_HEIGHT
         line_idx += 1
 
-    y += LINE_HEIGHT
+    y += LINE_HEIGHT  # spacer
     line_idx += 1
 
     for line in boot_lines:
@@ -310,7 +270,7 @@ def render_terminal_svg(
         y += LINE_HEIGHT
         line_idx += 1
 
-    y += LINE_HEIGHT
+    y += LINE_HEIGHT  # spacer
     line_idx += 1
 
     right_elements.append(
@@ -319,7 +279,7 @@ def render_terminal_svg(
     )
     line_idx += 1
 
-    # Cursor (positioned relative to status line in natural coords)
+    # Cursor (natural coords, scaled with right column)
     cursor_x = CHAR_WIDTH * len(status_line)
     cursor_y = y - FONT_SIZE + 2
     cursor = (
@@ -350,12 +310,12 @@ xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(username)} termi
   {_title_bar(width, accent, username)}
   <g clip-path="url(#bodyClip)">
     <g class="glitch">
-      <!-- Avatar column with center-origin scaling -->
-      <g transform="{avatar_transform}">
+      <!-- Avatar column -->
+      <g transform="translate({avatar_base_x:.1f}, {avatar_base_y:.1f}) scale({avatar_scale:.4f})">
         {''.join(avatar_elements)}
       </g>
-      <!-- Right column with center-origin scaling -->
-      <g transform="{right_transform}">
+      <!-- Right column -->
+      <g transform="translate({right_base_x:.1f}, {right_base_y:.1f}) scale({right_scale:.4f})">
         {''.join(right_elements)}
         {cursor}
       </g>
