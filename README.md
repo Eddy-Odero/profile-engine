@@ -41,7 +41,11 @@
 
 <div align="center">
 
+<<<<<<< HEAD
 **Status:** `Reading Documentation` _
+=======
+**Status:** `ONLINE`  
+>>>>>>> 29d808cad462e4af90c0c741ca3f67e9b8cb9953
 
 ![Eddy Odero terminal](generated/terminal.svg)
 
@@ -54,12 +58,21 @@
 ### `$ github --stats`
 
 ```
+<<<<<<< HEAD
 Repositories : 24
 Stars        : 37
 Followers    : 12
 Contributions: N/A
 Top Languages: Go, JavaScript, Python
 Pinned       : SatGate, EDU-FLIX, lem-in
+=======
+Repositories : 23
+Stars        : 1
+Followers    : 10
+Contributions: 1047
+Top Languages: Go, HTML, Python
+Pinned       : SatGate
+>>>>>>> 29d808cad462e4af90c0c741ca3f67e9b8cb9953
 ```
 
 ### `$ github --activity`
@@ -82,4 +95,8 @@ Badges       : none yet
 
 ---
 
+<<<<<<< HEAD
 <sub>Last rendered: 2026-07-22 12:12 UTC · theme: cyberpunk · auto-generated, do not edit by hand</sub>
+=======
+<sub>Last rendered: 2026-07-22 08:08 UTC · theme: cyberpunk · auto-generated, do not edit by hand</sub>
+>>>>>>> 29d808cad462e4af90c0c741ca3f67e9b8cb9953
