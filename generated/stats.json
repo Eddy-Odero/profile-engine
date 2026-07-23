@@ -15,44 +15,46 @@
     "lem-in colony visualizer",
     "Maison POS"
   ],
-  "cursor": "_",
+  "cursor": " ",
   "system_message": "[WARN] motivation.exe not responding",
-  "quote": "A user interface is like a joke. If you have to explain it, it's not that good.",
-  "status": "Compiling new ideas...",
+  "quote": "The best error message is the one that never shows up.",
+  "status": "Writing Go",
   "terminal_svg_path": "generated/terminal.svg",
   "project_cards_svg_path": "generated/project_cards.svg",
   "tech_stack_svg_path": "generated/tech_stack.svg",
   "quote_svg_path": "generated/quote.svg",
-  "build_time": "2026-07-23 02:58 UTC",
+  "build_time": "2026-07-23 03:07 UTC",
   "stat_badges": [
-    "![Repos: 24](https://img.shields.io/badge/Repos-24-ff2079?style=for-the-badge&labelColor=0d0221)",
-    "![Stars: 37](https://img.shields.io/badge/Stars-37-ff2079?style=for-the-badge&labelColor=0d0221)",
-    "![Followers: 12](https://img.shields.io/badge/Followers-12-ff2079?style=for-the-badge&labelColor=0d0221)",
-    "![LC Solved: 120](https://img.shields.io/badge/LC_Solved-120-ff2079?style=for-the-badge&labelColor=0d0221)"
+    "![Repos: 23](https://img.shields.io/badge/Repos-23-ff2079?style=for-the-badge&labelColor=0d0221)",
+    "![Stars: 1](https://img.shields.io/badge/Stars-1-ff2079?style=for-the-badge&labelColor=0d0221)",
+    "![Followers: 10](https://img.shields.io/badge/Followers-10-ff2079?style=for-the-badge&labelColor=0d0221)",
+    "![LC Solved: 45](https://img.shields.io/badge/LC_Solved-45-ff2079?style=for-the-badge&labelColor=0d0221)"
   ],
   "theme": "cyberpunk",
-  "repo_count": 24,
-  "stars": 37,
-  "followers": 12,
+  "repo_count": 23,
+  "stars": 1,
+  "followers": 10,
   "top_languages": [
     "Go",
-    "JavaScript",
+    "HTML",
     "Python"
   ],
   "recent_activity": [
-    "pushed to profile-engine"
+    "pushed to Eddy-Odero/profile-engine",
+    "pushed to Eddy-Odero/profile-engine",
+    "pushed to Eddy-Odero/profile-engine",
+    "pushed to Eddy-Odero/profile-engine",
+    "pushed to Eddy-Odero/profile-engine"
   ],
   "pinned_repos": [
-    "SatGate",
-    "EDU-FLIX",
-    "lem-in"
+    "SatGate"
   ],
-  "contributions": null,
+  "contributions": 1051,
   "solved": {
-    "total": 120,
-    "easy": 55,
-    "medium": 50,
-    "hard": 15
+    "total": 45,
+    "easy": 12,
+    "medium": 22,
+    "hard": 11
   },
   "rating": null,
   "ranking": null,
