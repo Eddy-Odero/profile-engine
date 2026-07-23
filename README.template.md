@@ -16,6 +16,10 @@
 
 ![Tech Stack]({{ tech_stack_svg_path }})
 
+**Tools**
+
+![Tools]({{ tools_svg_path }})
+
 </div>
 
 ### Projects
@@ -25,6 +29,11 @@
 ![Projects]({{ project_cards_svg_path }})
 
 </div>
+
+{% for project in projects %}
+**{{ project.name }}**
+{% if project.preview_url %}[![Preview]({{ badge_preview_path }})]({{ project.preview_url }}){% else %}![not hosted yet]({{ badge_disabled_path }}) <sub>not hosted yet</sub>{% endif %} [![Code]({{ badge_code_path }})]({{ project.repo_url }})
+{% endfor %}
 
 ### A quote I like
 

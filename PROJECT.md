@@ -687,6 +687,68 @@ row for the current (short) tech list.
 
 ---
 
+## Revision - Removed avatar_01, updated stack, added Tools section
+
+- `avatar_01.txt` removed from the rotation pool per request - now only
+  the 4 user-uploaded pieces (`avatar_02`-`avatar_05`) rotate. Content
+  not lost: it's the same art already sitting at `assets/ascii/hacker.txt`
+  from the earlier photo-style-generator revision, just no longer in
+  the active pool.
+- `STACK` updated: removed Python, added TypeScript, PHP, Node.js, C++,
+  HTML, CSS (kept Go, JavaScript, SQLite, PostgreSQL, Docker).
+- New `TOOLS` list (Git, Figma, Blender, Redis) rendered as its own
+  labeled chip row using the same `tech_pills.render_tech_stack_svg()`,
+  just a second call with a different list - no new rendering code
+  needed, the function already took an arbitrary list.
+- Verified: rebuilt, confirmed both `tech_stack.svg` and `tools.svg`
+  validate as well-formed XML, and confirmed via the rotation pool
+  listing that `avatar_01` is genuinely gone (4 files, not 5).
+
+---
+
+## Revision - Redesigned projects section, with a real technical constraint solved
+
+Request: match the dashboard reference's dark-card aesthetic, icon +
+one-line description per project, plus clickable "Preview" and "Code"
+icon buttons like an editor's UI.
+
+**Important constraint surfaced and solved:** GitHub renders every
+README image via `<img src="...">`, and browsers strip all
+interactivity - including internal `<a>` links - from any SVG loaded
+that way. This meant the original plan (one combined image with
+clickable icons baked in) was impossible; nothing inside an
+`<img>`-loaded SVG can ever be clickable, regardless of how it's built.
+
+The fix: split into two pieces.
+1. **`render_project_cards_svg()`** - the visual grid (dark `#16161c`
+   cards, subtle `#2a2a33` border, an initials-circle icon, name, and a
+   word-wrapped one-line description) - not clickable, purely visual.
+2. **`render_link_badge_svg()`** - small standalone "Preview"/"Code"
+   badges, generated ONCE each (not per-project, since they're visually
+   identical - only the href differs). The template wraps each in
+   markdown's own `[![alt](badge.svg)](url)` syntax per project - the
+   link lives in the MARKDOWN, not the SVG, which is the only way to
+   get a real clickable icon in a GitHub README.
+
+**`PROJECTS` restructured** from a flat list of strings to a list of
+dicts (`name`, `description`, `repo_url`, `preview_url`). `preview_url`
+is `None` for all four projects right now (repo URLs are guessed from
+naming convention and need verification) - when `None`, the template
+shows a dimmed "not hosted yet" badge instead of a link, exactly as
+requested, rather than a broken/dead link.
+
+**Verified:** rebuilt, confirmed the actual rendered `README.md` shows
+real clickable `[Code]` links to each repo and correctly falls back to
+"not hosted yet" for every project's preview (since no `preview_url` is
+set yet). Validated all four generated SVGs (card grid + 3 badge
+variants) as well-formed XML.
+
+**Still needed from the person building this:** verify the guessed
+`repo_url` values actually match real repo names/casing, and fill in
+`preview_url` for anything that's actually hosted somewhere.
+
+---
+
 ## How to run locally
 
 ```bash

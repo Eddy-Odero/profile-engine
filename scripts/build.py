@@ -53,8 +53,40 @@ LEETCODE_USERNAME = "leetcode"  # swap for the real LeetCode handle
 TAGLINE = "Full-stack developer | Go, SQLite, vanilla JS | Kisumu, Kenya"
 ROLE = "Full-Stack Developer"  # used by the hero card - kept separate from
 LOCATION = "Kisumu, Kenya"  # TAGLINE so the card doesn't have to parse a string
-STACK = ["Go", "JavaScript", "SQLite", "PostgreSQL", "Docker", "Python"]
-PROJECTS = ["SatGate", "EDU-FLIX", "lem-in colony visualizer", "Maison POS"]
+STACK = [
+    "Go", "JavaScript", "TypeScript", "PHP", "Node.js", "C++",
+    "HTML", "CSS", "SQLite", "PostgreSQL", "Docker",
+]
+TOOLS = ["Git", "Figma", "Blender", "Redis"]
+PROJECTS = [
+    {
+        "name": "SatGate",
+        "description": "Lightning Network-powered CAPTCHA replacement for contact forms.",
+        "repo_url": f"https://github.com/{GITHUB_USERNAME}/SatGate",
+        "preview_url": None,  # set a real URL once hosted, or leave None
+    },
+    {
+        "name": "EDU-FLIX",
+        "description": "Netflix-style streaming platform built with Go and SQLite/Turso.",
+        "repo_url": f"https://github.com/{GITHUB_USERNAME}/EDU-FLIX",
+        "preview_url": None,
+    },
+    {
+        "name": "lem-in colony visualizer",
+        "description": "Ant colony pathfinding simulator with a 3D max-flow visualizer.",
+        "repo_url": f"https://github.com/{GITHUB_USERNAME}/lem-in",
+        "preview_url": None,
+    },
+    {
+        "name": "Maison POS",
+        "description": "Point-of-sale system for retail, built with vanilla JS.",
+        "repo_url": f"https://github.com/{GITHUB_USERNAME}/Maison-POS",
+        "preview_url": None,
+    },
+]
+# NOTE: repo_url values above are guessed from the naming convention -
+# double check they match your actual repo names/casing, and fill in
+# preview_url wherever a project is actually hosted somewhere.
 
 # How aggressive the CRT effects are: "subtle" (default), "medium", "heavy".
 # Override with CRT_LEVEL=medium in the environment to try other looks
@@ -197,7 +229,6 @@ def build_context() -> dict:
         "username": USERNAME,
         "tagline": TAGLINE,
         "stack": STACK,
-        "projects": PROJECTS,
         "avatar_ascii": avatar_ascii,
         "cursor": effects.random_cursor(),
         "system_message": system_message,
@@ -210,8 +241,21 @@ def build_context() -> dict:
         "project_cards_svg_path": _write_svg(
             project_cards.render_project_cards_svg(PROJECTS, THEME), "project_cards.svg"
         ),
+        "badge_preview_path": _write_svg(
+            project_cards.render_link_badge_svg("preview", THEME), "badge_preview.svg"
+        ),
+        "badge_code_path": _write_svg(
+            project_cards.render_link_badge_svg("code", THEME), "badge_code.svg"
+        ),
+        "badge_disabled_path": _write_svg(
+            project_cards.render_link_badge_svg("preview", THEME, disabled=True), "badge_disabled.svg"
+        ),
+        "projects": PROJECTS,
         "tech_stack_svg_path": _write_svg(
             tech_pills.render_tech_stack_svg(STACK, THEME), "tech_stack.svg"
+        ),
+        "tools_svg_path": _write_svg(
+            tech_pills.render_tech_stack_svg(TOOLS, THEME), "tools.svg"
         ),
         "quote_svg_path": _write_svg(quote_card.render_quote_svg(quote, THEME), "quote.svg"),
         "build_time": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
