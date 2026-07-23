@@ -4,7 +4,7 @@
 
 <sub>~ live session · Eddy Odero@github · re-renders every build ~</sub>
 
-![Repos: 23](https://img.shields.io/badge/Repos-23-ff2079?style=for-the-badge&labelColor=0d0221) ![Stars: 1](https://img.shields.io/badge/Stars-1-ff2079?style=for-the-badge&labelColor=0d0221) ![Followers: 10](https://img.shields.io/badge/Followers-10-ff2079?style=for-the-badge&labelColor=0d0221) ![LC Solved: 45](https://img.shields.io/badge/LC_Solved-45-ff2079?style=for-the-badge&labelColor=0d0221)
+![Repos: 23](https://img.shields.io/badge/Repos-23-ff2079?style=for-the-badge&labelColor=0d0221) ![Stars: 11](https://img.shields.io/badge/Stars-11-ff2079?style=for-the-badge&labelColor=0d0221) ![Followers: 17](https://img.shields.io/badge/Followers-17-ff2079?style=for-the-badge&labelColor=0d0221) ![LC Solved: 45](https://img.shields.io/badge/LC_Solved-45-ff2079?style=for-the-badge&labelColor=0d0221)
 
 </div>
 
@@ -40,8 +40,8 @@
 
 ```
 Repositories : 23
-Stars        : 1
-Followers    : 10
+Stars        : 11
+Followers    : 17
 Contributions: 1051
 Top Languages: Go, HTML, Python
 Pinned       : SatGate
@@ -50,7 +50,7 @@ Pinned       : SatGate
 ### `$ github --activity`
 
 ```
-pushed to Eddy-Odero/profile-engine
+starred Eddy-Odero/profile-engine
 pushed to Eddy-Odero/profile-engine
 pushed to Eddy-Odero/profile-engine
 pushed to Eddy-Odero/profile-engine
@@ -71,4 +71,4 @@ Badges       : none yet
 
 ---
 
-<sub>Last rendered: 2026-07-23 03:07 UTC · theme: cyberpunk · auto-generated, do not edit by hand</sub>
+<sub>Last rendered: 2026-07-23 08:11 UTC · theme: cyberpunk · auto-generated, do not edit by hand</sub>
