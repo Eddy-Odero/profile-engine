@@ -1,0 +1,39 @@
+<svg width="561" height="26" viewBox="0 0 561 26" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Tech stack">
+  
+  <g>
+    <line x1="0.0" y1="13.0" x2="5.0" y2="13.0" stroke="#ff2079" stroke-width="2"/><line x1="43.879999999999995" y1="13.0" x2="48.879999999999995" y2="13.0" stroke="#ff2079" stroke-width="2"/>
+    <rect x="5.0" y="0.0" width="38.9" height="26" rx="3" fill="#0d0221" stroke="#ff2079" stroke-width="1.3"/>
+    <circle cx="11.0" cy="6.0" r="3" fill="#ff2079" fill-opacity="0.55"/>
+    <text x="24.4" y="17.2" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="#ff2079" text-anchor="middle">Go</text>
+  </g>
+  <g>
+    <line x1="58.879999999999995" y1="13.0" x2="63.879999999999995" y2="13.0" stroke="#ff2079" stroke-width="2"/><line x1="162.27999999999997" y1="13.0" x2="167.27999999999997" y2="13.0" stroke="#ff2079" stroke-width="2"/>
+    <rect x="63.9" y="0.0" width="98.4" height="26" rx="3" fill="#0d0221" stroke="#ff2079" stroke-width="1.3"/>
+    <circle cx="69.9" cy="6.0" r="3" fill="#ff2079" fill-opacity="0.55"/>
+    <text x="113.1" y="17.2" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="#ff2079" text-anchor="middle">JavaScript</text>
+  </g>
+  <g>
+    <line x1="177.27999999999997" y1="13.0" x2="182.27999999999997" y2="13.0" stroke="#ff2079" stroke-width="2"/><line x1="250.91999999999996" y1="13.0" x2="255.91999999999996" y2="13.0" stroke="#ff2079" stroke-width="2"/>
+    <rect x="182.3" y="0.0" width="68.6" height="26" rx="3" fill="#0d0221" stroke="#ff2079" stroke-width="1.3"/>
+    <circle cx="188.3" cy="6.0" r="3" fill="#ff2079" fill-opacity="0.55"/>
+    <text x="216.6" y="17.2" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="#ff2079" text-anchor="middle">SQLite</text>
+  </g>
+  <g>
+    <line x1="265.91999999999996" y1="13.0" x2="270.91999999999996" y2="13.0" stroke="#ff2079" stroke-width="2"/><line x1="369.31999999999994" y1="13.0" x2="374.31999999999994" y2="13.0" stroke="#ff2079" stroke-width="2"/>
+    <rect x="270.9" y="0.0" width="98.4" height="26" rx="3" fill="#0d0221" stroke="#ff2079" stroke-width="1.3"/>
+    <circle cx="276.9" cy="6.0" r="3" fill="#ff2079" fill-opacity="0.55"/>
+    <text x="320.1" y="17.2" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="#ff2079" text-anchor="middle">PostgreSQL</text>
+  </g>
+  <g>
+    <line x1="384.31999999999994" y1="13.0" x2="389.31999999999994" y2="13.0" stroke="#ff2079" stroke-width="2"/><line x1="457.9599999999999" y1="13.0" x2="462.9599999999999" y2="13.0" stroke="#ff2079" stroke-width="2"/>
+    <rect x="389.3" y="0.0" width="68.6" height="26" rx="3" fill="#0d0221" stroke="#ff2079" stroke-width="1.3"/>
+    <circle cx="395.3" cy="6.0" r="3" fill="#ff2079" fill-opacity="0.55"/>
+    <text x="423.6" y="17.2" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="#ff2079" text-anchor="middle">Docker</text>
+  </g>
+  <g>
+    <line x1="472.9599999999999" y1="13.0" x2="477.9599999999999" y2="13.0" stroke="#ff2079" stroke-width="2"/><line x1="546.5999999999999" y1="13.0" x2="551.5999999999999" y2="13.0" stroke="#ff2079" stroke-width="2"/>
+    <rect x="478.0" y="0.0" width="68.6" height="26" rx="3" fill="#0d0221" stroke="#ff2079" stroke-width="1.3"/>
+    <circle cx="484.0" cy="6.0" r="3" fill="#ff2079" fill-opacity="0.55"/>
+    <text x="512.3" y="17.2" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="#ff2079" text-anchor="middle">Python</text>
+  </g>
+</svg>

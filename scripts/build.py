@@ -30,12 +30,12 @@ import avatar
 import badges
 import effects
 import github
-import hero_card
 import leetcode
 import project_cards
 import quote_card
 import renderer
 import svg_terminal
+import tech_pills
 from utils import (
     GENERATED_DIR,
     build_boot_sequence,
@@ -210,8 +210,8 @@ def build_context() -> dict:
         "project_cards_svg_path": _write_svg(
             project_cards.render_project_cards_svg(PROJECTS, THEME), "project_cards.svg"
         ),
-        "hero_svg_path": _write_svg(
-            hero_card.render_hero_svg(USERNAME, ROLE, LOCATION, THEME), "hero.svg"
+        "tech_stack_svg_path": _write_svg(
+            tech_pills.render_tech_stack_svg(STACK, THEME), "tech_stack.svg"
         ),
         "quote_svg_path": _write_svg(quote_card.render_quote_svg(quote, THEME), "quote.svg"),
         "build_time": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),

@@ -632,6 +632,61 @@ before considering this done.
 
 ---
 
+## Revision - Layout restructure + 3 more rotation-pool avatars
+
+**Layout changes, all per direct request:**
+- Terminal moved to the very first section of the README (previously
+  the hero card + name heading came first)
+- Removed the hero card image and the plain `# {{ username }}` /
+  `### {{ tagline }}` heading entirely - both were duplicating identity
+  info already shown inside the terminal itself (title bar + status
+  line). `hero_card.py` is kept as a file, just no longer called from
+  `build_context()` - same "don't delete, just stop using" pattern as
+  the photo-avatar pipeline.
+- Caption below the terminal reworded from a meta-description ("Live-ish
+  terminal flair...") to read like an in-universe live session log
+  instead: `~ live session · {username}@github · re-renders every
+  build ~`.
+
+**Rotation pool grown from 2 to 5 avatars** - three more user-uploaded
+pieces added as `avatar_03.txt`, `avatar_04.txt`, `avatar_05.txt` (each
+trimmed of surrounding blank padding first, same as `avatar_02.txt`).
+Every file validated individually: rendered through the real
+`svg_terminal.render_terminal_svg()` and checked with `ET.fromstring()`
+for well-formed XML before being considered added, not just dropped in
+and assumed to work.
+
+**Not yet done:** tech stack section is still plain backtick-wrapped
+text (`` `Go` `JavaScript` ``) - flagged as the next thing to design,
+matching the card-based visual language used for projects/quotes.
+
+---
+
+## Revision - Custom tech-stack chips (not shields.io)
+
+Explicit request: match shields.io's compact size/layout logic, but
+design a genuinely distinct shape rather than reusing shields.io itself
+- "everyone on GitHub" already uses those rounded pills, and the whole
+point of this project is a from-scratch, recognizably-ours pipeline.
+
+**`tech_pills.py`** - each tech renders as a small IC-chip-style badge:
+a rectangular (not pill-rounded) body, small pin ticks protruding from
+the left/right edges like a real integrated circuit's legs, and a
+notch-dot in the top-left corner (evoking the orientation notch real
+chips have). Auto-width per label, wraps into additional rows past
+`MAX_ROW_WIDTH` (same grid-wrap approach as `project_cards.py`).
+
+Replaced the old plain backtick list (`` `Go` `JavaScript` ``) in the
+template with this rendered image.
+
+**Verified:** validated as well-formed XML across all 5 themes, then
+checked via pixel-sampling (not just eyeballing) that content actually
+spans the expected width with the expected fill ratio for 6 chips with
+gaps between them, and that natural height matched a single un-wrapped
+row for the current (short) tech list.
+
+---
+
 ## How to run locally
 
 ```bash

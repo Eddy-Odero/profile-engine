@@ -1,10 +1,8 @@
 <div align="center">
 
-![{{ username }} - {{ tagline }}]({{ hero_svg_path }})
+![{{ username }} terminal]({{ terminal_svg_path }})
 
-# {{ username }}
-
-### {{ tagline }}
+<sub>~ live session · {{ username }}@github · re-renders every build ~</sub>
 
 {{ stat_badges | join(" ") }}
 
@@ -12,15 +10,13 @@
 
 ---
 
-<div align="center">
-
-<sub>The terminal below is just flavor - here's the plain-language version first.</sub>
-
-</div>
-
 ### Tech Stack
 
-{% for tech in stack %}`{{ tech }}` {% endfor %}
+<div align="center">
+
+![Tech Stack]({{ tech_stack_svg_path }})
+
+</div>
 
 ### Projects
 
@@ -35,18 +31,6 @@
 <div align="center">
 
 ![Quote]({{ quote_svg_path }})
-
-</div>
-
----
-
-<div align="center">
-
-**Status:** `{{ status }}` {{ cursor }}
-
-![{{ username }} terminal]({{ terminal_svg_path }})
-
-<sub>Live-ish terminal flair - avatar, boot log, and status re-render every build.</sub>
 
 </div>
 
