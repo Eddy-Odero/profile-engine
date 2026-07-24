@@ -4,7 +4,7 @@
 
 <sub>~ live session · Eddy Odero@github · re-renders every build ~</sub>
 
-![Repos: 24](https://img.shields.io/badge/Repos-24-ff2079?style=for-the-badge&labelColor=0d0221) ![Stars: 37](https://img.shields.io/badge/Stars-37-ff2079?style=for-the-badge&labelColor=0d0221) ![Followers: 12](https://img.shields.io/badge/Followers-12-ff2079?style=for-the-badge&labelColor=0d0221) ![LC Solved: 120](https://img.shields.io/badge/LC_Solved-120-ff2079?style=for-the-badge&labelColor=0d0221)
+![Repos: 23](https://img.shields.io/badge/Repos-23-ff2079?style=for-the-badge&labelColor=0d0221) ![Stars: 22](https://img.shields.io/badge/Stars-22-ff2079?style=for-the-badge&labelColor=0d0221) ![Followers: 26](https://img.shields.io/badge/Followers-26-ff2079?style=for-the-badge&labelColor=0d0221) ![LC Solved: 45](https://img.shields.io/badge/LC_Solved-45-ff2079?style=for-the-badge&labelColor=0d0221)
 
 </div>
 
@@ -82,24 +82,28 @@
 ### `$ github --stats`
 
 ```
-Repositories : 24
-Stars        : 37
-Followers    : 12
-Contributions: N/A
-Top Languages: Go, JavaScript, Python
-Pinned       : SatGate, EDU-FLIX, lem-in
+Repositories : 23
+Stars        : 22
+Followers    : 26
+Contributions: 1055
+Top Languages: Go, HTML, Python
+Pinned       : SatGate
 ```
 
 ### `$ github --activity`
 
 ```
-pushed to profile-engine
+pushed to Eddy-Odero/profile-engine
+pushed to Eddy-Odero/profile-engine
+starred Omollos/loba
+starred Eddy-Odero/profile-engine
+pushed to Eddy-Odero/profile-engine
 ```
 
 ### `$ leetcode --stats`
 
 ```
-Solved       : 120 (Easy 55 / Medium 50 / Hard 15)
+Solved       : 45 (Easy 12 / Medium 22 / Hard 11)
 Rating       : unrated
 Global Rank  : N/A
 Top %        : N/A
@@ -110,8 +114,4 @@ Badges       : none yet
 
 ---
 
-<<<<<<< HEAD
-<sub>Last rendered: 2026-07-24 02:58 UTC · theme: cyberpunk · auto-generated, do not edit by hand</sub>
-=======
-<sub>Last rendered: 2026-07-24 08:06 UTC · theme: cyberpunk · auto-generated, do not edit by hand</sub>
->>>>>>> e5b196362b350d78a8845c632d16cd4f78b9a8c9
+<sub>Last rendered: 2026-07-24 17:00 UTC · theme: cyberpunk · auto-generated, do not edit by hand</sub>
