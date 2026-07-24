@@ -14,10 +14,10 @@
     "PostgreSQL",
     "Docker"
   ],
-  "cursor": "_",
-  "system_message": "[WARNING] coffee levels critical",
-  "quote": "A user interface is like a joke. If you have to explain it, it's not that good.",
-  "status": "Coffee Loading...",
+  "cursor": " ",
+  "system_message": "> checking for updates... none, as usual",
+  "quote": "Programs must be written for people to read, and only incidentally for machines to execute.",
+  "status": "Debugging in production (again)",
   "terminal_svg_path": "generated/terminal.svg",
   "project_cards_svg_path": "generated/project_cards.svg",
   "badge_preview_path": "generated/badge_preview.svg",
@@ -52,7 +52,7 @@
   "tech_stack_svg_path": "generated/tech_stack.svg",
   "tools_svg_path": "generated/tools.svg",
   "quote_svg_path": "generated/quote.svg",
-  "build_time": "2026-07-23 15:42 UTC",
+  "build_time": "2026-07-24 08:06 UTC",
   "stat_badges": [
     "![Repos: 23](https://img.shields.io/badge/Repos-23-ff2079?style=for-the-badge&labelColor=0d0221)",
     "![Stars: 21](https://img.shields.io/badge/Stars-21-ff2079?style=for-the-badge&labelColor=0d0221)",
