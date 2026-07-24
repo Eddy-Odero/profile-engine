@@ -1,28 +1,34 @@
 """
 project_cards.py
 
-Two things live here, and they're separate for an important reason:
+Three things live here:
 
-1. render_project_cards_svg() - the VISUAL card grid (icon + one-line
-   description per project). Dark, muted background with a subtle
-   border, matching the reference dashboard's aesthetic (sparse accent
-   color, not a bright white card like the old design).
+1. render_single_project_card_svg() - ONE project's visual card (icon +
+   name + description). Renders one project at a time now, not a
+   combined grid - the template arranges cards into an HTML table grid
+   itself, because each card needs its own View/Code button row
+   directly underneath it (see point 2), which only works if each
+   card is its own separate image.
 
-2. render_link_badge_svg() - small "Preview" / "Code" icon badges.
-   These are NOT embedded inside the card grid above, because SVGs
-   loaded via markdown image syntax (`![]()`, which becomes `<img
-   src="...">`) have all internal interactivity stripped by the browser
-   - any <a> links inside such an SVG are inert. The only way to get an
-   actually-clickable icon in a GitHub README is markdown's own
+2. render_link_badge_svg() - small "View" / "Code" icon badges. These
+   are NOT embedded inside the card SVG, because SVGs loaded via
+   markdown image syntax (`![]()`, which becomes `<img src="...">`)
+   have all internal interactivity stripped by the browser - any <a>
+   links inside such an SVG are inert. The only way to get an actually-
+   clickable icon in a GitHub README is markdown's own
    `[![alt](badge.svg)](url)` syntax, where the link lives in the
-   markdown, not the image. So each project gets its OWN tiny badge
-   file, wrapped in a real markdown link in the template - that's what
-   makes them clickable.
+   markdown, not the image.
+
+3. A small set of hand-drawn semantic icon glyphs (lightning bolt, play
+   button, network/graph nodes, shopping cart, and a generic default) -
+   picked per-project via an "icon" key, since there's no real per-
+   project logo artwork to draw from. Falls back to a generic icon if
+   a project doesn't specify one or specifies an unknown key.
 
 Usage:
-    from project_cards import render_project_cards_svg, render_link_badge_svg
-    svg_markup = render_project_cards_svg(projects, theme_name)
-    badge_svg = render_link_badge_svg("preview", theme_name)
+    from project_cards import render_single_project_card_svg, render_link_badge_svg
+    card_svg = render_single_project_card_svg(project, theme_name)
+    badge_svg = render_link_badge_svg("view", theme_name)
 """
 
 from __future__ import annotations
@@ -33,15 +39,13 @@ from themes import DEFAULT_THEME, get_theme
 
 CARD_WIDTH = 210
 CARD_HEIGHT = 130
-CARD_GAP = 16
-CARDS_PER_ROW = 4
 ICON_RADIUS = 20
 
 CARD_BG = "16161c"  # dark, muted - close to a typical dark page background
 CARD_BORDER = "2a2a33"  # subtle, barely-lighter-than-bg border
 DESC_COLOR = "9a9aa5"  # muted gray for description text, per the reference's hierarchy
 
-BADGE_WIDTH = 96
+BADGE_WIDTH = 88
 BADGE_HEIGHT = 30
 
 
@@ -50,7 +54,6 @@ def _esc(text: str) -> str:
 
 
 def _wrap_label(name: str, max_chars: int = 18) -> list[str]:
-    """Wrap a project name onto up to 2 lines, breaking at the nearest space."""
     if len(name) <= max_chars:
         return [name]
     break_at = name.rfind(" ", 0, max_chars + 1)
@@ -62,7 +65,6 @@ def _wrap_label(name: str, max_chars: int = 18) -> list[str]:
 
 
 def _wrap_description(text: str, max_chars: int = 30) -> list[str]:
-    """Wrap a description onto up to 3 lines, breaking on spaces."""
     words = text.split()
     lines: list[str] = []
     current = ""
@@ -78,24 +80,70 @@ def _wrap_description(text: str, max_chars: int = 30) -> list[str]:
     return lines[:3]
 
 
-def _project_icon(cx: float, cy: float, initial: str, accent: str) -> str:
-    """
-    A simple circular icon badge with the project's first letter -
-    consistent with the initials-avatar pattern used elsewhere in this
-    project (hero_card.py), rather than trying to guess a "real" icon
-    per project with no actual icon data to draw from.
-    """
+def _icon_lightning(cx: float, cy: float, color: str) -> str:
     return (
-        f'<circle cx="{cx}" cy="{cy}" r="{ICON_RADIUS}" fill="{accent}" fill-opacity="0.15" '
-        f'stroke="{accent}" stroke-width="1.5"/>'
-        f'<text x="{cx}" y="{cy + 6}" font-family="Segoe UI, Helvetica, Arial, sans-serif" '
-        f'font-size="18" font-weight="700" fill="{accent}" text-anchor="middle">{_esc(initial)}</text>'
+        f'<path transform="translate({cx - 6},{cy - 9})" '
+        f'd="M7 0 L1 10 L5.5 10 L4 18 L11 8 L6.5 8 Z" fill="{color}"/>'
     )
 
 
-def _card(x: int, y: int, project: dict, accent: str) -> str:
-    name = project["name"]
+def _icon_play(cx: float, cy: float, color: str) -> str:
+    return f'<path transform="translate({cx - 6},{cy - 7})" d="M0 0 L14 7 L0 14 Z" fill="{color}"/>'
+
+
+def _icon_network(cx: float, cy: float, color: str) -> str:
+    pts = [(cx - 9, cy + 6), (cx, cy - 8), (cx + 9, cy + 6)]
+    lines = "".join(
+        f'<line x1="{cx}" y1="{cy-2}" x2="{x}" y2="{y}" stroke="{color}" stroke-width="1.4"/>'
+        for x, y in pts
+    )
+    dots = "".join(f'<circle cx="{x}" cy="{y}" r="3" fill="{color}"/>' for x, y in pts)
+    return lines + dots + f'<circle cx="{cx}" cy="{cy - 2}" r="3" fill="{color}"/>'
+
+
+def _icon_cart(cx: float, cy: float, color: str) -> str:
+    return (
+        f'<g transform="translate({cx - 9},{cy - 7})" fill="none" stroke="{color}" stroke-width="1.5">'
+        f'<path d="M0 0 H3 L5.5 11 H15 L17 3 H4.5"/>'
+        f'<circle cx="7" cy="15" r="1.6" fill="{color}"/>'
+        f'<circle cx="13.5" cy="15" r="1.6" fill="{color}"/>'
+        f"</g>"
+    )
+
+
+def _icon_default(cx: float, cy: float, color: str) -> str:
+    return (
+        f'<text x="{cx}" y="{cy + 5}" font-family="Consolas, Menlo, monospace" font-size="16" '
+        f'font-weight="700" fill="{color}" text-anchor="middle">&lt;/&gt;</text>'
+    )
+
+
+_ICON_FUNCS = {
+    "lightning": _icon_lightning,
+    "play": _icon_play,
+    "network": _icon_network,
+    "cart": _icon_cart,
+}
+
+
+def _project_icon(cx: float, cy: float, icon_key: str, accent: str) -> str:
+    glyph_fn = _ICON_FUNCS.get(icon_key, _icon_default)
+    return (
+        f'<circle cx="{cx}" cy="{cy}" r="{ICON_RADIUS}" fill="{accent}" fill-opacity="0.13" '
+        f'stroke="{accent}" stroke-width="1.5"/>'
+        f"{glyph_fn(cx, cy, accent)}"
+    )
+
+
+def render_single_project_card_svg(project: dict, theme_name: str = DEFAULT_THEME) -> str:
+    """Build the SVG for one project's visual card (icon + name + description)."""
+    theme = get_theme(theme_name)
+    accent = f"#{theme['color']}"
+
+    name = project.get("name", "")
     description = project.get("description", "")
+    icon_key = project.get("icon", "")
+
     name_lines = _wrap_label(name)
     desc_lines = _wrap_description(description)
 
@@ -116,49 +164,17 @@ def _card(x: int, y: int, project: dict, accent: str) -> str:
         for i, line in enumerate(desc_lines)
     )
 
-    return f"""
-  <g transform="translate({x},{y})">
-    <rect width="{CARD_WIDTH}" height="{CARD_HEIGHT}" rx="10" fill="#{CARD_BG}" \
+    return f"""<svg width="{CARD_WIDTH}" height="{CARD_HEIGHT}" viewBox="0 0 {CARD_WIDTH} {CARD_HEIGHT}" \
+xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(name)}">
+  <rect width="{CARD_WIDTH}" height="{CARD_HEIGHT}" rx="10" fill="#{CARD_BG}" \
 stroke="#{CARD_BORDER}" stroke-width="1"/>
-    {_project_icon(CARD_WIDTH / 2, icon_cy, name[0].upper(), accent)}
-    {name_elements}
-    {desc_elements}
-  </g>"""
-
-
-def render_project_cards_svg(projects: list[dict], theme_name: str = DEFAULT_THEME) -> str:
-    """
-    Build an SVG containing one visual card per project (icon + name +
-    description - NOT clickable, see module docstring), wrapping into
-    rows of CARDS_PER_ROW.
-    """
-    if not projects:
-        projects = [{"name": "More projects coming soon", "description": ""}]
-
-    theme = get_theme(theme_name)
-    accent = f"#{theme['color']}"
-
-    rows = [projects[i : i + CARDS_PER_ROW] for i in range(0, len(projects), CARDS_PER_ROW)]
-    cols_in_widest_row = max(len(row) for row in rows)
-
-    width = cols_in_widest_row * CARD_WIDTH + (cols_in_widest_row - 1) * CARD_GAP
-    height = len(rows) * CARD_HEIGHT + (len(rows) - 1) * CARD_GAP
-
-    cards = []
-    for row_i, row in enumerate(rows):
-        for col_i, project in enumerate(row):
-            x = col_i * (CARD_WIDTH + CARD_GAP)
-            y = row_i * (CARD_HEIGHT + CARD_GAP)
-            cards.append(_card(x, y, project, accent))
-
-    return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
-xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Projects">
-  {''.join(cards)}
+  {_project_icon(CARD_WIDTH / 2, icon_cy, icon_key, accent)}
+  {name_elements}
+  {desc_elements}
 </svg>"""
 
 
 def _eye_icon(cx: float, cy: float, color: str) -> str:
-    """Simple eye glyph for the 'preview' badge - drawn as shapes, no icon font needed."""
     return (
         f'<ellipse cx="{cx}" cy="{cy}" rx="7" ry="4.2" fill="none" stroke="{color}" stroke-width="1.4"/>'
         f'<circle cx="{cx}" cy="{cy}" r="2.1" fill="{color}"/>'
@@ -169,22 +185,20 @@ def render_link_badge_svg(
     kind: str, theme_name: str = DEFAULT_THEME, disabled: bool = False
 ) -> str:
     """
-    Build one small badge: kind is "preview" or "code". These are the
+    Build one small badge: kind is "view" or "code". These are the
     pieces that actually become clickable, once wrapped in a markdown
-    link in the template - see module docstring for why this is a
-    separate function/file from the card grid.
+    link in the template.
 
     `disabled=True` renders a muted, non-link-implying version (used
-    for "not hosted yet" - still shown as a badge for visual
-    consistency, just dimmed and not wrapped in a link by the template).
+    for "not hosted yet").
     """
     theme = get_theme(theme_name)
     accent = f"#{theme['color']}" if not disabled else "#5a5a66"
     dark = f"#{theme['label_color']}"
-    label = "Preview" if kind == "preview" else "Code"
+    label = "View" if kind == "view" else "Code"
 
     icon_x = 16
-    if kind == "preview":
+    if kind == "view":
         icon = _eye_icon(icon_x, BADGE_HEIGHT / 2, accent)
     else:
         icon = (
@@ -197,7 +211,7 @@ viewBox="0 0 {BADGE_WIDTH} {BADGE_HEIGHT}" xmlns="http://www.w3.org/2000/svg" \
 role="img" aria-label="{_esc(label)}">
   <rect width="{BADGE_WIDTH}" height="{BADGE_HEIGHT}" rx="6" fill="{dark}" stroke="{accent}" stroke-width="1.2"/>
   {icon}
-  <text x="{BADGE_WIDTH / 2 + 10}" y="{BADGE_HEIGHT / 2 + 4}" \
+  <text x="{BADGE_WIDTH / 2 + 9}" y="{BADGE_HEIGHT / 2 + 4}" \
 font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="600" \
 fill="{accent}" text-anchor="middle">{_esc(label)}</text>
 </svg>"""

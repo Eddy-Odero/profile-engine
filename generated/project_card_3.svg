@@ -1,0 +1,6 @@
+<svg width="210" height="130" viewBox="0 0 210 130" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Maison POS">
+  <rect width="210" height="130" rx="10" fill="#16161c" stroke="#2a2a33" stroke-width="1"/>
+  <circle cx="105.0" cy="34" r="20" fill="#ff2079" fill-opacity="0.13" stroke="#ff2079" stroke-width="1.5"/><g transform="translate(96.0,27)" fill="none" stroke="#ff2079" stroke-width="1.5"><path d="M0 0 H3 L5.5 11 H15 L17 3 H4.5"/><circle cx="7" cy="15" r="1.6" fill="#ff2079"/><circle cx="13.5" cy="15" r="1.6" fill="#ff2079"/></g>
+  <text x="105.0" y="74" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="white" text-anchor="middle">Maison POS</text>
+  <text x="105.0" y="98" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" fill="#9a9aa5" text-anchor="middle">Point-of-sale system for</text><text x="105.0" y="113" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" fill="#9a9aa5" text-anchor="middle">retail, built with vanilla JS.</text>
+</svg>

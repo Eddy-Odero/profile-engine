@@ -64,24 +64,28 @@ PROJECTS = [
         "description": "Lightning Network-powered CAPTCHA replacement for contact forms.",
         "repo_url": f"https://github.com/{GITHUB_USERNAME}/SatGate",
         "preview_url": None,  # set a real URL once hosted, or leave None
+        "icon": "lightning",
     },
     {
         "name": "EDU-FLIX",
         "description": "Netflix-style streaming platform built with Go and SQLite/Turso.",
         "repo_url": f"https://github.com/{GITHUB_USERNAME}/EDU-FLIX",
         "preview_url": None,
+        "icon": "play",
     },
     {
         "name": "lem-in colony visualizer",
         "description": "Ant colony pathfinding simulator with a 3D max-flow visualizer.",
         "repo_url": f"https://github.com/{GITHUB_USERNAME}/lem-in",
         "preview_url": None,
+        "icon": "network",
     },
     {
         "name": "Maison POS",
         "description": "Point-of-sale system for retail, built with vanilla JS.",
         "repo_url": f"https://github.com/{GITHUB_USERNAME}/Maison-POS",
         "preview_url": None,
+        "icon": "cart",
     },
 ]
 # NOTE: repo_url values above are guessed from the naming convention -
@@ -238,19 +242,21 @@ def build_context() -> dict:
         "terminal_svg_path": build_terminal_svg(
             avatar_ascii, boot_sequence, system_message, status, combined_stats
         ),
-        "project_cards_svg_path": _write_svg(
-            project_cards.render_project_cards_svg(PROJECTS, THEME), "project_cards.svg"
-        ),
-        "badge_preview_path": _write_svg(
-            project_cards.render_link_badge_svg("preview", THEME), "badge_preview.svg"
+        "project_cards": [
+            {**p, "card_svg_path": _write_svg(
+                project_cards.render_single_project_card_svg(p, THEME), f"project_card_{i}.svg"
+            )}
+            for i, p in enumerate(PROJECTS)
+        ],
+        "badge_view_path": _write_svg(
+            project_cards.render_link_badge_svg("view", THEME), "badge_view.svg"
         ),
         "badge_code_path": _write_svg(
             project_cards.render_link_badge_svg("code", THEME), "badge_code.svg"
         ),
         "badge_disabled_path": _write_svg(
-            project_cards.render_link_badge_svg("preview", THEME, disabled=True), "badge_disabled.svg"
+            project_cards.render_link_badge_svg("view", THEME, disabled=True), "badge_disabled.svg"
         ),
-        "projects": PROJECTS,
         "tech_stack_svg_path": _write_svg(
             tech_pills.render_tech_stack_svg(STACK, THEME), "tech_stack.svg"
         ),

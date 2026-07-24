@@ -1,5 +1,5 @@
-<svg width="96" height="30" viewBox="0 0 96 30" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Preview">
-  <rect width="96" height="30" rx="6" fill="#0d0221" stroke="#5a5a66" stroke-width="1.2"/>
+<svg width="88" height="30" viewBox="0 0 88 30" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="View">
+  <rect width="88" height="30" rx="6" fill="#0d0221" stroke="#5a5a66" stroke-width="1.2"/>
   <ellipse cx="16" cy="15.0" rx="7" ry="4.2" fill="none" stroke="#5a5a66" stroke-width="1.4"/><circle cx="16" cy="15.0" r="2.1" fill="#5a5a66"/>
-  <text x="58.0" y="19.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#5a5a66" text-anchor="middle">Preview</text>
+  <text x="53.0" y="19.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#5a5a66" text-anchor="middle">View</text>
 </svg>

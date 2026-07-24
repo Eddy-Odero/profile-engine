@@ -24,16 +24,24 @@
 
 ### Projects
 
-<div align="center">
+<table>
+{% for row in project_cards|batch(4) %}
+<tr>
+{% for project in row %}
+<td align="center" width="220">
 
-![Projects]({{ project_cards_svg_path }})
+![{{ project.name }}]({{ project.card_svg_path }})
 
-</div>
+<table><tr>
+<td align="left">{% if project.preview_url %}[![View]({{ badge_view_path }})]({{ project.preview_url }}){% else %}![not hosted]({{ badge_disabled_path }})<br><sub>not hosted yet</sub>{% endif %}</td>
+<td align="right">[![Code]({{ badge_code_path }})]({{ project.repo_url }})</td>
+</tr></table>
 
-{% for project in projects %}
-**{{ project.name }}**
-{% if project.preview_url %}[![Preview]({{ badge_preview_path }})]({{ project.preview_url }}){% else %}![not hosted yet]({{ badge_disabled_path }}) <sub>not hosted yet</sub>{% endif %} [![Code]({{ badge_code_path }})]({{ project.repo_url }})
+</td>
 {% endfor %}
+</tr>
+{% endfor %}
+</table>
 
 ### A quote I like
 

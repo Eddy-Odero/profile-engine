@@ -14,76 +14,81 @@
     "PostgreSQL",
     "Docker"
   ],
-  "cursor": "_",
-  "system_message": "[WARNING] coffee levels critical",
-  "quote": "A user interface is like a joke. If you have to explain it, it's not that good.",
-  "status": "Coffee Loading...",
+  "cursor": "\u2588",
+  "system_message": "> ping github.com... 12ms",
+  "quote": "Code never lies, comments sometimes do.",
+  "status": "Merging feature branch",
   "terminal_svg_path": "generated/terminal.svg",
-  "project_cards_svg_path": "generated/project_cards.svg",
-  "badge_preview_path": "generated/badge_preview.svg",
-  "badge_code_path": "generated/badge_code.svg",
-  "badge_disabled_path": "generated/badge_disabled.svg",
-  "projects": [
+  "project_cards": [
     {
       "name": "SatGate",
       "description": "Lightning Network-powered CAPTCHA replacement for contact forms.",
       "repo_url": "https://github.com/Eddy-Odero/SatGate",
-      "preview_url": null
+      "preview_url": null,
+      "icon": "lightning",
+      "card_svg_path": "generated/project_card_0.svg"
     },
     {
       "name": "EDU-FLIX",
       "description": "Netflix-style streaming platform built with Go and SQLite/Turso.",
       "repo_url": "https://github.com/Eddy-Odero/EDU-FLIX",
-      "preview_url": null
+      "preview_url": null,
+      "icon": "play",
+      "card_svg_path": "generated/project_card_1.svg"
     },
     {
       "name": "lem-in colony visualizer",
       "description": "Ant colony pathfinding simulator with a 3D max-flow visualizer.",
       "repo_url": "https://github.com/Eddy-Odero/lem-in",
-      "preview_url": null
+      "preview_url": null,
+      "icon": "network",
+      "card_svg_path": "generated/project_card_2.svg"
     },
     {
       "name": "Maison POS",
       "description": "Point-of-sale system for retail, built with vanilla JS.",
       "repo_url": "https://github.com/Eddy-Odero/Maison-POS",
-      "preview_url": null
+      "preview_url": null,
+      "icon": "cart",
+      "card_svg_path": "generated/project_card_3.svg"
     }
   ],
+  "badge_view_path": "generated/badge_view.svg",
+  "badge_code_path": "generated/badge_code.svg",
+  "badge_disabled_path": "generated/badge_disabled.svg",
   "tech_stack_svg_path": "generated/tech_stack.svg",
   "tools_svg_path": "generated/tools.svg",
   "quote_svg_path": "generated/quote.svg",
-  "build_time": "2026-07-23 15:42 UTC",
+  "build_time": "2026-07-24 02:58 UTC",
   "stat_badges": [
-    "![Repos: 23](https://img.shields.io/badge/Repos-23-ff2079?style=for-the-badge&labelColor=0d0221)",
-    "![Stars: 21](https://img.shields.io/badge/Stars-21-ff2079?style=for-the-badge&labelColor=0d0221)",
-    "![Followers: 25](https://img.shields.io/badge/Followers-25-ff2079?style=for-the-badge&labelColor=0d0221)",
-    "![LC Solved: 45](https://img.shields.io/badge/LC_Solved-45-ff2079?style=for-the-badge&labelColor=0d0221)"
+    "![Repos: 24](https://img.shields.io/badge/Repos-24-ff2079?style=for-the-badge&labelColor=0d0221)",
+    "![Stars: 37](https://img.shields.io/badge/Stars-37-ff2079?style=for-the-badge&labelColor=0d0221)",
+    "![Followers: 12](https://img.shields.io/badge/Followers-12-ff2079?style=for-the-badge&labelColor=0d0221)",
+    "![LC Solved: 120](https://img.shields.io/badge/LC_Solved-120-ff2079?style=for-the-badge&labelColor=0d0221)"
   ],
   "theme": "cyberpunk",
-  "repo_count": 23,
-  "stars": 21,
-  "followers": 25,
+  "repo_count": 24,
+  "stars": 37,
+  "followers": 12,
   "top_languages": [
     "Go",
-    "HTML",
+    "JavaScript",
     "Python"
   ],
   "recent_activity": [
-    "pushed to Eddy-Odero/profile-engine",
-    "starred Omollos/loba",
-    "starred Eddy-Odero/profile-engine",
-    "pushed to Eddy-Odero/profile-engine",
-    "pushed to Eddy-Odero/profile-engine"
+    "pushed to profile-engine"
   ],
   "pinned_repos": [
-    "SatGate"
+    "SatGate",
+    "EDU-FLIX",
+    "lem-in"
   ],
-  "contributions": 1053,
+  "contributions": null,
   "solved": {
-    "total": 45,
-    "easy": 12,
-    "medium": 22,
-    "hard": 11
+    "total": 120,
+    "easy": 55,
+    "medium": 50,
+    "hard": 15
   },
   "rating": null,
   "ranking": null,

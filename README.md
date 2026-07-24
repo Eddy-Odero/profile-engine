@@ -4,7 +4,7 @@
 
 <sub>~ live session · Eddy Odero@github · re-renders every build ~</sub>
 
-![Repos: 23](https://img.shields.io/badge/Repos-23-ff2079?style=for-the-badge&labelColor=0d0221) ![Stars: 21](https://img.shields.io/badge/Stars-21-ff2079?style=for-the-badge&labelColor=0d0221) ![Followers: 25](https://img.shields.io/badge/Followers-25-ff2079?style=for-the-badge&labelColor=0d0221) ![LC Solved: 45](https://img.shields.io/badge/LC_Solved-45-ff2079?style=for-the-badge&labelColor=0d0221)
+![Repos: 24](https://img.shields.io/badge/Repos-24-ff2079?style=for-the-badge&labelColor=0d0221) ![Stars: 37](https://img.shields.io/badge/Stars-37-ff2079?style=for-the-badge&labelColor=0d0221) ![Followers: 12](https://img.shields.io/badge/Followers-12-ff2079?style=for-the-badge&labelColor=0d0221) ![LC Solved: 120](https://img.shields.io/badge/LC_Solved-120-ff2079?style=for-the-badge&labelColor=0d0221)
 
 </div>
 
@@ -24,20 +24,50 @@
 
 ### Projects
 
-<div align="center">
+<table>
+<tr>
+<td align="center" width="220">
 
-![Projects](generated/project_cards.svg)
+![SatGate](generated/project_card_0.svg)
 
-</div>
+<table><tr>
+<td align="left">![not hosted](generated/badge_disabled.svg)<br><sub>not hosted yet</sub></td>
+<td align="right">[![Code](generated/badge_code.svg)](https://github.com/Eddy-Odero/SatGate)</td>
+</tr></table>
 
-**SatGate**
-![not hosted yet](generated/badge_disabled.svg) <sub>not hosted yet</sub> [![Code](generated/badge_code.svg)](https://github.com/Eddy-Odero/SatGate)
-**EDU-FLIX**
-![not hosted yet](generated/badge_disabled.svg) <sub>not hosted yet</sub> [![Code](generated/badge_code.svg)](https://github.com/Eddy-Odero/EDU-FLIX)
-**lem-in colony visualizer**
-![not hosted yet](generated/badge_disabled.svg) <sub>not hosted yet</sub> [![Code](generated/badge_code.svg)](https://github.com/Eddy-Odero/lem-in)
-**Maison POS**
-![not hosted yet](generated/badge_disabled.svg) <sub>not hosted yet</sub> [![Code](generated/badge_code.svg)](https://github.com/Eddy-Odero/Maison-POS)
+</td>
+<td align="center" width="220">
+
+![EDU-FLIX](generated/project_card_1.svg)
+
+<table><tr>
+<td align="left">![not hosted](generated/badge_disabled.svg)<br><sub>not hosted yet</sub></td>
+<td align="right">[![Code](generated/badge_code.svg)](https://github.com/Eddy-Odero/EDU-FLIX)</td>
+</tr></table>
+
+</td>
+<td align="center" width="220">
+
+![lem-in colony visualizer](generated/project_card_2.svg)
+
+<table><tr>
+<td align="left">![not hosted](generated/badge_disabled.svg)<br><sub>not hosted yet</sub></td>
+<td align="right">[![Code](generated/badge_code.svg)](https://github.com/Eddy-Odero/lem-in)</td>
+</tr></table>
+
+</td>
+<td align="center" width="220">
+
+![Maison POS](generated/project_card_3.svg)
+
+<table><tr>
+<td align="left">![not hosted](generated/badge_disabled.svg)<br><sub>not hosted yet</sub></td>
+<td align="right">[![Code](generated/badge_code.svg)](https://github.com/Eddy-Odero/Maison-POS)</td>
+</tr></table>
+
+</td>
+</tr>
+</table>
 
 ### A quote I like
 
@@ -52,28 +82,24 @@
 ### `$ github --stats`
 
 ```
-Repositories : 23
-Stars        : 21
-Followers    : 25
-Contributions: 1053
-Top Languages: Go, HTML, Python
-Pinned       : SatGate
+Repositories : 24
+Stars        : 37
+Followers    : 12
+Contributions: N/A
+Top Languages: Go, JavaScript, Python
+Pinned       : SatGate, EDU-FLIX, lem-in
 ```
 
 ### `$ github --activity`
 
 ```
-pushed to Eddy-Odero/profile-engine
-starred Omollos/loba
-starred Eddy-Odero/profile-engine
-pushed to Eddy-Odero/profile-engine
-pushed to Eddy-Odero/profile-engine
+pushed to profile-engine
 ```
 
 ### `$ leetcode --stats`
 
 ```
-Solved       : 45 (Easy 12 / Medium 22 / Hard 11)
+Solved       : 120 (Easy 55 / Medium 50 / Hard 15)
 Rating       : unrated
 Global Rank  : N/A
 Top %        : N/A
@@ -84,4 +110,4 @@ Badges       : none yet
 
 ---
 
-<sub>Last rendered: 2026-07-23 15:42 UTC · theme: cyberpunk · auto-generated, do not edit by hand</sub>
+<sub>Last rendered: 2026-07-24 02:58 UTC · theme: cyberpunk · auto-generated, do not edit by hand</sub>

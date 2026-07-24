@@ -1,27 +1,27 @@
 <svg width="324" height="26" viewBox="0 0 324 26" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Tech stack">
   
   <g>
-    <line x1="0.0" y1="13.0" x2="5.0" y2="13.0" stroke="#ff2079" stroke-width="2"/><line x1="51.32" y1="13.0" x2="56.32" y2="13.0" stroke="#ff2079" stroke-width="2"/>
-    <rect x="5.0" y="0.0" width="46.3" height="26" rx="3" fill="#0d0221" stroke="#ff2079" stroke-width="1.3"/>
-    <circle cx="11.0" cy="6.0" r="3" fill="#ff2079" fill-opacity="0.55"/>
-    <text x="28.2" y="17.2" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="#ff2079" text-anchor="middle">Git</text>
+    <line x1="0.0" y1="13.0" x2="5.0" y2="13.0" stroke="#F05032" stroke-width="2"/><line x1="51.32" y1="13.0" x2="56.32" y2="13.0" stroke="#F05032" stroke-width="2"/>
+    <rect x="5.0" y="0.0" width="46.3" height="26" rx="3" fill="#0d0221" stroke="#F05032" stroke-width="1.3"/>
+    <circle cx="11.0" cy="6.0" r="3" fill="#F05032" fill-opacity="0.55"/>
+    <text x="28.2" y="17.2" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="#F05032" text-anchor="middle">Git</text>
   </g>
   <g>
-    <line x1="66.32" y1="13.0" x2="71.32" y2="13.0" stroke="#ff2079" stroke-width="2"/><line x1="132.51999999999998" y1="13.0" x2="137.51999999999998" y2="13.0" stroke="#ff2079" stroke-width="2"/>
-    <rect x="71.3" y="0.0" width="61.2" height="26" rx="3" fill="#0d0221" stroke="#ff2079" stroke-width="1.3"/>
-    <circle cx="77.3" cy="6.0" r="3" fill="#ff2079" fill-opacity="0.55"/>
-    <text x="101.9" y="17.2" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="#ff2079" text-anchor="middle">Figma</text>
+    <line x1="66.32" y1="13.0" x2="71.32" y2="13.0" stroke="#A259FF" stroke-width="2"/><line x1="132.51999999999998" y1="13.0" x2="137.51999999999998" y2="13.0" stroke="#A259FF" stroke-width="2"/>
+    <rect x="71.3" y="0.0" width="61.2" height="26" rx="3" fill="#0d0221" stroke="#A259FF" stroke-width="1.3"/>
+    <circle cx="77.3" cy="6.0" r="3" fill="#A259FF" fill-opacity="0.55"/>
+    <text x="101.9" y="17.2" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="#A259FF" text-anchor="middle">Figma</text>
   </g>
   <g>
-    <line x1="147.51999999999998" y1="13.0" x2="152.51999999999998" y2="13.0" stroke="#ff2079" stroke-width="2"/><line x1="228.59999999999997" y1="13.0" x2="233.59999999999997" y2="13.0" stroke="#ff2079" stroke-width="2"/>
-    <rect x="152.5" y="0.0" width="76.1" height="26" rx="3" fill="#0d0221" stroke="#ff2079" stroke-width="1.3"/>
-    <circle cx="158.5" cy="6.0" r="3" fill="#ff2079" fill-opacity="0.55"/>
-    <text x="190.6" y="17.2" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="#ff2079" text-anchor="middle">Blender</text>
+    <line x1="147.51999999999998" y1="13.0" x2="152.51999999999998" y2="13.0" stroke="#F5792A" stroke-width="2"/><line x1="228.59999999999997" y1="13.0" x2="233.59999999999997" y2="13.0" stroke="#F5792A" stroke-width="2"/>
+    <rect x="152.5" y="0.0" width="76.1" height="26" rx="3" fill="#0d0221" stroke="#F5792A" stroke-width="1.3"/>
+    <circle cx="158.5" cy="6.0" r="3" fill="#F5792A" fill-opacity="0.55"/>
+    <text x="190.6" y="17.2" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="#F5792A" text-anchor="middle">Blender</text>
   </g>
   <g>
-    <line x1="243.59999999999997" y1="13.0" x2="248.59999999999997" y2="13.0" stroke="#ff2079" stroke-width="2"/><line x1="309.79999999999995" y1="13.0" x2="314.79999999999995" y2="13.0" stroke="#ff2079" stroke-width="2"/>
-    <rect x="248.6" y="0.0" width="61.2" height="26" rx="3" fill="#0d0221" stroke="#ff2079" stroke-width="1.3"/>
-    <circle cx="254.6" cy="6.0" r="3" fill="#ff2079" fill-opacity="0.55"/>
-    <text x="279.2" y="17.2" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="#ff2079" text-anchor="middle">Redis</text>
+    <line x1="243.59999999999997" y1="13.0" x2="248.59999999999997" y2="13.0" stroke="#DC382D" stroke-width="2"/><line x1="309.79999999999995" y1="13.0" x2="314.79999999999995" y2="13.0" stroke="#DC382D" stroke-width="2"/>
+    <rect x="248.6" y="0.0" width="61.2" height="26" rx="3" fill="#0d0221" stroke="#DC382D" stroke-width="1.3"/>
+    <circle cx="254.6" cy="6.0" r="3" fill="#DC382D" fill-opacity="0.55"/>
+    <text x="279.2" y="17.2" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="#DC382D" text-anchor="middle">Redis</text>
   </g>
 </svg>

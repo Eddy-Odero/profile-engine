@@ -749,6 +749,60 @@ variants) as well-formed XML.
 
 ---
 
+## Revision - Color variety, semantic icons, button layout fix, full mockup
+
+Four issues raised together, all addressed:
+
+**1. Too much pink / most real terminals are blue or green:**
+Added two new themes to `themes.py` - `cyan` (classic light-blue CRT
+phosphor) and `ocean` (softer mid-blue). Switched `DEFAULT_THEME` from
+`cyberpunk` to `cyan`. 7 themes now available total.
+
+**2. Tech stack was one flat color for every chip:**
+`tech_pills.py` now has a `TECH_COLORS` mapping - each language/tool
+gets its own loosely brand-inspired color (Go's cyan, TypeScript's
+blue, Redis's red, Figma's purple, etc.) instead of one theme accent
+repeated for every chip. Unmapped entries still fall back to the theme
+accent, so nothing breaks for an unrecognized tech name.
+
+**3. Project cards: same color issue, confusing button arrangement,
+letter-initial icons:**
+- `project_cards.py` rewritten: each project is now its OWN separate
+  SVG card (`render_single_project_card_svg`), not one shared grid
+  image - necessary so View/Code buttons can sit directly under the
+  correct card.
+- Semantic icon glyphs replace letter initials: hand-drawn lightning
+  bolt, play button, network/graph nodes, and shopping cart, selected
+  per-project via an `icon` key (`PROJECTS` dicts now include one).
+  Falls back to a generic `</>` glyph for unrecognized/missing keys.
+- "Preview" renamed to "View" per request.
+- Layout fixed using an HTML table per project: card image on top,
+  then a 2-column row with View (`align="left"`) and Code
+  (`align="right"`) directly underneath - tight, unambiguous
+  arrangement instead of the previous stacked-text mess.
+- Projects are laid out in a table grid (`batch(4)` in the template),
+  matching the previous per-row card count.
+
+**4. Full-README composite mockup:**
+Built a single composite PNG (`/mnt/user-data/outputs/readme_full_mockup.png`)
+combining every actual generated piece from a real build run - terminal,
+tech stack, tools, all 4 project cards with their button rows, quote,
+and text renders of the stats blocks - stacked in the same order the
+real README uses. Not itself part of the codebase (a one-off review
+tool built with PIL), but useful for reviewing the whole design at once
+rather than piece by piece.
+
+**Verified:** rebuilt end to end, confirmed every generated SVG (4
+project cards, 3 badge variants, tech stack, tools, terminal) validates
+as well-formed XML. Confirmed each icon glyph renders with genuinely
+different pixel complexity (97-119 unique grayscale values in the icon
+region, varying by icon type) rather than all being identical/blank.
+Sanity-checked the composite mockup for accidental blank sections
+(largest gap: 42px, consistent with normal spacing, not a missing
+piece).
+
+---
+
 ## How to run locally
 
 ```bash

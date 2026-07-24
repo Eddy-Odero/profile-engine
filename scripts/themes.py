@@ -54,9 +54,25 @@ THEMES: dict[str, dict] = {
         "label_color": "0d0d0d",
         "color": "008f11",  # deeper green than 'hacker', more muted
     },
+    "cyan": {
+        "label": "Cyan",
+        "style": "flat-square",
+        "label_color": "001014",  # near-black teal
+        "color": "00e5ff",  # classic light-blue CRT phosphor - the most common
+        # "digitized terminal" color alongside green, per direct feedback that
+        # most real terminal aesthetics lean blue/green, not pink/purple
+    },
+    "ocean": {
+        "label": "Ocean",
+        "style": "for-the-badge",
+        "label_color": "071a2b",  # near-black navy
+        "color": "3fa9f5",  # softer mid-blue, less neon than 'cyan'
+    },
 }
 
-DEFAULT_THEME = "cyberpunk"
+# Switched away from an all-pink default per direct feedback - most
+# "digitized terminal" references are blue or green, not magenta/pink.
+DEFAULT_THEME = "cyan"
 
 
 def get_theme(name: str) -> dict:
