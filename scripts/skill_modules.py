@@ -23,7 +23,7 @@ from __future__ import annotations
 import html
 
 from tech_pills import TECH_COLORS
-from themes import DEFAULT_THEME, get_theme
+from themes import DEFAULT_THEME, HUD_COLORS, get_theme
 
 CARD_WIDTH = 170
 CARD_HEIGHT = 150
@@ -77,7 +77,7 @@ def _corner_brackets(x: float, y: float, accent: str) -> str:
     return "".join(marks)
 
 
-def _badge(x: float, y: float, skill: str, level: str, accent: str) -> str:
+def _badge(x: float, y: float, skill: str, level: str, accent: str, bracket_color: str) -> str:
     color = _skill_color(skill, accent)
     badge_cx = x + CARD_WIDTH / 2
     badge_cy = y + 44
@@ -86,7 +86,7 @@ def _badge(x: float, y: float, skill: str, level: str, accent: str) -> str:
   <g>
     <rect x="{x}" y="{y}" width="{CARD_WIDTH}" height="{CARD_HEIGHT}" fill="#{CARD_BG}" \
 stroke="#{CARD_BORDER}" stroke-width="1"/>
-    {_corner_brackets(x, y, accent)}
+    {_corner_brackets(x, y, bracket_color)}
     <circle cx="{badge_cx}" cy="{badge_cy}" r="{BADGE_RADIUS}" fill="{color}" fill-opacity="0.12" \
 stroke="{color}" stroke-width="2"/>
     <text x="{badge_cx}" y="{badge_cy + 5}" font-family="Consolas, Menlo, monospace" \
@@ -104,9 +104,15 @@ def render_skill_modules_svg(
     """
     Build the SVG for the skill modules grid. `skills` is a list of
     (name, proficiency_level) tuples. Wraps into rows of CARDS_PER_ROW.
+
+    Corner brackets use the exact reference gold (#FFB917), sampled
+    directly from the design image, rather than the active theme's
+    accent - this section's bracket color doesn't change with theme,
+    matching the reference exactly.
     """
     theme = get_theme(theme_name)
     accent = f"#{theme['color']}"
+    bracket_color = HUD_COLORS["modules"]
 
     if not skills:
         skills = [("more skills coming soon", "")]
@@ -122,7 +128,7 @@ def render_skill_modules_svg(
         for col_i, (skill, level) in enumerate(row):
             x = col_i * (CARD_WIDTH + CARD_GAP)
             y = row_i * (CARD_HEIGHT + CARD_GAP)
-            badges.append(_badge(x, y, skill, level, accent))
+            badges.append(_badge(x, y, skill, level, accent, bracket_color))
 
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="System modules">

@@ -28,6 +28,7 @@ import sys
 
 import avatar
 import badges
+import dimensional_stats
 import effects
 import github
 import leetcode
@@ -36,7 +37,6 @@ import quote_card
 import renderer
 import skill_modules
 import svg_terminal
-import tech_pills
 from utils import (
     GENERATED_DIR,
     build_boot_sequence,
@@ -60,19 +60,25 @@ STACK = [
 ]
 TOOLS = ["Git", "Figma", "Blender", "Redis"]
 
-# Skill -> proficiency level, for the System Modules section. Kept
-# separate from STACK/TOOLS since not every listed tech needs a
-# proficiency callout, and the module grid works best with a curated
-# subset rather than all 15 stack+tool entries.
+# Skill -> proficiency level, for the System Modules section - this now
+# fully replaces the old separate Tech Stack + Tools sections (they
+# were redundant with this), so it covers everything from both.
 SKILLS: list[tuple[str, str]] = [
     ("Go", "Advanced"),
     ("JavaScript", "Expert"),
     ("TypeScript", "Intermediate"),
-    ("Docker", "Advanced"),
+    ("PHP", "Intermediate"),
+    ("Node.js", "Intermediate"),
+    ("C++", "Intermediate"),
+    ("HTML", "Advanced"),
+    ("CSS", "Advanced"),
     ("SQLite", "Advanced"),
     ("PostgreSQL", "Intermediate"),
+    ("Docker", "Advanced"),
     ("Git", "Expert"),
-    ("Node.js", "Intermediate"),
+    ("Figma", "Intermediate"),
+    ("Blender", "Intermediate"),
+    ("Redis", "Intermediate"),
 ]
 # NOTE: proficiency levels above are a reasonable starting guess - adjust
 # to reflect actual comfort level with each.
@@ -293,14 +299,25 @@ def build_context() -> dict:
         "badge_disabled_path": _write_svg(
             project_cards.render_link_badge_svg("view", THEME, disabled=True), "badge_disabled.svg"
         ),
-        "tech_stack_svg_path": _write_svg(
-            tech_pills.render_tech_stack_svg(STACK, THEME), "tech_stack.svg"
-        ),
-        "tools_svg_path": _write_svg(
-            tech_pills.render_tech_stack_svg(TOOLS, THEME), "tools.svg"
-        ),
         "skill_modules_svg_path": _write_svg(
             skill_modules.render_skill_modules_svg(SKILLS, THEME), "skill_modules.svg"
+        ),
+        "dimensional_stats_svg_path": _write_svg(
+            dimensional_stats.render_dimensional_stats_svg(
+                [
+                    ("Contest Rating", combined_stats.get("rating") or "unrated"),
+                    ("Problems Solved", combined_stats.get("solved", {}).get("total", 0)),
+                    ("GitHub Stars", combined_stats.get("stars", 0)),
+                    # NOTE: the reference shows "Max Streak" here, which isn't
+                    # data this pipeline tracks (no streak-detection logic
+                    # exists yet) - substituted with Repos, a real stat we do
+                    # have, rather than fabricate a streak number.
+                    ("Repos", combined_stats.get("repo_count", 0)),
+                ],
+                [str(combined_stats.get("rating") or combined_stats.get("solved", {}).get("total", 0))],
+                THEME,
+            ),
+            "dimensional_stats.svg",
         ),
         "quote_svg_path": _write_svg(quote_card.render_quote_svg(quote, THEME), "quote.svg"),
         "build_time": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),

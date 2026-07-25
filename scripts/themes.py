@@ -68,11 +68,38 @@ THEMES: dict[str, dict] = {
         "label_color": "071a2b",  # near-black navy
         "color": "3fa9f5",  # softer mid-blue, less neon than 'cyan'
     },
+    "hud": {
+        "label": "HUD",
+        "style": "flat-square",
+        "label_color": "0a0c14",  # near-black blue, sampled directly from the reference image
+        "color": "14F7FF",  # header/divider cyan, sampled directly from the reference image
+        # Other section-specific accents (activity green #0BFF8E, stats
+        # magenta #FF00FF, modules gold #FFB917, timeline red #FB333D,
+        # ribbon green #0BFF9F / gold #FFEA54) live in the individual
+        # section modules that use them (dimensional_stats.py,
+        # skill_modules.py, project_cards.py) rather than here, since
+        # this design uses a different accent per section, not one
+        # color reused everywhere like the other themes.
+    },
+}
+
+# Exact-match reference design accents - sampled directly from pixel
+# data in the provided design image, not estimated. Each section in
+# this design has its own accent rather than reusing one theme color.
+HUD_COLORS = {
+    "header": "#14F7FF",
+    "activity": "#0BFF8E",
+    "stats": "#FF00FF",
+    "modules": "#FFB917",
+    "timeline": "#FB333D",
+    "timeline_end": "#FF00A6",
+    "ribbon_public": "#0BFF9F",
+    "ribbon_vip": "#FFEA54",
 }
 
 # Switched away from an all-pink default per direct feedback - most
 # "digitized terminal" references are blue or green, not magenta/pink.
-DEFAULT_THEME = "cyan"
+DEFAULT_THEME = "hud"
 
 
 def get_theme(name: str) -> dict:

@@ -845,6 +845,70 @@ holistic review.
 
 ---
 
+## Revision - Exact-match color system + Dimensional Stats
+
+Correction from the previous pass: the person building this wanted an
+exact replica of the design reference (color, style, every visual
+detail), not our own reinterpretation - and clarified System Modules
+already covers what Tech Stack was doing, so having both was pure
+duplication.
+
+**Colors sampled directly from the reference image**, not estimated -
+wrote a band-scanning script (`np.unique` on saturated/bright pixels
+per 200px horizontal strip) to extract real hex values:
+`header=#14F7FF, activity=#0BFF8E, stats=#FF00FF, modules=#FFB917,
+timeline=#FB333D→#FF00A6, ribbon_public=#0BFF9F, ribbon_vip=#FFEA54`.
+These live in `themes.HUD_COLORS`, plus a new `hud` theme (now
+`DEFAULT_THEME`) using the header cyan + near-black-blue background,
+both also sampled directly from the image rather than guessed.
+
+**Tech Stack + Tools sections removed** from `build.py`/the template
+(the modules stay as files, per the established "don't delete, stop
+using" pattern) - System Modules absorbed their content: `SKILLS` now
+covers all 15 former stack+tools entries, not just a curated 8.
+
+**`skill_modules.py`** - corner brackets switched from theme-accent
+cyan to the exact reference gold (`HUD_COLORS["modules"]`), matching
+the real image instead of my earlier (wrong) assumption that they were
+cyan.
+
+**`project_cards.py`** - ribbon colors switched to the exact sampled
+green/gold. Caught and fixed a real bug in the same pass: the ribbon
+color lookup was double-prefixing `#` (producing invalid `##0BFF9F`)
+after `HUD_COLORS` values were changed to already include `#` -
+verified fixed with an explicit `assert '##' not in svg` check.
+
+**`dimensional_stats.py`** - new section: 4 magenta stat cards + a
+static isometric cube (three shaded polygon faces implying depth/
+lighting - true rotating 3D isn't possible for the same embedding-
+constraint reason nothing else here is truly animated-on-demand).
+Sourced from real data: Contest Rating (LeetCode), Problems Solved
+(LeetCode), GitHub Stars. **"Max Streak" from the reference was
+substituted with Repos** - this pipeline has no streak-detection logic,
+and fabricating a streak number wasn't an option; flagged clearly
+rather than silently substituted.
+
+**Real bug caught during this work:** `_stat_card()` called `_esc()`
+(which calls `html.escape()`, string-only) directly on stat values that
+are sometimes ints (star counts, repo counts) - crashed the build
+immediately with `AttributeError: 'int' object has no attribute
+'replace'`. Fixed by casting to `str()` first. Caught because the real
+build was run end-to-end with real (mock-fallback) data, not just
+tested with hand-typed string literals.
+
+**Verified:** full rebuild succeeds end to end. Every generated SVG
+(terminal, skill modules, dimensional stats, all 4 project cards)
+validated as well-formed XML with an explicit check for the double-hash
+bug. Confirmed `tech_stack.svg`/`tools.svg` are no longer generated at
+all. Rebuilt the composite mockup (`readme_full_mockup_v3.png`) with
+`SEC-X`-style section headers in the sampled cyan, for holistic review.
+
+**Still pending:** Event Log (needs real milestone data, promised but
+not yet provided) and Signal Uplink (placeholder links approved, not
+yet built).
+
+---
+
 ## How to run locally
 
 ```bash

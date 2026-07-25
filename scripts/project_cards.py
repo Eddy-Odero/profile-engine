@@ -36,7 +36,7 @@ from __future__ import annotations
 import html
 
 from tech_pills import TECH_COLORS
-from themes import DEFAULT_THEME, get_theme
+from themes import DEFAULT_THEME, HUD_COLORS, get_theme
 
 CARD_WIDTH = 210
 CARD_HEIGHT = 158  # +28 from the original 130 to fit the new stats row
@@ -47,7 +47,7 @@ CARD_BORDER = "2a2a33"  # subtle, barely-lighter-than-bg border
 DESC_COLOR = "9a9aa5"  # muted gray for description text, per the reference's hierarchy
 STAT_COLOR = "7d7d88"
 
-RIBBON_COLORS = {"public": "2ec4b6", "vip": "ffb703"}
+RIBBON_COLORS = {"public": HUD_COLORS["ribbon_public"], "vip": HUD_COLORS["ribbon_vip"]}
 
 BADGE_WIDTH = 88
 BADGE_HEIGHT = 30
@@ -143,7 +143,7 @@ def _ribbon(visibility: str) -> str:
     """A small diagonal corner ribbon showing PUBLIC/VIP, top-right of the card."""
     if not visibility:
         return ""
-    color = f"#{RIBBON_COLORS.get(visibility.lower(), RIBBON_COLORS['public'])}"
+    color = RIBBON_COLORS.get(visibility.lower(), RIBBON_COLORS["public"])
     label = visibility.upper()
     # A small parallelogram tucked into the top-right corner, angled like a ribbon/flag
     return f"""

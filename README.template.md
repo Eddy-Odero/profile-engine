@@ -10,23 +10,19 @@
 
 ---
 
-### Tech Stack
-
-<div align="center">
-
-![Tech Stack]({{ tech_stack_svg_path }})
-
-**Tools**
-
-![Tools]({{ tools_svg_path }})
-
-</div>
-
 ### System Modules
 
 <div align="center">
 
 ![System Modules]({{ skill_modules_svg_path }})
+
+</div>
+
+### Dimensional Stats
+
+<div align="center">
+
+![Dimensional Stats]({{ dimensional_stats_svg_path }})
 
 </div>
 
