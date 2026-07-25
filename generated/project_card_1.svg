@@ -1,5 +1,10 @@
 <svg width="210" height="158" viewBox="0 0 210 158" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="EDU-FLIX">
-  <rect width="210" height="158" rx="10" fill="#16161c" stroke="#2a2a33" stroke-width="1"/>
+  <defs>
+    <pattern id="hudgrid" width="16" height="16" patternUnits="userSpaceOnUse">
+      <path d="M 16 0 L 0 0 0 16" fill="none" stroke="#ff2079" stroke-width="0.5" opacity="0.08"/>
+    </pattern></defs>
+  <rect width="210" height="158" rx="10" fill="url(#hudgrid)"/>
+  <rect width="210" height="158" rx="10" fill="#16161c" fill-opacity="0.93" stroke="#2a2a33" stroke-width="1"/>
   
   <g>
     <polygon points="140,14 202,14 202,30 152,30" fill="#0BFF9F"/>

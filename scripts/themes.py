@@ -74,7 +74,8 @@ THEMES: dict[str, dict] = {
         "label_color": "0a0c14",  # near-black blue, sampled directly from the reference image
         "color": "14F7FF",  # header/divider cyan, sampled directly from the reference image
         # Other section-specific accents (activity green #0BFF8E, stats
-        # magenta #FF00FF, modules gold #FFB917, timeline red #FB333D,
+        # blue #2DA8FF - overriding the sampled magenta per explicit no-
+        # pink feedback, modules gold #FFB917, timeline red #FB333D,
         # ribbon green #0BFF9F / gold #FFEA54) live in the individual
         # section modules that use them (dimensional_stats.py,
         # skill_modules.py, project_cards.py) rather than here, since
@@ -89,10 +90,10 @@ THEMES: dict[str, dict] = {
 HUD_COLORS = {
     "header": "#14F7FF",
     "activity": "#0BFF8E",
-    "stats": "#FF00FF",
+    "stats": "#2DA8FF",  # blue, not magenta - overriding the sampled pink per explicit feedback
     "modules": "#FFB917",
     "timeline": "#FB333D",
-    "timeline_end": "#FF00A6",
+    "timeline_end": "#FB333D",  # kept as solid red, not fading to pink, per no-pink feedback
     "ribbon_public": "#0BFF9F",
     "ribbon_vip": "#FFEA54",
 }

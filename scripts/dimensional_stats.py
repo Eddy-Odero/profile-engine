@@ -1,7 +1,7 @@
 """
 dimensional_stats.py
 
-"Dimensional Stats" - 4 magenta-accented stat cards plus a small
+"Dimensional Stats" - 4 blue-accented stat cards plus a small
 isometric cube graphic, matching the reference design.
 
 The reference's cube appears to imply rotation/3D. A truly rotating 3D
@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import html
 
+from hud_grid import grid_background
 from themes import DEFAULT_THEME, HUD_COLORS, get_theme
 
 CARD_WIDTH = 280
@@ -46,7 +47,7 @@ def _stat_card(x: float, y: float, label: str, value, accent: str) -> str:
     bar_width = min(len(value) * 14 + 20, CARD_WIDTH - 40)
     return f"""
   <g transform="translate({x},{y})">
-    <rect width="{CARD_WIDTH}" height="{CARD_HEIGHT}" fill="#{CARD_BG}" stroke="#{CARD_BORDER}" stroke-width="1"/>
+    <rect width="{CARD_WIDTH}" height="{CARD_HEIGHT}" fill="#{CARD_BG}" fill-opacity="0.9" stroke="#{CARD_BORDER}" stroke-width="1"/>
     <rect x="0" y="0" width="4" height="{CARD_HEIGHT}" fill="{accent}"/>
     <text x="20" y="28" font-family="Consolas, Menlo, monospace" font-size="10" \
 fill="#{LABEL_COLOR}" letter-spacing="1">{_esc(label.upper())}</text>
@@ -136,8 +137,12 @@ def render_dimensional_stats_svg(
         y = y_offset + row * (CARD_HEIGHT + CARD_GAP)
         cards.append(_stat_card(x, y, label, value, accent))
 
+    grid_defs, grid_rect = grid_background(width, height, accent)
+
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dimensional stats">
+  <defs>{grid_defs}</defs>
+  {grid_rect}
   {cube_svg}
   {''.join(cards)}
 </svg>"""

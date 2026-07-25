@@ -909,6 +909,50 @@ yet built).
 
 ---
 
+## Revision - Removed pink entirely, added missing grid texture
+
+Direct, repeated feedback: no pink/magenta anywhere, and the previous
+revision didn't structurally resemble the reference at all beyond
+picking some colors.
+
+**Pink removed decisively:** `HUD_COLORS["stats"]` changed from the
+sampled `#FF00FF` to `#2DA8FF` (blue) - overriding my own pixel-sampling
+result in favor of explicit, repeated user feedback. The Event Log
+timeline gradient (`timeline_end`, previously fading to `#FF00A6` pink)
+also changed to solid red, removing the only other pink reference.
+Verified with a direct scan of every generated SVG file for `ff00ff`/
+`magenta` - none found.
+
+**Grid texture added** (`hud_grid.py`) - a real, previously-missing
+piece of structural similarity: a faint repeating grid-line pattern,
+present throughout the reference image but absent from every component
+built so far (which matched colors but not this texture). Wired into
+`skill_modules.py`, `dimensional_stats.py`, and `project_cards.py` as a
+full-canvas background layer, with card backgrounds made slightly
+translucent (`fill-opacity` 0.9-0.93) so the grid shows through faintly
+even under panels - matching how the reference's dark card panels still
+show grid lines beneath them.
+
+**Bug caught and fixed during this work:** the grid rect initially used
+sharp corners while project cards use rounded corners (`rx="10"`) -
+this would have caused the grid's square corners to poke out past the
+card's rounded shape, a visible rendering glitch. Fixed by
+parameterizing `grid_background()` with an `rx` argument matching the
+card's own radius. Verified concretely: sampled all 4 corner pixels of
+a rendered card and confirmed full transparency (alpha=0), not a
+stray square patch of grid pattern.
+
+**Honest limitation restated:** I cannot get a visual description back
+when using the image-viewing tool in this environment - every
+"inspection" in this revision was done via direct pixel/array analysis
+(hue histograms, corner-alpha checks, row/column content-variance
+scans), not by looking at a rendered picture and describing it. This is
+a real constraint on how precisely I can self-verify "does this match
+the reference," and worth keeping in mind when judging future
+iterations from this pipeline.
+
+---
+
 ## How to run locally
 
 ```bash

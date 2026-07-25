@@ -35,6 +35,7 @@ from __future__ import annotations
 
 import html
 
+from hud_grid import grid_background
 from tech_pills import TECH_COLORS
 from themes import DEFAULT_THEME, HUD_COLORS, get_theme
 
@@ -238,9 +239,13 @@ def render_single_project_card_svg(project: dict, theme_name: str = DEFAULT_THEM
         for i, line in enumerate(desc_lines)
     )
 
+    grid_defs, grid_rect = grid_background(CARD_WIDTH, CARD_HEIGHT, accent, spacing=16, rx=10)
+
     return f"""<svg width="{CARD_WIDTH}" height="{CARD_HEIGHT}" viewBox="0 0 {CARD_WIDTH} {CARD_HEIGHT}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(name)}">
-  <rect width="{CARD_WIDTH}" height="{CARD_HEIGHT}" rx="10" fill="#{CARD_BG}" \
+  <defs>{grid_defs}</defs>
+  {grid_rect}
+  <rect width="{CARD_WIDTH}" height="{CARD_HEIGHT}" rx="10" fill="#{CARD_BG}" fill-opacity="0.93" \
 stroke="#{CARD_BORDER}" stroke-width="1"/>
   {_ribbon(project.get("visibility", ""))}
   {_project_icon(CARD_WIDTH / 2, icon_cy, icon_key, accent)}

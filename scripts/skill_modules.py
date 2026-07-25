@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import html
 
+from hud_grid import grid_background
 from tech_pills import TECH_COLORS
 from themes import DEFAULT_THEME, HUD_COLORS, get_theme
 
@@ -84,7 +85,7 @@ def _badge(x: float, y: float, skill: str, level: str, accent: str, bracket_colo
 
     return f"""
   <g>
-    <rect x="{x}" y="{y}" width="{CARD_WIDTH}" height="{CARD_HEIGHT}" fill="#{CARD_BG}" \
+    <rect x="{x}" y="{y}" width="{CARD_WIDTH}" height="{CARD_HEIGHT}" fill="#{CARD_BG}" fill-opacity="0.92" \
 stroke="#{CARD_BORDER}" stroke-width="1"/>
     {_corner_brackets(x, y, bracket_color)}
     <circle cx="{badge_cx}" cy="{badge_cy}" r="{BADGE_RADIUS}" fill="{color}" fill-opacity="0.12" \
@@ -130,7 +131,11 @@ def render_skill_modules_svg(
             y = row_i * (CARD_HEIGHT + CARD_GAP)
             badges.append(_badge(x, y, skill, level, accent, bracket_color))
 
+    grid_defs, grid_rect = grid_background(width, height, accent)
+
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="System modules">
+  <defs>{grid_defs}</defs>
+  {grid_rect}
   {''.join(badges)}
 </svg>"""
