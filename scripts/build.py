@@ -34,6 +34,7 @@ import leetcode
 import project_cards
 import quote_card
 import renderer
+import skill_modules
 import svg_terminal
 import tech_pills
 from utils import (
@@ -58,6 +59,23 @@ STACK = [
     "HTML", "CSS", "SQLite", "PostgreSQL", "Docker",
 ]
 TOOLS = ["Git", "Figma", "Blender", "Redis"]
+
+# Skill -> proficiency level, for the System Modules section. Kept
+# separate from STACK/TOOLS since not every listed tech needs a
+# proficiency callout, and the module grid works best with a curated
+# subset rather than all 15 stack+tool entries.
+SKILLS: list[tuple[str, str]] = [
+    ("Go", "Advanced"),
+    ("JavaScript", "Expert"),
+    ("TypeScript", "Intermediate"),
+    ("Docker", "Advanced"),
+    ("SQLite", "Advanced"),
+    ("PostgreSQL", "Intermediate"),
+    ("Git", "Expert"),
+    ("Node.js", "Intermediate"),
+]
+# NOTE: proficiency levels above are a reasonable starting guess - adjust
+# to reflect actual comfort level with each.
 PROJECTS = [
     {
         "name": "SatGate",
@@ -65,6 +83,10 @@ PROJECTS = [
         "repo_url": f"https://github.com/{GITHUB_USERNAME}/SatGate",
         "preview_url": None,  # set a real URL once hosted, or leave None
         "icon": "lightning",
+        "visibility": "public",
+        "language": "TypeScript",
+        "stars": 0,
+        "forks": 0,
     },
     {
         "name": "EDU-FLIX",
@@ -72,6 +94,10 @@ PROJECTS = [
         "repo_url": f"https://github.com/{GITHUB_USERNAME}/EDU-FLIX",
         "preview_url": None,
         "icon": "play",
+        "visibility": "public",
+        "language": "Go",
+        "stars": 0,
+        "forks": 0,
     },
     {
         "name": "lem-in colony visualizer",
@@ -79,6 +105,10 @@ PROJECTS = [
         "repo_url": f"https://github.com/{GITHUB_USERNAME}/lem-in",
         "preview_url": None,
         "icon": "network",
+        "visibility": "public",
+        "language": "Go",
+        "stars": 0,
+        "forks": 0,
     },
     {
         "name": "Maison POS",
@@ -86,11 +116,17 @@ PROJECTS = [
         "repo_url": f"https://github.com/{GITHUB_USERNAME}/Maison-POS",
         "preview_url": None,
         "icon": "cart",
+        "visibility": "public",
+        "language": "JavaScript",
+        "stars": 0,
+        "forks": 0,
     },
 ]
 # NOTE: repo_url values above are guessed from the naming convention -
-# double check they match your actual repo names/casing, and fill in
-# preview_url wherever a project is actually hosted somewhere.
+# double check they match your actual repo names/casing. stars/forks
+# are placeholders (0) - update with real counts, or wire up a live
+# per-repo GitHub API fetch later if you'd rather not maintain these
+# by hand. Fill in preview_url wherever a project is actually hosted.
 
 # How aggressive the CRT effects are: "subtle" (default), "medium", "heavy".
 # Override with CRT_LEVEL=medium in the environment to try other looks
@@ -262,6 +298,9 @@ def build_context() -> dict:
         ),
         "tools_svg_path": _write_svg(
             tech_pills.render_tech_stack_svg(TOOLS, THEME), "tools.svg"
+        ),
+        "skill_modules_svg_path": _write_svg(
+            skill_modules.render_skill_modules_svg(SKILLS, THEME), "skill_modules.svg"
         ),
         "quote_svg_path": _write_svg(quote_card.render_quote_svg(quote, THEME), "quote.svg"),
         "build_time": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),

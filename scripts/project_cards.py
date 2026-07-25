@@ -35,15 +35,19 @@ from __future__ import annotations
 
 import html
 
+from tech_pills import TECH_COLORS
 from themes import DEFAULT_THEME, get_theme
 
 CARD_WIDTH = 210
-CARD_HEIGHT = 130
+CARD_HEIGHT = 158  # +28 from the original 130 to fit the new stats row
 ICON_RADIUS = 20
 
 CARD_BG = "16161c"  # dark, muted - close to a typical dark page background
 CARD_BORDER = "2a2a33"  # subtle, barely-lighter-than-bg border
 DESC_COLOR = "9a9aa5"  # muted gray for description text, per the reference's hierarchy
+STAT_COLOR = "7d7d88"
+
+RIBBON_COLORS = {"public": "2ec4b6", "vip": "ffb703"}
 
 BADGE_WIDTH = 88
 BADGE_HEIGHT = 30
@@ -135,6 +139,76 @@ def _project_icon(cx: float, cy: float, icon_key: str, accent: str) -> str:
     )
 
 
+def _ribbon(visibility: str) -> str:
+    """A small diagonal corner ribbon showing PUBLIC/VIP, top-right of the card."""
+    if not visibility:
+        return ""
+    color = f"#{RIBBON_COLORS.get(visibility.lower(), RIBBON_COLORS['public'])}"
+    label = visibility.upper()
+    # A small parallelogram tucked into the top-right corner, angled like a ribbon/flag
+    return f"""
+  <g>
+    <polygon points="{CARD_WIDTH-70},14 {CARD_WIDTH-8},14 {CARD_WIDTH-8},30 {CARD_WIDTH-58},30" fill="{color}"/>
+    <text x="{CARD_WIDTH-39}" y="26" font-family="Consolas, Menlo, monospace" font-size="9" \
+font-weight="700" fill="#0a0a0d" text-anchor="middle">{_esc(label)}</text>
+  </g>"""
+
+
+def _star_icon(x: float, y: float, color: str) -> str:
+    """A tiny 5-point star glyph for the stars stat."""
+    import math
+    pts = []
+    for i in range(10):
+        r = 5 if i % 2 == 0 else 2.2
+        angle = math.pi / 2 + i * math.pi / 5
+        pts.append(f"{x + r*math.cos(angle):.1f},{y - r*math.sin(angle):.1f}")
+    return f'<polygon points="{" ".join(pts)}" fill="{color}"/>'
+
+
+def _fork_icon(x: float, y: float, color: str) -> str:
+    """A tiny fork/branch glyph (two prongs merging into one line) for the forks stat."""
+    return (
+        f'<g stroke="{color}" stroke-width="1.3" fill="none">'
+        f'<circle cx="{x}" cy="{y-4}" r="1.8" fill="{color}" stroke="none"/>'
+        f'<circle cx="{x+6}" cy="{y-4}" r="1.8" fill="{color}" stroke="none"/>'
+        f'<circle cx="{x+3}" cy="{y+4}" r="1.8" fill="{color}" stroke="none"/>'
+        f'<path d="M{x} {y-4} V{y-1} Q{x} {y+1} {x+3} {y+1} V{y+4} '
+        f'M{x+6} {y-4} V{y-1} Q{x+6} {y+1} {x+3} {y+1}"/>'
+        f"</g>"
+    )
+
+
+def _stats_row(y: float, language: str, stars: int, forks: int, accent: str) -> str:
+    """Language dot + name, star count, fork count - one row along the card bottom."""
+    lang_hex = TECH_COLORS.get((language or "").lower())
+    lang_color = f"#{lang_hex}" if lang_hex else accent
+
+    parts = []
+    lx = 16
+    if language:
+        parts.append(f'<circle cx="{lx}" cy="{y-3}" r="4" fill="{lang_color}"/>')
+        parts.append(
+            f'<text x="{lx+10}" y="{y}" font-family="Segoe UI, Helvetica, Arial, sans-serif" '
+            f'font-size="10" fill="#{STAT_COLOR}">{_esc(language)}</text>'
+        )
+
+    star_x = CARD_WIDTH - 62
+    parts.append(_star_icon(star_x, y - 3, f"#{STAT_COLOR}"))
+    parts.append(
+        f'<text x="{star_x+9}" y="{y}" font-family="Segoe UI, Helvetica, Arial, sans-serif" '
+        f'font-size="10" fill="#{STAT_COLOR}">{stars}</text>'
+    )
+
+    fork_x = CARD_WIDTH - 28
+    parts.append(_fork_icon(fork_x, y - 3, f"#{STAT_COLOR}"))
+    parts.append(
+        f'<text x="{fork_x+11}" y="{y}" font-family="Segoe UI, Helvetica, Arial, sans-serif" '
+        f'font-size="10" fill="#{STAT_COLOR}">{forks}</text>'
+    )
+
+    return "".join(parts)
+
+
 def render_single_project_card_svg(project: dict, theme_name: str = DEFAULT_THEME) -> str:
     """Build the SVG for one project's visual card (icon + name + description)."""
     theme = get_theme(theme_name)
@@ -168,9 +242,14 @@ def render_single_project_card_svg(project: dict, theme_name: str = DEFAULT_THEM
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(name)}">
   <rect width="{CARD_WIDTH}" height="{CARD_HEIGHT}" rx="10" fill="#{CARD_BG}" \
 stroke="#{CARD_BORDER}" stroke-width="1"/>
+  {_ribbon(project.get("visibility", ""))}
   {_project_icon(CARD_WIDTH / 2, icon_cy, icon_key, accent)}
   {name_elements}
   {desc_elements}
+  <line x1="14" y1="{CARD_HEIGHT - 26}" x2="{CARD_WIDTH - 14}" y2="{CARD_HEIGHT - 26}" \
+stroke="#{CARD_BORDER}" stroke-width="1"/>
+  {_stats_row(CARD_HEIGHT - 10, project.get("language", ""), project.get("stars", 0), \
+project.get("forks", 0), accent)}
 </svg>"""
 
 

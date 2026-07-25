@@ -803,6 +803,48 @@ piece).
 
 ---
 
+## Revision - System Modules + Fragmented-Data-style project cards
+
+Second design reference provided (sci-fi HUD / "holographic dashboard"
+aesthetic). Scope clarified: terminal stays as-is (already close in
+color - `cyan` was already the default theme), this reference's other
+sections get added alongside it, and Projects (missing from the
+reference) gets redesigned to match instead.
+
+**`skill_modules.py`** - new "System Modules" section: a grid of skill
+badges with sci-fi HUD corner brackets (4 L-shaped marks per card, like
+a targeting/scanner frame), a circular icon badge colored per-skill
+(reusing `tech_pills.TECH_COLORS` for consistency), and a proficiency
+level (Expert/Advanced/Intermediate). Uses short monograms (Go, JS, TS,
+PG...) instead of real logos - deliberate, avoids reproducing trademarked
+brand marks, which also mostly don't reduce well to a tiny circle
+anyway. New `SKILLS` data in `build.py`: 8 curated (name, level) pairs,
+proficiency levels are a starting guess that should be adjusted to
+reflect actual comfort level.
+
+**`project_cards.py` extended** (not replaced - same card layout from
+the previous revision, extended) with two more elements from the
+reference:
+- A diagonal corner ribbon showing PUBLIC or VIP, driven by a new
+  `visibility` field per project
+- A bottom stats row: language dot + name (colored via the same
+  `TECH_COLORS` map), a hand-drawn star icon + count, a hand-drawn fork
+  icon + count
+- `PROJECTS` gained `visibility`, `language`, `stars`, `forks` fields -
+  stars/forks are placeholder zeros right now (not live-fetched per-repo
+  yet), need real numbers filled in or a future live-fetch feature.
+- Card height increased from 130 to 158px to fit the new row without
+  cramping the existing description text.
+
+**Verified:** rebuilt end to end, validated all project cards and the
+skill modules SVG as well-formed XML. Pixel-checked the new stats-row
+region specifically (not just the whole card) to confirm it has real
+content variance, not a blank strip. Rebuilt the composite mockup
+(`readme_full_mockup_v2.png`) with both new sections included for
+holistic review.
+
+---
+
 ## How to run locally
 
 ```bash

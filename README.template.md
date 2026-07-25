@@ -22,6 +22,14 @@
 
 </div>
 
+### System Modules
+
+<div align="center">
+
+![System Modules]({{ skill_modules_svg_path }})
+
+</div>
+
 ### Projects
 
 <table>

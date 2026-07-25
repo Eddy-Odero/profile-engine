@@ -15,9 +15,9 @@
     "Docker"
   ],
   "cursor": "\u2588",
-  "system_message": "[DEBUG] still figuring it out",
-  "quote": "There are only two hard things in computer science: cache invalidation, naming things, and off-by-one errors.",
-  "status": "Building APIs",
+  "system_message": "[INFO] garbage collector taking a smoke break",
+  "quote": "Code never lies, comments sometimes do.",
+  "status": "Merging feature branch",
   "terminal_svg_path": "generated/terminal.svg",
   "project_cards": [
     {
@@ -26,6 +26,10 @@
       "repo_url": "https://github.com/Eddy-Odero/SatGate",
       "preview_url": null,
       "icon": "lightning",
+      "visibility": "public",
+      "language": "TypeScript",
+      "stars": 0,
+      "forks": 0,
       "card_svg_path": "generated/project_card_0.svg"
     },
     {
@@ -34,6 +38,10 @@
       "repo_url": "https://github.com/Eddy-Odero/EDU-FLIX",
       "preview_url": null,
       "icon": "play",
+      "visibility": "public",
+      "language": "Go",
+      "stars": 0,
+      "forks": 0,
       "card_svg_path": "generated/project_card_1.svg"
     },
     {
@@ -42,6 +50,10 @@
       "repo_url": "https://github.com/Eddy-Odero/lem-in",
       "preview_url": null,
       "icon": "network",
+      "visibility": "public",
+      "language": "Go",
+      "stars": 0,
+      "forks": 0,
       "card_svg_path": "generated/project_card_2.svg"
     },
     {
@@ -50,6 +62,10 @@
       "repo_url": "https://github.com/Eddy-Odero/Maison-POS",
       "preview_url": null,
       "icon": "cart",
+      "visibility": "public",
+      "language": "JavaScript",
+      "stars": 0,
+      "forks": 0,
       "card_svg_path": "generated/project_card_3.svg"
     }
   ],
@@ -58,18 +74,19 @@
   "badge_disabled_path": "generated/badge_disabled.svg",
   "tech_stack_svg_path": "generated/tech_stack.svg",
   "tools_svg_path": "generated/tools.svg",
+  "skill_modules_svg_path": "generated/skill_modules.svg",
   "quote_svg_path": "generated/quote.svg",
-  "build_time": "2026-07-24 17:00 UTC",
+  "build_time": "2026-07-25 02:25 UTC",
   "stat_badges": [
     "![Repos: 23](https://img.shields.io/badge/Repos-23-ff2079?style=for-the-badge&labelColor=0d0221)",
     "![Stars: 22](https://img.shields.io/badge/Stars-22-ff2079?style=for-the-badge&labelColor=0d0221)",
-    "![Followers: 26](https://img.shields.io/badge/Followers-26-ff2079?style=for-the-badge&labelColor=0d0221)",
-    "![LC Solved: 45](https://img.shields.io/badge/LC_Solved-45-ff2079?style=for-the-badge&labelColor=0d0221)"
+    "![Followers: 27](https://img.shields.io/badge/Followers-27-ff2079?style=for-the-badge&labelColor=0d0221)",
+    "![LC Solved: 120](https://img.shields.io/badge/LC_Solved-120-ff2079?style=for-the-badge&labelColor=0d0221)"
   ],
   "theme": "cyberpunk",
   "repo_count": 23,
   "stars": 22,
-  "followers": 26,
+  "followers": 27,
   "top_languages": [
     "Go",
     "HTML",
@@ -83,14 +100,16 @@
     "pushed to Eddy-Odero/profile-engine"
   ],
   "pinned_repos": [
-    "SatGate"
+    "profile-engine",
+    "Eddy-Odero",
+    "admin-dashboard-php"
   ],
-  "contributions": 1055,
+  "contributions": null,
   "solved": {
-    "total": 45,
-    "easy": 12,
-    "medium": 22,
-    "hard": 11
+    "total": 120,
+    "easy": 55,
+    "medium": 50,
+    "hard": 15
   },
   "rating": null,
   "ranking": null,
