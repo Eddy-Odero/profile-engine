@@ -4,7 +4,7 @@
 
 <sub>~ live session · Eddy Odero@github · re-renders every build ~</sub>
 
-![Repos: 23](https://img.shields.io/badge/Repos-23-ff2079?style=for-the-badge&labelColor=0d0221) ![Stars: 22](https://img.shields.io/badge/Stars-22-ff2079?style=for-the-badge&labelColor=0d0221) ![Followers: 27](https://img.shields.io/badge/Followers-27-ff2079?style=for-the-badge&labelColor=0d0221) ![LC Solved: 120](https://img.shields.io/badge/LC_Solved-120-ff2079?style=for-the-badge&labelColor=0d0221)
+![Repos: 23](https://img.shields.io/badge/Repos-23-ff2079?style=for-the-badge&labelColor=0d0221) ![Stars: 22](https://img.shields.io/badge/Stars-22-ff2079?style=for-the-badge&labelColor=0d0221) ![Followers: 27](https://img.shields.io/badge/Followers-27-ff2079?style=for-the-badge&labelColor=0d0221) ![LC Solved: 45](https://img.shields.io/badge/LC_Solved-45-ff2079?style=for-the-badge&labelColor=0d0221)
 
 </div>
 
@@ -93,9 +93,9 @@
 Repositories : 23
 Stars        : 22
 Followers    : 27
-Contributions: N/A
+Contributions: 1057
 Top Languages: Go, HTML, Python
-Pinned       : profile-engine, Eddy-Odero, admin-dashboard-php
+Pinned       : SatGate
 ```
 
 ### `$ github --activity`
@@ -103,15 +103,15 @@ Pinned       : profile-engine, Eddy-Odero, admin-dashboard-php
 ```
 pushed to Eddy-Odero/profile-engine
 pushed to Eddy-Odero/profile-engine
+pushed to Eddy-Odero/profile-engine
 starred Omollos/loba
 starred Eddy-Odero/profile-engine
-pushed to Eddy-Odero/profile-engine
 ```
 
 ### `$ leetcode --stats`
 
 ```
-Solved       : 120 (Easy 55 / Medium 50 / Hard 15)
+Solved       : 45 (Easy 12 / Medium 22 / Hard 11)
 Rating       : unrated
 Global Rank  : N/A
 Top %        : N/A
@@ -122,4 +122,4 @@ Badges       : none yet
 
 ---
 
-<sub>Last rendered: 2026-07-25 02:25 UTC · theme: cyberpunk · auto-generated, do not edit by hand</sub>
+<sub>Last rendered: 2026-07-25 06:43 UTC · theme: cyberpunk · auto-generated, do not edit by hand</sub>
