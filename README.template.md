@@ -18,14 +18,6 @@
 
 </div>
 
-### Dimensional Stats
-
-<div align="center">
-
-![Dimensional Stats]({{ dimensional_stats_svg_path }})
-
-</div>
-
 ### Projects
 
 <table>
@@ -47,11 +39,27 @@
 {% endfor %}
 </table>
 
+### Dimensional Stats
+
+<div align="center">
+
+![Dimensional Stats]({{ dimensional_stats_svg_path }})
+
+</div>
+
 ### A quote I like
 
 <div align="center">
 
 ![Quote]({{ quote_svg_path }})
+
+</div>
+
+### Signal Uplink
+
+<div align="center">
+
+{% for link in social_links %}{% if link.url %}[![{{ link.label }}]({{ link.pill_svg_path }})]({{ link.url }}) {% else %}![{{ link.label }}]({{ link.pill_svg_path }}) {% endif %}{% endfor %}
 
 </div>
 

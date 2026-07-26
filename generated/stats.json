@@ -14,10 +14,10 @@
     "PostgreSQL",
     "Docker"
   ],
-  "cursor": "\u2588",
-  "system_message": "[WARNING] coffee levels critical",
-  "quote": "The best error message is the one that never shows up.",
-  "status": "Reading Documentation",
+  "cursor": "_",
+  "system_message": "[WARN] cosmic ray flipped a bit",
+  "quote": "Code never lies, comments sometimes do.",
+  "status": "Compiling new ideas...",
   "terminal_svg_path": "generated/terminal.svg",
   "project_cards": [
     {
@@ -74,39 +74,69 @@
   "badge_disabled_path": "generated/badge_disabled.svg",
   "skill_modules_svg_path": "generated/skill_modules.svg",
   "dimensional_stats_svg_path": "generated/dimensional_stats.svg",
-  "quote_svg_path": "generated/quote.svg",
-  "build_time": "2026-07-26 08:07 UTC",
-  "stat_badges": [
-    "![Repos: 23](https://img.shields.io/badge/Repos-23-ff2079?style=for-the-badge&labelColor=0d0221)",
-    "![Stars: 22](https://img.shields.io/badge/Stars-22-ff2079?style=for-the-badge&labelColor=0d0221)",
-    "![Followers: 27](https://img.shields.io/badge/Followers-27-ff2079?style=for-the-badge&labelColor=0d0221)",
-    "![LC Solved: 45](https://img.shields.io/badge/LC_Solved-45-ff2079?style=for-the-badge&labelColor=0d0221)"
+  "social_links": [
+    {
+      "label": "Twitter",
+      "icon": "twitter",
+      "url": "https://x.com/savvyoriah48",
+      "pill_svg_path": "generated/pill_twitter.svg"
+    },
+    {
+      "label": "LinkedIn",
+      "icon": "linkedin",
+      "url": "https://www.linkedin.com/in/eddy-odero-7b3332346/",
+      "pill_svg_path": "generated/pill_linkedin.svg"
+    },
+    {
+      "label": "Dev.to",
+      "icon": "website",
+      "url": "https://dev.to/edd_odero",
+      "pill_svg_path": "generated/pill_website.svg"
+    },
+    {
+      "label": "Email",
+      "icon": "email",
+      "url": "mailto:odiwuorodero8948@gmail.com",
+      "pill_svg_path": "generated/pill_email.svg"
+    },
+    {
+      "label": "Discord",
+      "icon": "discord",
+      "url": null,
+      "pill_svg_path": "generated/pill_discord.svg"
+    }
   ],
-  "theme": "cyberpunk",
-  "repo_count": 23,
-  "stars": 22,
-  "followers": 27,
+  "quote_svg_path": "generated/quote.svg",
+  "build_time": "2026-07-26 19:29 UTC",
+  "stat_badges": [
+    "![Repos: 24](https://img.shields.io/badge/Repos-24-14F7FF?style=flat-square&labelColor=0a0c14)",
+    "![Stars: 37](https://img.shields.io/badge/Stars-37-14F7FF?style=flat-square&labelColor=0a0c14)",
+    "![Followers: 12](https://img.shields.io/badge/Followers-12-14F7FF?style=flat-square&labelColor=0a0c14)",
+    "![LC Solved: 120](https://img.shields.io/badge/LC_Solved-120-14F7FF?style=flat-square&labelColor=0a0c14)"
+  ],
+  "theme": "hud",
+  "repo_count": 24,
+  "stars": 37,
+  "followers": 12,
   "top_languages": [
     "Go",
-    "HTML",
+    "JavaScript",
     "Python"
   ],
   "recent_activity": [
-    "pushed to Eddy-Odero/profile-engine",
-    "pushed to Eddy-Odero/profile-engine",
-    "pushed to Eddy-Odero/Introduction-to-Algorithms-Go",
-    "pushed to Eddy-Odero/Introduction-to-Algorithms-Go",
-    "pushed to Eddy-Odero/Introduction-to-Algorithms-Go"
+    "pushed to profile-engine"
   ],
   "pinned_repos": [
-    "SatGate"
+    "SatGate",
+    "EDU-FLIX",
+    "lem-in"
   ],
-  "contributions": 1064,
+  "contributions": null,
   "solved": {
-    "total": 45,
-    "easy": 12,
-    "medium": 22,
-    "hard": 11
+    "total": 120,
+    "easy": 55,
+    "medium": 50,
+    "hard": 15
   },
   "rating": null,
   "ranking": null,

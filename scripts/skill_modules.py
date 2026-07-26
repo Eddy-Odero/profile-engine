@@ -22,7 +22,7 @@ from __future__ import annotations
 
 import html
 
-from hud_grid import grid_background
+from hud_grid import glow_filter, grid_background
 from tech_pills import TECH_COLORS
 from themes import DEFAULT_THEME, HUD_COLORS, get_theme
 
@@ -73,7 +73,7 @@ def _corner_brackets(x: float, y: float, accent: str) -> str:
     for cx, cy, dx, dy in corners:
         marks.append(
             f'<path d="M{cx} {cy + dy * BRACKET_LEN} L{cx} {cy} L{cx + dx * BRACKET_LEN} {cy}" '
-            f'fill="none" stroke="{accent}" stroke-width="2"/>'
+            f'fill="none" stroke="{accent}" stroke-width="2" filter="url(#hudglow)"/>'
         )
     return "".join(marks)
 
@@ -135,7 +135,7 @@ def render_skill_modules_svg(
 
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="System modules">
-  <defs>{grid_defs}</defs>
+  <defs>{grid_defs}{glow_filter()}</defs>
   {grid_rect}
   {''.join(badges)}
 </svg>"""

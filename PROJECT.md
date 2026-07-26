@@ -953,6 +953,76 @@ iterations from this pipeline.
 
 ---
 
+## Revision - Found and fixed the ACTUAL root cause of the pink issue
+
+The real bug, finally found: `build.py` had its own hardcoded fallback -
+`THEME = os.environ.get("THEME") or "cyberpunk"` - a literal string,
+completely disconnected from `themes.DEFAULT_THEME`. Every previous
+revision that changed the default theme (`cyberpunk` → `cyan` → `hud`)
+changed the wrong place. `build.py` never imported `themes` at all, so
+none of those changes ever reached the actual build - it silently kept
+falling back to `"cyberpunk"` regardless. This is why pink kept
+reappearing no matter how many times the color values themselves were
+fixed upstream: the bug was never in the color values, it was in which
+theme actually got selected.
+
+**Fixed:** `build.py` now imports `themes` and falls back to
+`themes.DEFAULT_THEME` instead of a hardcoded string. Verified directly
+- `build.THEME` now correctly resolves to `"hud"`, and the real
+generated `terminal.svg` now contains `#14F7FF`/`#0a0c14` (the correct
+HUD cyan/near-black) instead of `#ff2079`/`#0d0221` (the old cyberpunk
+pink/purple) - checked by grepping the actual fill colors out of the
+real build output, not assumed.
+
+**Grid texture made much more visible**, per direct feedback that it
+should read as "grids crossing the whole design" - increased base
+opacity from 0.08 to 0.22, and added a second, bolder, wider-spaced
+grid layer (every 4th line) for the denser crossing-lines look in the
+reference, instead of one faint uniform grid.
+
+**Added a glow/bloom filter** (`hud_grid.glow_filter()`) - the soft
+blurred-highlight look around bright elements that gives the reference
+its hazy neon quality, as opposed to flat crisp shapes. Applied to
+System Modules' corner brackets and Dimensional Stats' big numbers.
+
+**Real PNG previews generated and shared directly in chat** (not just
+described) - rendered every current generated SVG to PNG and sent them
+as actual files, addressing the direct request to see results without
+needing to push to GitHub Actions and wait for a workflow run.
+
+---
+
+## Revision - Section reorder + Signal Uplink built
+
+**Reordered per direct instruction:** Terminal → System Modules →
+Projects → Dimensional Stats → Quote → (stats blocks). Neural Activity
+will go last once built; Event Log and an exact-match Fragmented Data
+rebuild are still pending.
+
+**`signal_uplink.py`** - social/contact pills matching the reference,
+using generic hand-drawn icon glyphs (bird/chat shape, network/
+connection shape, globe, envelope, controller-ish shape) rather than
+the literal trademarked platform logos. Same clickable-badge pattern as
+the project View/Code buttons: each pill is its own small image,
+clickable only because the template wraps it in a real markdown link.
+
+**Real links wired in**, not placeholders: Twitter, LinkedIn, Dev.to,
+email. One caught early: the first LinkedIn URL provided was under a
+different person's name ("Emmaculate Jane Akinyi Odhiambo") - flagged
+before using it rather than silently linking someone else's profile;
+corrected URL provided and used. **Discord has no link** (none
+provided) - renders as a dimmed, non-clickable pill rather than a dead
+link, same pattern as "not hosted yet" for projects without a preview URL.
+
+**Verified:** rebuilt end to end, confirmed the real rendered
+`README.md` produces working `[![label](pill.svg)](url)` markdown links
+for all 4 real accounts and correctly omits the link wrapper for
+Discord. Validated all 5 pill SVGs as well-formed XML. Rendered pills to
+PNG and shared directly for visual confirmation rather than only
+describing them.
+
+---
+
 ## How to run locally
 
 ```bash

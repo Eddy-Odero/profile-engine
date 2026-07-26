@@ -35,8 +35,10 @@ import leetcode
 import project_cards
 import quote_card
 import renderer
+import signal_uplink
 import skill_modules
 import svg_terminal
+import themes
 from utils import (
     GENERATED_DIR,
     build_boot_sequence,
@@ -59,6 +61,16 @@ STACK = [
     "HTML", "CSS", "SQLite", "PostgreSQL", "Docker",
 ]
 TOOLS = ["Git", "Figma", "Blender", "Redis"]
+
+# Signal Uplink - social/contact links. Discord has no invite link
+# provided, so it stays as a disabled/non-clickable pill until one exists.
+SOCIAL_LINKS = [
+    {"label": "Twitter", "icon": "twitter", "url": "https://x.com/savvyoriah48"},
+    {"label": "LinkedIn", "icon": "linkedin", "url": "https://www.linkedin.com/in/eddy-odero-7b3332346/"},
+    {"label": "Dev.to", "icon": "website", "url": "https://dev.to/edd_odero"},
+    {"label": "Email", "icon": "email", "url": "mailto:odiwuorodero8948@gmail.com"},
+    {"label": "Discord", "icon": "discord", "url": None},
+]
 
 # Skill -> proficiency level, for the System Modules section - this now
 # fully replaces the old separate Tech Stack + Tools sections (they
@@ -152,7 +164,14 @@ CRT_LEVEL = os.environ.get("CRT_LEVEL") or "subtle"
 # Which shields.io color palette to use for the stat badges: cyberpunk
 # (default), crt, hacker, minimal, matrix. Override with THEME=matrix in
 # the environment - see scripts/themes.py for the full palette list.
-THEME = os.environ.get("THEME") or "cyberpunk"
+# Which shields.io color palette / HUD accent set to use. Falls back to
+# themes.DEFAULT_THEME (not a hardcoded string here) so changing the
+# default in themes.py actually takes effect - a hardcoded fallback
+# string here previously stayed stuck on "cyberpunk" through several
+# revisions that changed DEFAULT_THEME upstream, silently ignoring all
+# of them. That was the actual root cause of pink kept reappearing
+# despite repeated fixes elsewhere.
+THEME = os.environ.get("THEME") or themes.DEFAULT_THEME
 
 # "static" (default) picks a random art file from
 # assets/ascii/avatars/*.txt each build - a rotation pool, same pattern
@@ -319,6 +338,18 @@ def build_context() -> dict:
             ),
             "dimensional_stats.svg",
         ),
+        "social_links": [
+            {
+                **link,
+                "pill_svg_path": _write_svg(
+                    signal_uplink.render_link_pill_svg(
+                        link["label"], link["icon"], THEME, disabled=link["url"] is None
+                    ),
+                    f"pill_{link['icon']}.svg",
+                ),
+            }
+            for link in SOCIAL_LINKS
+        ],
         "quote_svg_path": _write_svg(quote_card.render_quote_svg(quote, THEME), "quote.svg"),
         "build_time": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
         "stat_badges": badges.build_stat_badges(combined_stats, THEME),

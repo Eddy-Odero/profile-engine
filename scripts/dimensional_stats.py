@@ -23,7 +23,7 @@ from __future__ import annotations
 
 import html
 
-from hud_grid import grid_background
+from hud_grid import glow_filter, grid_background
 from themes import DEFAULT_THEME, HUD_COLORS, get_theme
 
 CARD_WIDTH = 280
@@ -52,7 +52,7 @@ def _stat_card(x: float, y: float, label: str, value, accent: str) -> str:
     <text x="20" y="28" font-family="Consolas, Menlo, monospace" font-size="10" \
 fill="#{LABEL_COLOR}" letter-spacing="1">{_esc(label.upper())}</text>
     <text x="20" y="64" font-family="Consolas, Menlo, monospace" font-size="30" \
-font-weight="700" fill="{accent}">{_esc(value)}</text>
+font-weight="700" fill="{accent}" filter="url(#hudglow)">{_esc(value)}</text>
     <line x1="20" y1="80" x2="{20 + bar_width}" y2="80" stroke="{accent}" stroke-width="2"/>
   </g>"""
 
@@ -141,7 +141,7 @@ def render_dimensional_stats_svg(
 
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dimensional stats">
-  <defs>{grid_defs}</defs>
+  <defs>{grid_defs}{glow_filter()}</defs>
   {grid_rect}
   {cube_svg}
   {''.join(cards)}
