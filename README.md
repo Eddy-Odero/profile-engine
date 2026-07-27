@@ -4,7 +4,7 @@
 
 <sub>~ live session · Eddy Odero@github · re-renders every build ~</sub>
 
-![Repos: 23](https://img.shields.io/badge/Repos-23-14F7FF?style=flat-square&labelColor=0a0c14) ![Stars: 22](https://img.shields.io/badge/Stars-22-14F7FF?style=flat-square&labelColor=0a0c14) ![Followers: 27](https://img.shields.io/badge/Followers-27-14F7FF?style=flat-square&labelColor=0a0c14) ![LC Solved: 45](https://img.shields.io/badge/LC_Solved-45-14F7FF?style=flat-square&labelColor=0a0c14)
+![Repos: 23](https://img.shields.io/badge/Repos-23-14F7FF?style=flat-square&labelColor=0a0c14) ![Stars: 22](https://img.shields.io/badge/Stars-22-14F7FF?style=flat-square&labelColor=0a0c14) ![Followers: 28](https://img.shields.io/badge/Followers-28-14F7FF?style=flat-square&labelColor=0a0c14) ![LC Solved: 45](https://img.shields.io/badge/LC_Solved-45-14F7FF?style=flat-square&labelColor=0a0c14)
 
 </div>
 
@@ -95,8 +95,8 @@
 ```
 Repositories : 23
 Stars        : 22
-Followers    : 27
-Contributions: 1065
+Followers    : 28
+Contributions: 1063
 Top Languages: Go, HTML, Python
 Pinned       : SatGate
 ```
@@ -125,4 +125,4 @@ Badges       : none yet
 
 ---
 
-<sub>Last rendered: 2026-07-26 19:41 UTC · theme: hud · auto-generated, do not edit by hand</sub>
+<sub>Last rendered: 2026-07-27 09:29 UTC · theme: hud · auto-generated, do not edit by hand</sub>
