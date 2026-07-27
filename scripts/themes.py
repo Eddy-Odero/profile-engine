@@ -90,7 +90,10 @@ THEMES: dict[str, dict] = {
 HUD_COLORS = {
     "header": "#14F7FF",
     "activity": "#0BFF8E",
-    "stats": "#2DA8FF",  # blue, not magenta - overriding the sampled pink per explicit feedback
+    "stats": "#FF00FF",  # reverted to the actual sampled reference color -
+    # the earlier "no pink" override was about correcting MY invented
+    # colors (the old cyberpunk theme bug), not the reference's own
+    # legitimate magenta, which is what this project is now matching exactly
     "modules": "#FFB917",
     "timeline": "#FB333D",
     "timeline_end": "#FB333D",  # kept as solid red, not fading to pink, per no-pink feedback

@@ -1,10 +1,10 @@
 <svg width="826" height="224" viewBox="0 0 826 224" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dimensional stats">
   <defs>
     <pattern id="hudgrid" width="24" height="24" patternUnits="userSpaceOnUse">
-      <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#2DA8FF" stroke-width="0.6" opacity="0.22"/>
+      <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#FF00FF" stroke-width="0.6" opacity="0.22"/>
     </pattern>
     <pattern id="hudgridbold" width="96" height="96" patternUnits="userSpaceOnUse">
-      <path d="M 96 0 L 0 0 0 96" fill="none" stroke="#2DA8FF" stroke-width="1" opacity="0.396"/>
+      <path d="M 96 0 L 0 0 0 96" fill="none" stroke="#FF00FF" stroke-width="1" opacity="0.396"/>
     </pattern>
     <filter id="hudglow" x="-60%" y="-60%" width="220%" height="220%">
       <feGaussianBlur stdDeviation="1.4" result="blur"/>
@@ -15,39 +15,37 @@
     </filter></defs>
   <rect width="826" height="224" rx="0" fill="url(#hudgrid)"/><rect width="826" height="224" rx="0" fill="url(#hudgridbold)"/>
   
-  <g>
-    <polygon points="110.0,62.5 155.0,87.2 110.0,112.0 65.0,87.2" fill="#2DA8FF" fill-opacity="0.35" stroke="#2DA8FF" stroke-width="1"/>
-    <polygon points="65.0,87.2 110.0,112.0 110.0,161.5 65.0,136.8" fill="#2DA8FF" fill-opacity="0.2" stroke="#2DA8FF" stroke-width="1"/>
-    <polygon points="155.0,87.2 110.0,112.0 110.0,161.5 155.0,136.8" fill="#2DA8FF" fill-opacity="0.12" stroke="#2DA8FF" stroke-width="1"/>
-    <text x="110.0" y="128.8" font-family="Consolas, Menlo, monospace" font-size="10" fill="white" text-anchor="middle">45</text>
+  <g fill="none">
+    <line x1="65.0" y1="87.2" x2="155.0" y2="87.2" stroke="#FF00FF" stroke-width="1.2"/><line x1="96.5" y1="67.5" x2="186.5" y2="67.5" stroke="#FF00FF" stroke-width="1.2"/><line x1="65.0" y1="87.2" x2="96.5" y2="67.5" stroke="#FF00FF" stroke-width="1.2"/><line x1="155.0" y1="87.2" x2="155.0" y2="161.5" stroke="#FF00FF" stroke-width="1.2"/><line x1="186.5" y1="67.5" x2="186.5" y2="141.7" stroke="#FF00FF" stroke-width="1.2"/><line x1="155.0" y1="87.2" x2="186.5" y2="67.5" stroke="#FF00FF" stroke-width="1.2"/><line x1="155.0" y1="161.5" x2="65.0" y2="161.5" stroke="#FF00FF" stroke-width="1.2"/><line x1="186.5" y1="141.7" x2="96.5" y2="141.7" stroke="#FF00FF" stroke-width="1.2"/><line x1="155.0" y1="161.5" x2="186.5" y2="141.7" stroke="#FF00FF" stroke-width="1.2"/><line x1="65.0" y1="161.5" x2="65.0" y2="87.2" stroke="#FF00FF" stroke-width="1.2"/><line x1="96.5" y1="141.7" x2="96.5" y2="67.5" stroke="#FF00FF" stroke-width="1.2"/><line x1="65.0" y1="161.5" x2="96.5" y2="141.7" stroke="#FF00FF" stroke-width="1.2"/>
+    <text x="110.0" y="108.0" font-family="Consolas, Menlo, monospace" font-size="9" fill="#FF00FF" text-anchor="middle">120</text>
   </g>
   
   <g transform="translate(250,4.0)">
     <rect width="280" height="100" fill="#0c0a14" fill-opacity="0.9" stroke="#241c33" stroke-width="1"/>
-    <rect x="0" y="0" width="4" height="100" fill="#2DA8FF"/>
+    <rect x="0" y="0" width="4" height="100" fill="#FF00FF"/>
     <text x="20" y="28" font-family="Consolas, Menlo, monospace" font-size="10" fill="#8a7fa8" letter-spacing="1">CONTEST RATING</text>
-    <text x="20" y="64" font-family="Consolas, Menlo, monospace" font-size="30" font-weight="700" fill="#2DA8FF" filter="url(#hudglow)">unrated</text>
-    <line x1="20" y1="80" x2="138" y2="80" stroke="#2DA8FF" stroke-width="2"/>
+    <text x="20" y="64" font-family="Consolas, Menlo, monospace" font-size="30" font-weight="700" fill="#FF00FF" filter="url(#hudglow)">unrated</text>
+    <line x1="20" y1="80" x2="138" y2="80" stroke="#FF00FF" stroke-width="2"/>
   </g>
   <g transform="translate(546,4.0)">
     <rect width="280" height="100" fill="#0c0a14" fill-opacity="0.9" stroke="#241c33" stroke-width="1"/>
-    <rect x="0" y="0" width="4" height="100" fill="#2DA8FF"/>
+    <rect x="0" y="0" width="4" height="100" fill="#FF00FF"/>
     <text x="20" y="28" font-family="Consolas, Menlo, monospace" font-size="10" fill="#8a7fa8" letter-spacing="1">PROBLEMS SOLVED</text>
-    <text x="20" y="64" font-family="Consolas, Menlo, monospace" font-size="30" font-weight="700" fill="#2DA8FF" filter="url(#hudglow)">45</text>
-    <line x1="20" y1="80" x2="68" y2="80" stroke="#2DA8FF" stroke-width="2"/>
+    <text x="20" y="64" font-family="Consolas, Menlo, monospace" font-size="30" font-weight="700" fill="#FF00FF" filter="url(#hudglow)">120</text>
+    <line x1="20" y1="80" x2="82" y2="80" stroke="#FF00FF" stroke-width="2"/>
   </g>
   <g transform="translate(250,120.0)">
     <rect width="280" height="100" fill="#0c0a14" fill-opacity="0.9" stroke="#241c33" stroke-width="1"/>
-    <rect x="0" y="0" width="4" height="100" fill="#2DA8FF"/>
+    <rect x="0" y="0" width="4" height="100" fill="#FF00FF"/>
     <text x="20" y="28" font-family="Consolas, Menlo, monospace" font-size="10" fill="#8a7fa8" letter-spacing="1">GITHUB STARS</text>
-    <text x="20" y="64" font-family="Consolas, Menlo, monospace" font-size="30" font-weight="700" fill="#2DA8FF" filter="url(#hudglow)">22</text>
-    <line x1="20" y1="80" x2="68" y2="80" stroke="#2DA8FF" stroke-width="2"/>
+    <text x="20" y="64" font-family="Consolas, Menlo, monospace" font-size="30" font-weight="700" fill="#FF00FF" filter="url(#hudglow)">37</text>
+    <line x1="20" y1="80" x2="68" y2="80" stroke="#FF00FF" stroke-width="2"/>
   </g>
   <g transform="translate(546,120.0)">
     <rect width="280" height="100" fill="#0c0a14" fill-opacity="0.9" stroke="#241c33" stroke-width="1"/>
-    <rect x="0" y="0" width="4" height="100" fill="#2DA8FF"/>
+    <rect x="0" y="0" width="4" height="100" fill="#FF00FF"/>
     <text x="20" y="28" font-family="Consolas, Menlo, monospace" font-size="10" fill="#8a7fa8" letter-spacing="1">REPOS</text>
-    <text x="20" y="64" font-family="Consolas, Menlo, monospace" font-size="30" font-weight="700" fill="#2DA8FF" filter="url(#hudglow)">23</text>
-    <line x1="20" y1="80" x2="68" y2="80" stroke="#2DA8FF" stroke-width="2"/>
+    <text x="20" y="64" font-family="Consolas, Menlo, monospace" font-size="30" font-weight="700" fill="#FF00FF" filter="url(#hudglow)">24</text>
+    <line x1="20" y1="80" x2="68" y2="80" stroke="#FF00FF" stroke-width="2"/>
   </g>
 </svg>

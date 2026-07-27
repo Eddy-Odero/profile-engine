@@ -62,14 +62,14 @@ STACK = [
 ]
 TOOLS = ["Git", "Figma", "Blender", "Redis"]
 
-# Signal Uplink - social/contact links. Discord has no invite link
-# provided, so it stays as a disabled/non-clickable pill until one exists.
+# Signal Uplink - social/contact links. Only real, provided links -
+# Discord removed entirely (no invite link exists) rather than shown
+# as a disabled placeholder.
 SOCIAL_LINKS = [
     {"label": "Twitter", "icon": "twitter", "url": "https://x.com/savvyoriah48"},
     {"label": "LinkedIn", "icon": "linkedin", "url": "https://www.linkedin.com/in/eddy-odero-7b3332346/"},
     {"label": "Dev.to", "icon": "website", "url": "https://dev.to/edd_odero"},
     {"label": "Email", "icon": "email", "url": "mailto:odiwuorodero8948@gmail.com"},
-    {"label": "Discord", "icon": "discord", "url": None},
 ]
 
 # Skill -> proficiency level, for the System Modules section - this now

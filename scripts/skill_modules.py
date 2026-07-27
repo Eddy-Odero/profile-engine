@@ -34,17 +34,18 @@ BADGE_RADIUS = 26
 BRACKET_LEN = 16
 BRACKET_INSET = 6
 
-CARD_BG = "0c1420"
+CARD_BG = "050608"  # near-black, matching the actual sampled reference color (not navy-tinted)
 CARD_BORDER = "1c2a3a"
 MUTED = "6b7a8c"
 
-# Short monograms instead of real logos - avoids trademark reproduction
-# while still being instantly recognizable per skill.
+# Real recognizable emoji per skill - standard Unicode characters, not
+# custom trademarked logo art, but immediately recognizable per language/
+# tool (the snake for Python, the whale for Docker, etc.)
 MONOGRAMS: dict[str, str] = {
-    "go": "Go", "javascript": "JS", "typescript": "TS", "php": "PHP",
-    "node.js": "JS", "nodejs": "JS", "c++": "C++", "html": "<>", "css": "{}",
-    "sqlite": "DB", "postgresql": "PG", "docker": "\u25a2", "python": "PY",
-    "git": "GIT", "figma": "FIG", "blender": "3D", "redis": "RE",
+    "go": "🐹", "javascript": "🟨", "typescript": "🔷", "php": "🟣",
+    "node.js": "💚", "nodejs": "💚", "c++": "⚙️", "html": "🌐", "css": "🎨",
+    "sqlite": "🗄️", "postgresql": "🐘", "docker": "🐳", "python": "🐍",
+    "git": "🔧", "figma": "🎯", "blender": "🧊", "redis": "🔴",
 }
 
 
@@ -85,13 +86,13 @@ def _badge(x: float, y: float, skill: str, level: str, accent: str, bracket_colo
 
     return f"""
   <g>
-    <rect x="{x}" y="{y}" width="{CARD_WIDTH}" height="{CARD_HEIGHT}" fill="#{CARD_BG}" fill-opacity="0.92" \
+    <rect x="{x}" y="{y}" width="{CARD_WIDTH}" height="{CARD_HEIGHT}" fill="#{CARD_BG}" \
 stroke="#{CARD_BORDER}" stroke-width="1"/>
     {_corner_brackets(x, y, bracket_color)}
     <circle cx="{badge_cx}" cy="{badge_cy}" r="{BADGE_RADIUS}" fill="{color}" fill-opacity="0.12" \
 stroke="{color}" stroke-width="2"/>
-    <text x="{badge_cx}" y="{badge_cy + 5}" font-family="Consolas, Menlo, monospace" \
-font-size="13" font-weight="700" fill="{color}" text-anchor="middle">{_esc(_monogram(skill))}</text>
+    <text x="{badge_cx}" y="{badge_cy + 8}" font-size="22" \
+text-anchor="middle">{_esc(_monogram(skill))}</text>
     <text x="{badge_cx}" y="{y + 100}" font-family="Consolas, Menlo, monospace" font-size="12" \
 font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">{_esc(skill.upper())}</text>
     <text x="{badge_cx}" y="{y + 118}" font-family="Consolas, Menlo, monospace" font-size="9" \

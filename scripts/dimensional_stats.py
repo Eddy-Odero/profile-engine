@@ -59,43 +59,41 @@ font-weight="700" fill="{accent}" filter="url(#hudglow)">{_esc(value)}</text>
 
 def _isometric_cube(cx: float, cy: float, size: float, accent: str, label_lines: list[str]) -> str:
     """
-    Three visible faces (top, left, right) of a cube in isometric
-    projection, each a different opacity of the same accent color to
-    imply depth/lighting - the standard flat-art trick for a "3D" look.
+    A wireframe cube (front face + back face + connecting edges, all
+    outline-only, no fill) in isometric projection - matching the
+    reference's actual style. An earlier filled/shaded isometric block
+    version was tried and didn't match.
     """
     h = size * 0.55  # vertical squash for the isometric angle
 
-    top = [
-        (cx, cy - h), (cx + size / 2, cy - h / 2),
-        (cx, cy), (cx - size / 2, cy - h / 2),
+    # 8 vertices of the cube in isometric projection: front face (4) + back face (4, offset up-left)
+    front = [
+        (cx - size / 2, cy - h / 2),  # front-top-left
+        (cx + size / 2, cy - h / 2),  # front-top-right
+        (cx + size / 2, cy + h),      # front-bottom-right
+        (cx - size / 2, cy + h),      # front-bottom-left
     ]
-    left = [
-        (cx - size / 2, cy - h / 2), (cx, cy),
-        (cx, cy + h), (cx - size / 2, cy + h / 2),
-    ]
-    right = [
-        (cx + size / 2, cy - h / 2), (cx, cy),
-        (cx, cy + h), (cx + size / 2, cy + h / 2),
-    ]
+    depth_x, depth_y = size * 0.35, -size * 0.22
+    back = [(x + depth_x, y + depth_y) for x, y in front]
 
-    def poly(pts, opacity):
-        pts_str = " ".join(f"{x:.1f},{y:.1f}" for x, y in pts)
-        return (
-            f'<polygon points="{pts_str}" fill="{accent}" fill-opacity="{opacity}" '
-            f'stroke="{accent}" stroke-width="1"/>'
-        )
+    def line(p1, p2, width=1.2):
+        return f'<line x1="{p1[0]:.1f}" y1="{p1[1]:.1f}" x2="{p2[0]:.1f}" y2="{p2[1]:.1f}" stroke="{accent}" stroke-width="{width}"/>'
+
+    edges = []
+    for i in range(4):
+        edges.append(line(front[i], front[(i + 1) % 4]))  # front face
+        edges.append(line(back[i], back[(i + 1) % 4]))    # back face
+        edges.append(line(front[i], back[i]))              # connecting edges
 
     label_svg = "".join(
-        f'<text x="{cx:.1f}" y="{cy + h/2 - 8 + i*13:.1f}" font-family="Consolas, Menlo, monospace" '
-        f'font-size="10" fill="white" text-anchor="middle">{_esc(line)}</text>'
-        for i, line in enumerate(label_lines)
+        f'<text x="{cx:.1f}" y="{cy - 4 + i*13:.1f}" font-family="Consolas, Menlo, monospace" '
+        f'font-size="9" fill="{accent}" text-anchor="middle">{_esc(line_text)}</text>'
+        for i, line_text in enumerate(label_lines)
     )
 
     return f"""
-  <g>
-    {poly(top, 0.35)}
-    {poly(left, 0.20)}
-    {poly(right, 0.12)}
+  <g fill="none">
+    {''.join(edges)}
     {label_svg}
   </g>"""
 

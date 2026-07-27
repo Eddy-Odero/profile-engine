@@ -1023,6 +1023,47 @@ describing them.
 
 ---
 
+## Revision - Corrected 3 real regressions from my own substitutions
+
+Direct, sharp feedback: several things had drifted back to my own
+design choices instead of the agreed exact-match reference, specifically:
+
+1. **Dimensional Stats color reverted to the real sampled magenta
+   (`#FF00FF`)**, undoing the earlier blue override. That override was
+   meant to fix MY invented pink (the old cyberpunk-theme bug), but it
+   incorrectly also overwrote this section's genuine, correctly-sampled
+   reference color. Re-verified by sampling the actual crop again,
+   specifically excluding the header text this time (which had skewed
+   an earlier sample toward cyan) - confirmed unambiguously: dozens of
+   individual pixel samples in the `#ff00ff`-`#fe00ff` range.
+
+2. **System Modules background switched to near-black (`#050608`)**,
+   full opacity (no translucency) - the previous navy-tinted, partially
+   translucent version didn't read as "black" as directly pointed out.
+
+3. **Cube rebuilt as an actual wireframe** (front face + back face +
+   connecting edges, outline only) instead of the previous filled/
+   shaded isometric block - the filled version was a design choice that
+   didn't match the reference's real wireframe style.
+
+**Real emoji icons added** for System Modules, replacing text
+monograms - 🐍 Python, 🐳 Docker, 🐘 PostgreSQL, etc. Caught and fixed an
+icon collision during this work: PHP and PostgreSQL both got the
+elephant emoji initially (both languages really do use elephant
+mascots, which made the mistake easy to make) - given PHP a distinct
+purple circle instead so the two remain visually distinguishable.
+
+**Discord removed entirely** from Signal Uplink, not shown as a
+disabled placeholder - verified directly in the real generated
+`README.md` output (`grep` for `pill_discord` returns zero matches).
+
+**Verified:** re-sampled both corrected colors directly from rendered
+output (not just source code) - skill-module card background pixel:
+`(5,6,8)`, near-black as intended; dimensional-stats dominant vivid
+pixel: `(249,0,250)`, matching `#FF00FF` almost exactly.
+
+---
+
 ## How to run locally
 
 ```bash
