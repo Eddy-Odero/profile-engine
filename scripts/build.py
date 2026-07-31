@@ -76,24 +76,18 @@ SOCIAL_LINKS = [
 # fully replaces the old separate Tech Stack + Tools sections (they
 # were redundant with this), so it covers everything from both.
 SKILLS: list[tuple[str, str]] = [
+    ("Python", "Expert"),
+    ("TypeScript", "Advanced"),
     ("Go", "Advanced"),
-    ("JavaScript", "Expert"),
-    ("TypeScript", "Intermediate"),
-    ("PHP", "Intermediate"),
-    ("Node.js", "Intermediate"),
-    ("C++", "Intermediate"),
-    ("HTML", "Advanced"),
-    ("CSS", "Advanced"),
-    ("SQLite", "Advanced"),
-    ("PostgreSQL", "Intermediate"),
-    ("Docker", "Advanced"),
-    ("Git", "Expert"),
-    ("Figma", "Intermediate"),
-    ("Blender", "Intermediate"),
-    ("Redis", "Intermediate"),
+    ("Rust", "Intermediate"),
+    ("Docker", "Expert"),
+    ("Kubernetes", "Advanced"),
+    ("PostgreSQL", "Advanced"),
+    ("AWS", "Advanced"),
 ]
-# NOTE: proficiency levels above are a reasonable starting guess - adjust
-# to reflect actual comfort level with each.
+# This exact 8 + proficiency levels came directly from a detailed written
+# spec, not guessed - if your actual comfort levels differ, just edit
+# the tuples above.
 PROJECTS = [
     {
         "name": "SatGate",

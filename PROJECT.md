@@ -1064,6 +1064,75 @@ pixel: `(249,0,250)`, matching `#FF00FF` almost exactly.
 
 ---
 
+## Revision - Adopted an exact written spec; fixed a real opacity regression
+
+A full detailed written spec was provided (exact colors, exact content,
+exact section-by-section behavior) after continued visual mismatches -
+switched to using it as the authoritative source instead of pixel-
+sampling estimates, which are inherently less reliable than being told
+the exact values directly.
+
+**Real regression found and fixed:** the previous revision's "fix" for
+transparent card gaps made the CARDS themselves fully opaque - correct
+fix was only the full-canvas background (behind everything) needed to
+be opaque; the cards themselves were always supposed to stay
+translucent/glassy so the grid shows through, per the reference. Fixed:
+card fill-opacity dropped to 0.3 in both `skill_modules.py` and
+`dimensional_stats.py`, full-canvas background rect kept opaque. Also
+switched `dimensional_stats.py`'s card border from a muted gray to the
+magenta accent, matching "transparent cards with magenta borders" from
+the spec.
+
+**Exact colors adopted directly**, replacing sampled approximations:
+background `#07090F`, cyan `#00E7FF`, green `#24FF9A`, magenta
+`#FF38F8`, amber `#FFC84D`, red `#FF4D5A` - all now in `themes.HUD_COLORS`.
+
+**`SKILLS` replaced** with the exact 8 from the spec: Python (Expert),
+TypeScript (Advanced), Go (Advanced), Rust (Intermediate), Docker
+(Expert), Kubernetes (Advanced), PostgreSQL (Advanced), AWS (Advanced) -
+added matching brand colors and emoji for the 3 new entries (Rust,
+Kubernetes, AWS) to `tech_pills.TECH_COLORS` and `skill_modules.
+MONOGRAMS`. Caught a collision while doing this: Rust and C++ would
+have both gotten a gear emoji - gave Rust its actual mascot (🦀) instead.
+
+**Verified concretely:** counted unique colors within a card's own
+pixel region after the opacity fix (190 for System Modules, up from
+what a flat single-color fill would show) - direct evidence the grid
+texture is genuinely visible through the card now, not just asserted.
+
+**Honesty note:** no AI image-generation tool is available in this
+environment - could not literally "generate" a concept-art PNG from the
+detailed prompt provided. Used the prompt's content as an exact
+specification for the code instead.
+
+---
+
+## Revision - Fixed the cube (real bug) and grid alignment
+
+**Real bug found: the "centered view" cube fix from the previous
+revision was the actual cause of the "looks like an Excel table"
+complaint.** Setting `depth_x = 0` (for a "centered, not skewed" cube)
+meant every single connecting edge between the front and back face was
+perfectly vertical - which is exactly what a flat table/spreadsheet
+grid looks like, not a 3D box. A cube needs DIAGONAL connecting edges
+to read as 3D at all; centering the cube and giving it depth aren't the
+same axis, and the earlier fix conflated them. Restored a modest
+diagonal offset (`size*0.22, -size*0.3`) - enough to read as genuine
+3D depth while still staying roughly centered rather than heavily
+skewed to one side. Verified directly: counted the actual `<line>`
+coordinates in the generated SVG - 12 of 16 edges are now genuinely
+diagonal (non-vertical), versus 0 before the fix.
+
+**Grid-alignment fix:** `CARD_GAP` (16→20), `CUBE_BOX_HEIGHT` (224→220),
+and `gap_between` (30→20) all adjusted to be clean multiples of the
+20px grid spacing (matching `CARD_WIDTH`/`CARD_HEIGHT`, which already
+were), and the grid's own `spacing=20` is now passed explicitly instead
+of relying on the function's default. Every stat card's edges now land
+exactly on a grid line intersection instead of floating at an
+unaligned sub-grid position.
+
+---
+
 ## How to run locally
 
 ```bash

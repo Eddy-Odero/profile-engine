@@ -60,6 +60,9 @@ TECH_COLORS: dict[str, str] = {
     "figma": "A259FF",
     "blender": "F5792A",
     "redis": "DC382D",
+    "rust": "CE422B",
+    "kubernetes": "326CE5",
+    "aws": "FF9900",
 }
 
 

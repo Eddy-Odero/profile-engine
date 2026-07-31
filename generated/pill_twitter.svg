@@ -1,10 +1,10 @@
 <svg width="150" height="44" viewBox="0 0 150 44" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Twitter">
   <defs>
     <pattern id="hudgrid" width="10" height="10" patternUnits="userSpaceOnUse">
-      <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#14F7FF" stroke-width="0.6" opacity="0.22"/>
+      <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#00E7FF" stroke-width="0.6" opacity="0.09"/>
     </pattern>
     <pattern id="hudgridbold" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#14F7FF" stroke-width="1" opacity="0.396"/>
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#00E7FF" stroke-width="1" opacity="0.162"/>
     </pattern>
     <filter id="hudglow" x="-60%" y="-60%" width="220%" height="220%">
       <feGaussianBlur stdDeviation="1.4" result="blur"/>
@@ -13,8 +13,8 @@
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter></defs>
-  <rect width="150" height="44" rx="22" fill="#0a0c14" stroke="#14F7FF" stroke-width="1.3"/>
+  <rect width="150" height="44" rx="22" fill="#0a0c14" stroke="#00E7FF" stroke-width="1.3"/>
   <rect width="150" height="44" rx="22" fill="url(#hudgrid)"/><rect width="150" height="44" rx="22" fill="url(#hudgridbold)"/>
-  <path transform="translate(18,16.0)" d="M0 10 Q2 2 8 1 Q7 0 9 0 Q11 2 10 4 Q15 3 16 0 Q15 5 12 6 Q13 12 6 13 Q2 13 0 10 Z" fill="none" stroke="#14F7FF" stroke-width="1.3"/>
-  <text x="46" y="27.0" font-family="Consolas, Menlo, monospace" font-size="13" font-weight="600" fill="#14F7FF" filter="url(#hudglow)">Twitter</text>
+  <path transform="translate(18,16.0)" d="M0 10 Q2 2 8 1 Q7 0 9 0 Q11 2 10 4 Q15 3 16 0 Q15 5 12 6 Q13 12 6 13 Q2 13 0 10 Z" fill="none" stroke="#00E7FF" stroke-width="1.3"/>
+  <text x="46" y="27.0" font-family="Consolas, Menlo, monospace" font-size="13" font-weight="600" fill="#00E7FF" filter="url(#hudglow)">Twitter</text>
 </svg>

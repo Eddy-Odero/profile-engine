@@ -71,34 +71,23 @@ THEMES: dict[str, dict] = {
     "hud": {
         "label": "HUD",
         "style": "flat-square",
-        "label_color": "0a0c14",  # near-black blue, sampled directly from the reference image
-        "color": "14F7FF",  # header/divider cyan, sampled directly from the reference image
-        # Other section-specific accents (activity green #0BFF8E, stats
-        # blue #2DA8FF - overriding the sampled magenta per explicit no-
-        # pink feedback, modules gold #FFB917, timeline red #FB333D,
-        # ribbon green #0BFF9F / gold #FFEA54) live in the individual
-        # section modules that use them (dimensional_stats.py,
-        # skill_modules.py, project_cards.py) rather than here, since
-        # this design uses a different accent per section, not one
-        # color reused everywhere like the other themes.
+        "label_color": "07090F",  # exact background from spec
+        "color": "00E7FF",  # exact cyan from spec
     },
 }
 
-# Exact-match reference design accents - sampled directly from pixel
-# data in the provided design image, not estimated. Each section in
-# this design has its own accent rather than reusing one theme color.
+# Exact colors specified directly - these supersede the earlier
+# pixel-sampled approximations, since exact hex values from the person
+# building this are strictly more reliable than estimates from a photo.
 HUD_COLORS = {
-    "header": "#14F7FF",
-    "activity": "#0BFF8E",
-    "stats": "#FF00FF",  # reverted to the actual sampled reference color -
-    # the earlier "no pink" override was about correcting MY invented
-    # colors (the old cyberpunk theme bug), not the reference's own
-    # legitimate magenta, which is what this project is now matching exactly
-    "modules": "#FFB917",
-    "timeline": "#FB333D",
-    "timeline_end": "#FB333D",  # kept as solid red, not fading to pink, per no-pink feedback
-    "ribbon_public": "#0BFF9F",
-    "ribbon_vip": "#FFEA54",
+    "header": "#00E7FF",
+    "activity": "#24FF9A",
+    "stats": "#FF38F8",
+    "modules": "#FFC84D",
+    "timeline": "#FF4D5A",
+    "timeline_end": "#FF4D5A",
+    "ribbon_public": "#24FF9A",
+    "ribbon_vip": "#FFC84D",
 }
 
 # Switched away from an all-pink default per direct feedback - most

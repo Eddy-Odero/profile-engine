@@ -26,33 +26,66 @@ import html
 from hud_grid import glow_filter, grid_background
 from themes import DEFAULT_THEME, HUD_COLORS, get_theme
 
-CARD_WIDTH = 280
-CARD_HEIGHT = 100
-CARD_GAP = 16
-CARD_BG = "0c0a14"
+CARD_WIDTH = 280  # multiple of the 20px grid spacing below
+CARD_HEIGHT = 100  # multiple of 20
+CARD_GAP = 20  # changed from 16 - now a multiple of the grid spacing, so card edges land on grid lines
+CARD_BG = "07090F"  # exact background from spec, subtle navy tint
 CARD_BORDER = "241c33"
 LABEL_COLOR = "8a7fa8"
 
 CUBE_SIZE = 90
 CUBE_BOX_WIDTH = 220
-CUBE_BOX_HEIGHT = 224
+CUBE_BOX_HEIGHT = 220  # multiple of 20 (was 224) - keeps the whole canvas height grid-aligned
 
 
 def _esc(text: str) -> str:
     return html.escape(text, quote=True)
 
 
-def _stat_card(x: float, y: float, label: str, value, accent: str) -> str:
+def _hex_to_rgb(hex_color: str) -> tuple[int, int, int]:
+    hex_color = hex_color.lstrip("#")
+    return int(hex_color[0:2], 16), int(hex_color[2:4], 16), int(hex_color[4:6], 16)
+
+
+def _shade(hex_color: str, factor: float) -> str:
+    """factor > 1 lightens toward white, factor < 1 darkens toward black."""
+    r, g, b = _hex_to_rgb(hex_color)
+    if factor >= 1:
+        blend = min(factor - 1, 1)
+        r, g, b = [int(c + (255 - c) * blend) for c in (r, g, b)]
+    else:
+        r, g, b = [int(c * factor) for c in (r, g, b)]
+    return f"#{r:02x}{g:02x}{b:02x}"
+
+
+def _number_gradient_defs(accent: str, gradient_id: str) -> str:
+    """
+    A gradient from a darker shade of the accent to a lighter shade -
+    the "starts dark, gradually lightens" glow illusion on the big
+    numbers, rather than one flat solid color.
+    """
+    dark = _shade(accent, 0.45)
+    light = _shade(accent, 1.7)
+    return f"""
+    <linearGradient id="{gradient_id}" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="{dark}"/>
+      <stop offset="100%" stop-color="{light}"/>
+    </linearGradient>"""
+
+
+def _stat_card(x: float, y: float, label: str, value, accent: str, idx: int) -> str:
     value = str(value)
     bar_width = min(len(value) * 14 + 20, CARD_WIDTH - 40)
+    gradient_id = f"numGrad{idx}"
     return f"""
+  <defs>{_number_gradient_defs(accent, gradient_id)}</defs>
   <g transform="translate({x},{y})">
-    <rect width="{CARD_WIDTH}" height="{CARD_HEIGHT}" fill="#{CARD_BG}" fill-opacity="0.9" stroke="#{CARD_BORDER}" stroke-width="1"/>
+    <rect width="{CARD_WIDTH}" height="{CARD_HEIGHT}" fill="#{CARD_BG}" fill-opacity="0.3" stroke="{accent}" stroke-width="1"/>
     <rect x="0" y="0" width="4" height="{CARD_HEIGHT}" fill="{accent}"/>
     <text x="20" y="28" font-family="Consolas, Menlo, monospace" font-size="10" \
 fill="#{LABEL_COLOR}" letter-spacing="1">{_esc(label.upper())}</text>
     <text x="20" y="64" font-family="Consolas, Menlo, monospace" font-size="30" \
-font-weight="700" fill="{accent}" filter="url(#hudglow)">{_esc(value)}</text>
+font-weight="700" fill="url(#{gradient_id})" filter="url(#hudglow)">{_esc(value)}</text>
     <line x1="20" y1="80" x2="{20 + bar_width}" y2="80" stroke="{accent}" stroke-width="2"/>
   </g>"""
 
@@ -73,7 +106,14 @@ def _isometric_cube(cx: float, cy: float, size: float, accent: str, label_lines:
         (cx + size / 2, cy + h),      # front-bottom-right
         (cx - size / 2, cy + h),      # front-bottom-left
     ]
-    depth_x, depth_y = size * 0.35, -size * 0.22
+    # A small DIAGONAL offset (both x and y) is what actually creates the
+    # 3D illusion - the connecting edges need to be angled lines, not
+    # straight verticals. A previous attempt used depth_x=0 for a
+    # "centered view" fix, but that made every connecting edge perfectly
+    # vertical, which reads as a flat table grid, not a cube. This keeps
+    # the offset small and roughly centered (not heavily skewed to one
+    # side) while still being large enough to read as genuine depth.
+    depth_x, depth_y = size * 0.22, -size * 0.3
     back = [(x + depth_x, y + depth_y) for x, y in front]
 
     def line(p1, p2, width=1.2):
@@ -117,7 +157,7 @@ def render_dimensional_stats_svg(
     stats_area_w = stats_cols * CARD_WIDTH + (stats_cols - 1) * CARD_GAP
     stats_area_h = stats_rows * CARD_HEIGHT + (stats_rows - 1) * CARD_GAP
 
-    gap_between = 30
+    gap_between = 20  # multiple of grid spacing, matches CARD_GAP for consistent alignment
     width = cube_area_w + gap_between + stats_area_w
     height = max(CUBE_BOX_HEIGHT, stats_area_h)
 
@@ -133,13 +173,14 @@ def render_dimensional_stats_svg(
         row = i // 2
         x = stats_x0 + col * (CARD_WIDTH + CARD_GAP)
         y = y_offset + row * (CARD_HEIGHT + CARD_GAP)
-        cards.append(_stat_card(x, y, label, value, accent))
+        cards.append(_stat_card(x, y, label, value, accent, i))
 
-    grid_defs, grid_rect = grid_background(width, height, accent)
+    grid_defs, grid_rect = grid_background(width, height, accent, spacing=20)
 
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dimensional stats">
   <defs>{grid_defs}{glow_filter()}</defs>
+  <rect width="{width}" height="{height}" fill="#07090F"/>
   {grid_rect}
   {cube_svg}
   {''.join(cards)}

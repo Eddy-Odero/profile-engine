@@ -34,7 +34,7 @@ BADGE_RADIUS = 26
 BRACKET_LEN = 16
 BRACKET_INSET = 6
 
-CARD_BG = "050608"  # near-black, matching the actual sampled reference color (not navy-tinted)
+CARD_BG = "07090F"  # exact background from spec, subtle navy tint
 CARD_BORDER = "1c2a3a"
 MUTED = "6b7a8c"
 
@@ -46,6 +46,7 @@ MONOGRAMS: dict[str, str] = {
     "node.js": "💚", "nodejs": "💚", "c++": "⚙️", "html": "🌐", "css": "🎨",
     "sqlite": "🗄️", "postgresql": "🐘", "docker": "🐳", "python": "🐍",
     "git": "🔧", "figma": "🎯", "blender": "🧊", "redis": "🔴",
+    "rust": "🦀", "kubernetes": "☸️", "aws": "☁️",
 }
 
 
@@ -86,7 +87,7 @@ def _badge(x: float, y: float, skill: str, level: str, accent: str, bracket_colo
 
     return f"""
   <g>
-    <rect x="{x}" y="{y}" width="{CARD_WIDTH}" height="{CARD_HEIGHT}" fill="#{CARD_BG}" \
+    <rect x="{x}" y="{y}" width="{CARD_WIDTH}" height="{CARD_HEIGHT}" fill="#{CARD_BG}" fill-opacity="0.3" \
 stroke="#{CARD_BORDER}" stroke-width="1"/>
     {_corner_brackets(x, y, bracket_color)}
     <circle cx="{badge_cx}" cy="{badge_cy}" r="{BADGE_RADIUS}" fill="{color}" fill-opacity="0.12" \
@@ -137,6 +138,7 @@ def render_skill_modules_svg(
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="System modules">
   <defs>{grid_defs}{glow_filter()}</defs>
+  <rect width="{width}" height="{height}" fill="#{CARD_BG}"/>
   {grid_rect}
   {''.join(badges)}
 </svg>"""

@@ -4,7 +4,7 @@
 
 <sub>~ live session · Eddy Odero@github · re-renders every build ~</sub>
 
-![Repos: 23](https://img.shields.io/badge/Repos-23-14F7FF?style=flat-square&labelColor=0a0c14) ![Stars: 22](https://img.shields.io/badge/Stars-22-14F7FF?style=flat-square&labelColor=0a0c14) ![Followers: 36](https://img.shields.io/badge/Followers-36-14F7FF?style=flat-square&labelColor=0a0c14) ![LC Solved: 45](https://img.shields.io/badge/LC_Solved-45-14F7FF?style=flat-square&labelColor=0a0c14)
+![Repos: 24](https://img.shields.io/badge/Repos-24-00E7FF?style=flat-square&labelColor=07090F) ![Stars: 37](https://img.shields.io/badge/Stars-37-00E7FF?style=flat-square&labelColor=07090F) ![Followers: 12](https://img.shields.io/badge/Followers-12-00E7FF?style=flat-square&labelColor=07090F) ![LC Solved: 120](https://img.shields.io/badge/LC_Solved-120-00E7FF?style=flat-square&labelColor=07090F)
 
 </div>
 
@@ -93,28 +93,24 @@
 ### `$ github --stats`
 
 ```
-Repositories : 23
-Stars        : 22
-Followers    : 36
-Contributions: 1071
-Top Languages: Go, HTML, Python
-Pinned       : SatGate
+Repositories : 24
+Stars        : 37
+Followers    : 12
+Contributions: N/A
+Top Languages: Go, JavaScript, Python
+Pinned       : SatGate, EDU-FLIX, lem-in
 ```
 
 ### `$ github --activity`
 
 ```
-pushed to Eddy-Odero/Introduction-to-Algorithms-Go
-pushed to Eddy-Odero/Introduction-to-Algorithms-Go
-pushed to Eddy-Odero/Introduction-to-Algorithms-Go
-pushed to Eddy-Odero/Introduction-to-Algorithms-Go
-pushed to Eddy-Odero/profile-engine
+pushed to profile-engine
 ```
 
 ### `$ leetcode --stats`
 
 ```
-Solved       : 45 (Easy 12 / Medium 22 / Hard 11)
+Solved       : 120 (Easy 55 / Medium 50 / Hard 15)
 Rating       : unrated
 Global Rank  : N/A
 Top %        : N/A
@@ -125,4 +121,4 @@ Badges       : none yet
 
 ---
 
-<sub>Last rendered: 2026-07-30 08:06 UTC · theme: hud · auto-generated, do not edit by hand</sub>
+<sub>Last rendered: 2026-07-30 16:49 UTC · theme: hud · auto-generated, do not edit by hand</sub>

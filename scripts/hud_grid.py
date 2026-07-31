@@ -18,7 +18,7 @@ from __future__ import annotations
 
 
 def grid_background(
-    width: float, height: float, color: str, spacing: int = 24, opacity: float = 0.22,
+    width: float, height: float, color: str, spacing: int = 24, opacity: float = 0.09,
     pattern_id: str = "hudgrid", rx: int = 0,
 ) -> tuple[str, str]:
     """

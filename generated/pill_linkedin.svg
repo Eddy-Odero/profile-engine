@@ -1,10 +1,10 @@
 <svg width="150" height="44" viewBox="0 0 150 44" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LinkedIn">
   <defs>
     <pattern id="hudgrid" width="10" height="10" patternUnits="userSpaceOnUse">
-      <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#14F7FF" stroke-width="0.6" opacity="0.22"/>
+      <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#00E7FF" stroke-width="0.6" opacity="0.09"/>
     </pattern>
     <pattern id="hudgridbold" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#14F7FF" stroke-width="1" opacity="0.396"/>
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#00E7FF" stroke-width="1" opacity="0.162"/>
     </pattern>
     <filter id="hudglow" x="-60%" y="-60%" width="220%" height="220%">
       <feGaussianBlur stdDeviation="1.4" result="blur"/>
@@ -13,8 +13,8 @@
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter></defs>
-  <rect width="150" height="44" rx="22" fill="#0a0c14" stroke="#14F7FF" stroke-width="1.3"/>
+  <rect width="150" height="44" rx="22" fill="#0a0c14" stroke="#00E7FF" stroke-width="1.3"/>
   <rect width="150" height="44" rx="22" fill="url(#hudgrid)"/><rect width="150" height="44" rx="22" fill="url(#hudgridbold)"/>
-  <g transform="translate(18,14.0)" fill="#14F7FF"><circle cx="2.5" cy="2.5" r="2.2"/><rect x="0.7" y="6" width="3.6" height="10" /><path d="M8 6 H11.5 V8 C12.3 6.5 14 6 15.5 7 C17 8 17 10 17 12 V16 H13.5 V12.5 C13.5 11 13 10.3 11.8 10.3 C10.6 10.3 10 11 10 12.5 V16 H8 Z"/></g>
-  <text x="46" y="27.0" font-family="Consolas, Menlo, monospace" font-size="13" font-weight="600" fill="#14F7FF" filter="url(#hudglow)">LinkedIn</text>
+  <g transform="translate(18,14.0)" fill="#00E7FF"><circle cx="2.5" cy="2.5" r="2.2"/><rect x="0.7" y="6" width="3.6" height="10" /><path d="M8 6 H11.5 V8 C12.3 6.5 14 6 15.5 7 C17 8 17 10 17 12 V16 H13.5 V12.5 C13.5 11 13 10.3 11.8 10.3 C10.6 10.3 10 11 10 12.5 V16 H8 Z"/></g>
+  <text x="46" y="27.0" font-family="Consolas, Menlo, monospace" font-size="13" font-weight="600" fill="#00E7FF" filter="url(#hudglow)">LinkedIn</text>
 </svg>

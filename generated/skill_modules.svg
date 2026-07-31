@@ -1,10 +1,10 @@
-<svg width="722" height="642" viewBox="0 0 722 642" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="System modules">
+<svg width="722" height="314" viewBox="0 0 722 314" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="System modules">
   <defs>
     <pattern id="hudgrid" width="24" height="24" patternUnits="userSpaceOnUse">
-      <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#14F7FF" stroke-width="0.6" opacity="0.22"/>
+      <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#00E7FF" stroke-width="0.6" opacity="0.09"/>
     </pattern>
     <pattern id="hudgridbold" width="96" height="96" patternUnits="userSpaceOnUse">
-      <path d="M 96 0 L 0 0 0 96" fill="none" stroke="#14F7FF" stroke-width="1" opacity="0.396"/>
+      <path d="M 96 0 L 0 0 0 96" fill="none" stroke="#00E7FF" stroke-width="1" opacity="0.162"/>
     </pattern>
     <filter id="hudglow" x="-60%" y="-60%" width="220%" height="220%">
       <feGaussianBlur stdDeviation="1.4" result="blur"/>
@@ -13,126 +13,71 @@
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter></defs>
-  <rect width="722" height="642" rx="0" fill="url(#hudgrid)"/><rect width="722" height="642" rx="0" fill="url(#hudgridbold)"/>
+  <rect width="722" height="314" fill="#07090F"/>
+  <rect width="722" height="314" rx="0" fill="url(#hudgrid)"/><rect width="722" height="314" rx="0" fill="url(#hudgridbold)"/>
   
   <g>
-    <rect x="0" y="0" width="170" height="150" fill="#050608" stroke="#1c2a3a" stroke-width="1"/>
-    <path d="M6 22 L6 6 L22 6" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M164 22 L164 6 L148 6" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M6 128 L6 144 L22 144" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M164 128 L164 144 L148 144" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/>
-    <circle cx="85.0" cy="44" r="26" fill="#00ADD8" fill-opacity="0.12" stroke="#00ADD8" stroke-width="2"/>
-    <text x="85.0" y="52" font-size="22" text-anchor="middle">🐹</text>
-    <text x="85.0" y="100" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">GO</text>
-    <text x="85.0" y="118" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">ADVANCED</text>
+    <rect x="0" y="0" width="170" height="150" fill="#07090F" fill-opacity="0.3" stroke="#1c2a3a" stroke-width="1"/>
+    <path d="M6 22 L6 6 L22 6" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M164 22 L164 6 L148 6" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M6 128 L6 144 L22 144" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M164 128 L164 144 L148 144" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/>
+    <circle cx="85.0" cy="44" r="26" fill="#3776AB" fill-opacity="0.12" stroke="#3776AB" stroke-width="2"/>
+    <text x="85.0" y="52" font-size="22" text-anchor="middle">🐍</text>
+    <text x="85.0" y="100" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">PYTHON</text>
+    <text x="85.0" y="118" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">EXPERT</text>
   </g>
   <g>
-    <rect x="184" y="0" width="170" height="150" fill="#050608" stroke="#1c2a3a" stroke-width="1"/>
-    <path d="M190 22 L190 6 L206 6" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M348 22 L348 6 L332 6" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M190 128 L190 144 L206 144" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M348 128 L348 144 L332 144" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/>
-    <circle cx="269.0" cy="44" r="26" fill="#F7DF1E" fill-opacity="0.12" stroke="#F7DF1E" stroke-width="2"/>
-    <text x="269.0" y="52" font-size="22" text-anchor="middle">🟨</text>
-    <text x="269.0" y="100" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">JAVASCRIPT</text>
-    <text x="269.0" y="118" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">EXPERT</text>
+    <rect x="184" y="0" width="170" height="150" fill="#07090F" fill-opacity="0.3" stroke="#1c2a3a" stroke-width="1"/>
+    <path d="M190 22 L190 6 L206 6" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M348 22 L348 6 L332 6" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M190 128 L190 144 L206 144" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M348 128 L348 144 L332 144" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/>
+    <circle cx="269.0" cy="44" r="26" fill="#3178C6" fill-opacity="0.12" stroke="#3178C6" stroke-width="2"/>
+    <text x="269.0" y="52" font-size="22" text-anchor="middle">🔷</text>
+    <text x="269.0" y="100" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">TYPESCRIPT</text>
+    <text x="269.0" y="118" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">ADVANCED</text>
   </g>
   <g>
-    <rect x="368" y="0" width="170" height="150" fill="#050608" stroke="#1c2a3a" stroke-width="1"/>
-    <path d="M374 22 L374 6 L390 6" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M532 22 L532 6 L516 6" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M374 128 L374 144 L390 144" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M532 128 L532 144 L516 144" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/>
-    <circle cx="453.0" cy="44" r="26" fill="#3178C6" fill-opacity="0.12" stroke="#3178C6" stroke-width="2"/>
-    <text x="453.0" y="52" font-size="22" text-anchor="middle">🔷</text>
-    <text x="453.0" y="100" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">TYPESCRIPT</text>
-    <text x="453.0" y="118" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">INTERMEDIATE</text>
+    <rect x="368" y="0" width="170" height="150" fill="#07090F" fill-opacity="0.3" stroke="#1c2a3a" stroke-width="1"/>
+    <path d="M374 22 L374 6 L390 6" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M532 22 L532 6 L516 6" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M374 128 L374 144 L390 144" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M532 128 L532 144 L516 144" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/>
+    <circle cx="453.0" cy="44" r="26" fill="#00ADD8" fill-opacity="0.12" stroke="#00ADD8" stroke-width="2"/>
+    <text x="453.0" y="52" font-size="22" text-anchor="middle">🐹</text>
+    <text x="453.0" y="100" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">GO</text>
+    <text x="453.0" y="118" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">ADVANCED</text>
   </g>
   <g>
-    <rect x="552" y="0" width="170" height="150" fill="#050608" stroke="#1c2a3a" stroke-width="1"/>
-    <path d="M558 22 L558 6 L574 6" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M716 22 L716 6 L700 6" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M558 128 L558 144 L574 144" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M716 128 L716 144 L700 144" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/>
-    <circle cx="637.0" cy="44" r="26" fill="#8892BF" fill-opacity="0.12" stroke="#8892BF" stroke-width="2"/>
-    <text x="637.0" y="52" font-size="22" text-anchor="middle">🟣</text>
-    <text x="637.0" y="100" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">PHP</text>
+    <rect x="552" y="0" width="170" height="150" fill="#07090F" fill-opacity="0.3" stroke="#1c2a3a" stroke-width="1"/>
+    <path d="M558 22 L558 6 L574 6" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M716 22 L716 6 L700 6" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M558 128 L558 144 L574 144" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M716 128 L716 144 L700 144" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/>
+    <circle cx="637.0" cy="44" r="26" fill="#CE422B" fill-opacity="0.12" stroke="#CE422B" stroke-width="2"/>
+    <text x="637.0" y="52" font-size="22" text-anchor="middle">🦀</text>
+    <text x="637.0" y="100" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">RUST</text>
     <text x="637.0" y="118" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">INTERMEDIATE</text>
   </g>
   <g>
-    <rect x="0" y="164" width="170" height="150" fill="#050608" stroke="#1c2a3a" stroke-width="1"/>
-    <path d="M6 186 L6 170 L22 170" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M164 186 L164 170 L148 170" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M6 292 L6 308 L22 308" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M164 292 L164 308 L148 308" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/>
-    <circle cx="85.0" cy="208" r="26" fill="#68A063" fill-opacity="0.12" stroke="#68A063" stroke-width="2"/>
-    <text x="85.0" y="216" font-size="22" text-anchor="middle">💚</text>
-    <text x="85.0" y="264" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">NODE.JS</text>
-    <text x="85.0" y="282" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">INTERMEDIATE</text>
+    <rect x="0" y="164" width="170" height="150" fill="#07090F" fill-opacity="0.3" stroke="#1c2a3a" stroke-width="1"/>
+    <path d="M6 186 L6 170 L22 170" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M164 186 L164 170 L148 170" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M6 292 L6 308 L22 308" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M164 292 L164 308 L148 308" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/>
+    <circle cx="85.0" cy="208" r="26" fill="#2496ED" fill-opacity="0.12" stroke="#2496ED" stroke-width="2"/>
+    <text x="85.0" y="216" font-size="22" text-anchor="middle">🐳</text>
+    <text x="85.0" y="264" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">DOCKER</text>
+    <text x="85.0" y="282" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">EXPERT</text>
   </g>
   <g>
-    <rect x="184" y="164" width="170" height="150" fill="#050608" stroke="#1c2a3a" stroke-width="1"/>
-    <path d="M190 186 L190 170 L206 170" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M348 186 L348 170 L332 170" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M190 292 L190 308 L206 308" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M348 292 L348 308 L332 308" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/>
-    <circle cx="269.0" cy="208" r="26" fill="#00599C" fill-opacity="0.12" stroke="#00599C" stroke-width="2"/>
-    <text x="269.0" y="216" font-size="22" text-anchor="middle">⚙️</text>
-    <text x="269.0" y="264" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">C++</text>
-    <text x="269.0" y="282" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">INTERMEDIATE</text>
+    <rect x="184" y="164" width="170" height="150" fill="#07090F" fill-opacity="0.3" stroke="#1c2a3a" stroke-width="1"/>
+    <path d="M190 186 L190 170 L206 170" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M348 186 L348 170 L332 170" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M190 292 L190 308 L206 308" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M348 292 L348 308 L332 308" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/>
+    <circle cx="269.0" cy="208" r="26" fill="#326CE5" fill-opacity="0.12" stroke="#326CE5" stroke-width="2"/>
+    <text x="269.0" y="216" font-size="22" text-anchor="middle">☸️</text>
+    <text x="269.0" y="264" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">KUBERNETES</text>
+    <text x="269.0" y="282" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">ADVANCED</text>
   </g>
   <g>
-    <rect x="368" y="164" width="170" height="150" fill="#050608" stroke="#1c2a3a" stroke-width="1"/>
-    <path d="M374 186 L374 170 L390 170" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M532 186 L532 170 L516 170" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M374 292 L374 308 L390 308" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M532 292 L532 308 L516 308" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/>
-    <circle cx="453.0" cy="208" r="26" fill="#E34C26" fill-opacity="0.12" stroke="#E34C26" stroke-width="2"/>
-    <text x="453.0" y="216" font-size="22" text-anchor="middle">🌐</text>
-    <text x="453.0" y="264" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">HTML</text>
+    <rect x="368" y="164" width="170" height="150" fill="#07090F" fill-opacity="0.3" stroke="#1c2a3a" stroke-width="1"/>
+    <path d="M374 186 L374 170 L390 170" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M532 186 L532 170 L516 170" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M374 292 L374 308 L390 308" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M532 292 L532 308 L516 308" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/>
+    <circle cx="453.0" cy="208" r="26" fill="#336791" fill-opacity="0.12" stroke="#336791" stroke-width="2"/>
+    <text x="453.0" y="216" font-size="22" text-anchor="middle">🐘</text>
+    <text x="453.0" y="264" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">POSTGRESQL</text>
     <text x="453.0" y="282" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">ADVANCED</text>
   </g>
   <g>
-    <rect x="552" y="164" width="170" height="150" fill="#050608" stroke="#1c2a3a" stroke-width="1"/>
-    <path d="M558 186 L558 170 L574 170" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M716 186 L716 170 L700 170" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M558 292 L558 308 L574 308" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M716 292 L716 308 L700 308" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/>
-    <circle cx="637.0" cy="208" r="26" fill="#2965F1" fill-opacity="0.12" stroke="#2965F1" stroke-width="2"/>
-    <text x="637.0" y="216" font-size="22" text-anchor="middle">🎨</text>
-    <text x="637.0" y="264" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">CSS</text>
+    <rect x="552" y="164" width="170" height="150" fill="#07090F" fill-opacity="0.3" stroke="#1c2a3a" stroke-width="1"/>
+    <path d="M558 186 L558 170 L574 170" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M716 186 L716 170 L700 170" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M558 292 L558 308 L574 308" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M716 292 L716 308 L700 308" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/>
+    <circle cx="637.0" cy="208" r="26" fill="#FF9900" fill-opacity="0.12" stroke="#FF9900" stroke-width="2"/>
+    <text x="637.0" y="216" font-size="22" text-anchor="middle">☁️</text>
+    <text x="637.0" y="264" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">AWS</text>
     <text x="637.0" y="282" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">ADVANCED</text>
-  </g>
-  <g>
-    <rect x="0" y="328" width="170" height="150" fill="#050608" stroke="#1c2a3a" stroke-width="1"/>
-    <path d="M6 350 L6 334 L22 334" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M164 350 L164 334 L148 334" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M6 456 L6 472 L22 472" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M164 456 L164 472 L148 472" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/>
-    <circle cx="85.0" cy="372" r="26" fill="#4C8BBE" fill-opacity="0.12" stroke="#4C8BBE" stroke-width="2"/>
-    <text x="85.0" y="380" font-size="22" text-anchor="middle">🗄️</text>
-    <text x="85.0" y="428" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">SQLITE</text>
-    <text x="85.0" y="446" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">ADVANCED</text>
-  </g>
-  <g>
-    <rect x="184" y="328" width="170" height="150" fill="#050608" stroke="#1c2a3a" stroke-width="1"/>
-    <path d="M190 350 L190 334 L206 334" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M348 350 L348 334 L332 334" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M190 456 L190 472 L206 472" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M348 456 L348 472 L332 472" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/>
-    <circle cx="269.0" cy="372" r="26" fill="#336791" fill-opacity="0.12" stroke="#336791" stroke-width="2"/>
-    <text x="269.0" y="380" font-size="22" text-anchor="middle">🐘</text>
-    <text x="269.0" y="428" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">POSTGRESQL</text>
-    <text x="269.0" y="446" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">INTERMEDIATE</text>
-  </g>
-  <g>
-    <rect x="368" y="328" width="170" height="150" fill="#050608" stroke="#1c2a3a" stroke-width="1"/>
-    <path d="M374 350 L374 334 L390 334" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M532 350 L532 334 L516 334" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M374 456 L374 472 L390 472" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M532 456 L532 472 L516 472" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/>
-    <circle cx="453.0" cy="372" r="26" fill="#2496ED" fill-opacity="0.12" stroke="#2496ED" stroke-width="2"/>
-    <text x="453.0" y="380" font-size="22" text-anchor="middle">🐳</text>
-    <text x="453.0" y="428" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">DOCKER</text>
-    <text x="453.0" y="446" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">ADVANCED</text>
-  </g>
-  <g>
-    <rect x="552" y="328" width="170" height="150" fill="#050608" stroke="#1c2a3a" stroke-width="1"/>
-    <path d="M558 350 L558 334 L574 334" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M716 350 L716 334 L700 334" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M558 456 L558 472 L574 472" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M716 456 L716 472 L700 472" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/>
-    <circle cx="637.0" cy="372" r="26" fill="#F05032" fill-opacity="0.12" stroke="#F05032" stroke-width="2"/>
-    <text x="637.0" y="380" font-size="22" text-anchor="middle">🔧</text>
-    <text x="637.0" y="428" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">GIT</text>
-    <text x="637.0" y="446" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">EXPERT</text>
-  </g>
-  <g>
-    <rect x="0" y="492" width="170" height="150" fill="#050608" stroke="#1c2a3a" stroke-width="1"/>
-    <path d="M6 514 L6 498 L22 498" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M164 514 L164 498 L148 498" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M6 620 L6 636 L22 636" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M164 620 L164 636 L148 636" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/>
-    <circle cx="85.0" cy="536" r="26" fill="#A259FF" fill-opacity="0.12" stroke="#A259FF" stroke-width="2"/>
-    <text x="85.0" y="544" font-size="22" text-anchor="middle">🎯</text>
-    <text x="85.0" y="592" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">FIGMA</text>
-    <text x="85.0" y="610" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">INTERMEDIATE</text>
-  </g>
-  <g>
-    <rect x="184" y="492" width="170" height="150" fill="#050608" stroke="#1c2a3a" stroke-width="1"/>
-    <path d="M190 514 L190 498 L206 498" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M348 514 L348 498 L332 498" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M190 620 L190 636 L206 636" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M348 620 L348 636 L332 636" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/>
-    <circle cx="269.0" cy="536" r="26" fill="#F5792A" fill-opacity="0.12" stroke="#F5792A" stroke-width="2"/>
-    <text x="269.0" y="544" font-size="22" text-anchor="middle">🧊</text>
-    <text x="269.0" y="592" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">BLENDER</text>
-    <text x="269.0" y="610" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">INTERMEDIATE</text>
-  </g>
-  <g>
-    <rect x="368" y="492" width="170" height="150" fill="#050608" stroke="#1c2a3a" stroke-width="1"/>
-    <path d="M374 514 L374 498 L390 498" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M532 514 L532 498 L516 498" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M374 620 L374 636 L390 636" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/><path d="M532 620 L532 636 L516 636" fill="none" stroke="#FFB917" stroke-width="2" filter="url(#hudglow)"/>
-    <circle cx="453.0" cy="536" r="26" fill="#DC382D" fill-opacity="0.12" stroke="#DC382D" stroke-width="2"/>
-    <text x="453.0" y="544" font-size="22" text-anchor="middle">🔴</text>
-    <text x="453.0" y="592" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">REDIS</text>
-    <text x="453.0" y="610" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">INTERMEDIATE</text>
   </g>
 </svg>
