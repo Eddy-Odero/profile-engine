@@ -21,7 +21,7 @@
   
   <g fill="none">
     <line x1="65.0" y1="65.0" x2="155.0" y2="65.0" stroke="#FF38F8" stroke-width="1.2"/><line x1="85.2" y1="85.2" x2="134.8" y2="85.2" stroke="#FF38F8" stroke-width="1.2"/><line x1="65.0" y1="65.0" x2="85.2" y2="85.2" stroke="#FF38F8" stroke-width="1.2"/><line x1="155.0" y1="65.0" x2="155.0" y2="155.0" stroke="#FF38F8" stroke-width="1.2"/><line x1="134.8" y1="85.2" x2="134.8" y2="134.8" stroke="#FF38F8" stroke-width="1.2"/><line x1="155.0" y1="65.0" x2="134.8" y2="85.2" stroke="#FF38F8" stroke-width="1.2"/><line x1="155.0" y1="155.0" x2="65.0" y2="155.0" stroke="#FF38F8" stroke-width="1.2"/><line x1="134.8" y1="134.8" x2="85.2" y2="134.8" stroke="#FF38F8" stroke-width="1.2"/><line x1="155.0" y1="155.0" x2="134.8" y2="134.8" stroke="#FF38F8" stroke-width="1.2"/><line x1="65.0" y1="155.0" x2="65.0" y2="65.0" stroke="#FF38F8" stroke-width="1.2"/><line x1="85.2" y1="134.8" x2="85.2" y2="85.2" stroke="#FF38F8" stroke-width="1.2"/><line x1="65.0" y1="155.0" x2="85.2" y2="134.8" stroke="#FF38F8" stroke-width="1.2"/>
-    <text x="110.0" y="106.0" font-family="Consolas, Menlo, monospace" font-size="9" fill="#FF38F8" text-anchor="middle">120</text>
+    <text x="110.0" y="106.0" font-family="Consolas, Menlo, monospace" font-size="9" fill="#FF38F8" text-anchor="middle">45</text>
   </g>
   
   <defs>
@@ -45,8 +45,8 @@
     <rect width="280" height="100" fill="#07090F" fill-opacity="0.3" stroke="#FF38F8" stroke-width="1"/>
     <rect x="0" y="0" width="4" height="100" fill="#FF38F8"/>
     <text x="20" y="28" font-family="Consolas, Menlo, monospace" font-size="10" fill="#8a7fa8" letter-spacing="1">PROBLEMS SOLVED</text>
-    <text x="20" y="64" font-family="Consolas, Menlo, monospace" font-size="30" font-weight="700" fill="url(#numGrad1)" filter="url(#hudglow)">120</text>
-    <line x1="20" y1="80" x2="82" y2="80" stroke="#FF38F8" stroke-width="2"/>
+    <text x="20" y="64" font-family="Consolas, Menlo, monospace" font-size="30" font-weight="700" fill="url(#numGrad1)" filter="url(#hudglow)">45</text>
+    <line x1="20" y1="80" x2="68" y2="80" stroke="#FF38F8" stroke-width="2"/>
   </g>
   <defs>
     <linearGradient id="numGrad2" x1="0" y1="0" x2="1" y2="0">
@@ -69,7 +69,7 @@
     <rect width="280" height="100" fill="#07090F" fill-opacity="0.3" stroke="#FF38F8" stroke-width="1"/>
     <rect x="0" y="0" width="4" height="100" fill="#FF38F8"/>
     <text x="20" y="28" font-family="Consolas, Menlo, monospace" font-size="10" fill="#8a7fa8" letter-spacing="1">MAX STREAK</text>
-    <text x="20" y="64" font-family="Consolas, Menlo, monospace" font-size="30" font-weight="700" fill="url(#numGrad3)" filter="url(#hudglow)">12</text>
+    <text x="20" y="64" font-family="Consolas, Menlo, monospace" font-size="30" font-weight="700" fill="url(#numGrad3)" filter="url(#hudglow)">29</text>
     <line x1="20" y1="80" x2="68" y2="80" stroke="#FF38F8" stroke-width="2"/>
   </g>
   <rect x="0" y="0" width="820" height="220" fill="url(#scanlines)"/>
