@@ -34,8 +34,8 @@ import event_log
 import fragmented_data
 import github
 import leetcode
+import leetcode_panel
 import neural_activity
-import project_cards
 import quote_card
 import renderer
 import section_header
@@ -85,13 +85,18 @@ SKILLS: list[tuple[str, str]] = [
     ("Go", "Advanced"),
     ("Rust", "Intermediate"),
     ("Docker", "Expert"),
-    ("Kubernetes", "Advanced"),
-    ("PostgreSQL", "Advanced"),
-    ("AWS", "Advanced"),
+    ("PHP", "Advanced"),
+    ("Git", "Expert"),
+    ("JavaScript", "Expert"),
+    ("HTML/CSS", "Expert"),
+    ("SQLite", "Advanced"),
+    ("C", "Intermediate"),
+    ("Blender", "Intermediate"),
 ]
-# This exact 8 + proficiency levels came directly from a detailed written
-# spec, not guessed - if your actual comfort levels differ, just edit
-# the tuples above.
+# Swapped out AWS/Kubernetes/PostgreSQL for PHP/Git/Blender/C/SQLite/
+# JavaScript/HTML-CSS per direct request - proficiency levels here are
+# a best-effort guess from the rest of what's known about the stack;
+# edit the tuples above if any of these read wrong.
 PROJECTS = [
     {
         "name": "SatGate",
@@ -349,27 +354,16 @@ def build_context() -> dict:
         "terminal_svg_path": build_terminal_svg(
             avatar_ascii, boot_sequence, system_message, status, combined_stats
         ),
-        "project_cards": [
-            {**p, "card_svg_path": _write_svg(
-                project_cards.render_project_card_simple_svg(p, THEME), f"project_card_{i}.svg"
-            )}
-            for i, p in enumerate(PROJECTS)
-        ],
+        # Projects and Fragmented Data were the same real project list at two
+        # levels of detail - kept only Fragmented Data (the ribbon+stats
+        # version) per direct request, so the plain-card Projects section
+        # and its View/Code badges are no longer wired in here.
         "fragment_cards": [
             {**p, "card_svg_path": _write_svg(
                 fragmented_data.render_fragment_card_svg(p, THEME), f"fragment_card_{i}.svg"
             )}
             for i, p in enumerate(PROJECTS)
         ],
-        "badge_view_path": _write_svg(
-            project_cards.render_link_badge_svg("view", THEME), "badge_view.svg"
-        ),
-        "badge_code_path": _write_svg(
-            project_cards.render_link_badge_svg("code", THEME), "badge_code.svg"
-        ),
-        "badge_disabled_path": _write_svg(
-            project_cards.render_link_badge_svg("view", THEME, disabled=True), "badge_disabled.svg"
-        ),
         "skill_modules_svg_path": _write_svg(
             skill_modules.render_skill_modules_svg(SKILLS, THEME), "skill_modules.svg"
         ),
@@ -388,6 +382,9 @@ def build_context() -> dict:
                 THEME,
             ),
             "dimensional_stats.svg",
+        ),
+        "leetcode_panel_svg_path": _write_svg(
+            leetcode_panel.render_leetcode_panel_svg(leetcode_stats, THEME), "leetcode_panel.svg"
         ),
         "event_log_svg_path": _write_svg(
             event_log.render_event_log_svg(EVENT_LOG, THEME), "event_log.svg"
@@ -422,8 +419,8 @@ def build_context() -> dict:
             for i, name in enumerate(
                 [
                     "System Modules",
-                    "Projects",
                     "Dimensional Stats",
+                    "LeetCode Stats",
                     "Event Log",
                     "Fragmented Data",
                     "Signal Uplink",

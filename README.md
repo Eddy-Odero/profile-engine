@@ -4,7 +4,7 @@
 
 <sub>~ live session · Eddy Odero@github · re-renders every build ~</sub>
 
-![Repos: 23](https://img.shields.io/badge/Repos-23-00E7FF?style=flat-square&labelColor=07090F) ![Stars: 22](https://img.shields.io/badge/Stars-22-00E7FF?style=flat-square&labelColor=07090F) ![Followers: 50](https://img.shields.io/badge/Followers-50-00E7FF?style=flat-square&labelColor=07090F) ![LC Solved: 45](https://img.shields.io/badge/LC_Solved-45-00E7FF?style=flat-square&labelColor=07090F)
+![Repos: 23](https://img.shields.io/badge/Repos-23-00E7FF?style=flat-square&labelColor=07090F) ![Stars: 22](https://img.shields.io/badge/Stars-22-00E7FF?style=flat-square&labelColor=07090F) ![Followers: 50](https://img.shields.io/badge/Followers-50-00E7FF?style=flat-square&labelColor=07090F) ![LC Solved: 120](https://img.shields.io/badge/LC_Solved-120-00E7FF?style=flat-square&labelColor=07090F)
 
 </div>
 
@@ -20,58 +20,7 @@
 
 <div align="center">
 
-![Projects header](generated/header_3.svg)
-
-</div>
-
-<table>
-<tr>
-<td align="center" width="220">
-
-![SatGate](generated/project_card_0.svg)
-
-<table><tr>
-<td align="left">![not hosted](generated/badge_disabled.svg)<br><sub>not hosted yet</sub></td>
-<td align="right">[![Code](generated/badge_code.svg)](https://github.com/Eddy-Odero/SatGate)</td>
-</tr></table>
-
-</td>
-<td align="center" width="220">
-
-![EDU-FLIX](generated/project_card_1.svg)
-
-<table><tr>
-<td align="left">![not hosted](generated/badge_disabled.svg)<br><sub>not hosted yet</sub></td>
-<td align="right">[![Code](generated/badge_code.svg)](https://github.com/Eddy-Odero/EDU-FLIX)</td>
-</tr></table>
-
-</td>
-<td align="center" width="220">
-
-![lem-in colony visualizer](generated/project_card_2.svg)
-
-<table><tr>
-<td align="left">![not hosted](generated/badge_disabled.svg)<br><sub>not hosted yet</sub></td>
-<td align="right">[![Code](generated/badge_code.svg)](https://github.com/Eddy-Odero/lem-in)</td>
-</tr></table>
-
-</td>
-<td align="center" width="220">
-
-![Maison POS](generated/project_card_3.svg)
-
-<table><tr>
-<td align="left">![not hosted](generated/badge_disabled.svg)<br><sub>not hosted yet</sub></td>
-<td align="right">[![Code](generated/badge_code.svg)](https://github.com/Eddy-Odero/Maison-POS)</td>
-</tr></table>
-
-</td>
-</tr>
-</table>
-
-<div align="center">
-
-![Dimensional Stats header](generated/header_4.svg)
+![Dimensional Stats header](generated/header_3.svg)
 
 ![Dimensional Stats](generated/dimensional_stats.svg)
 
@@ -80,6 +29,14 @@
 <div align="center">
 
 ![Quote](generated/quote.svg)
+
+</div>
+
+<div align="center">
+
+![LeetCode Stats header](generated/header_4.svg)
+
+![LeetCode Stats](generated/leetcode_panel.svg)
 
 </div>
 
@@ -133,41 +90,6 @@
 
 ---
 
-### `$ github --stats`
-
-```
-Repositories : 23
-Stars        : 22
-Followers    : 50
-Contributions: 1078
-Top Languages: Go, HTML, Python
-Pinned       : SatGate
-```
-
-### `$ github --activity`
-
-```
-pushed to Eddy-Odero/profile-engine
-pushed to Eddy-Odero/profile-engine
-pushed to Eddy-Odero/Introduction-to-Algorithms-Go
-pushed to Eddy-Odero/Introduction-to-Algorithms-Go
-pushed to Eddy-Odero/Introduction-to-Algorithms-Go
-```
-
-### `$ leetcode --stats`
-
-```
-Solved       : 45 (Easy 12 / Medium 22 / Hard 11)
-Rating       : unrated
-Global Rank  : N/A
-Top %        : N/A
-Contests     : 0
-Badges       : none yet
-```
-
-
----
-
 <div align="center">
 
 ![Neural Activity header](generated/header_8.svg)
@@ -178,4 +100,4 @@ Badges       : none yet
 
 ---
 
-<sub>Last rendered: 2026-08-01 10:51 UTC · theme: hud · auto-generated, do not edit by hand</sub>
+<sub>Last rendered: 2026-08-01 11:24 UTC · theme: hud · auto-generated, do not edit by hand</sub>

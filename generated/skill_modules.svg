@@ -1,4 +1,4 @@
-<svg width="722" height="314" viewBox="0 0 722 314" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="System modules">
+<svg width="722" height="478" viewBox="0 0 722 478" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="System modules">
   <defs>
     <pattern id="hudgrid" width="24" height="24" patternUnits="userSpaceOnUse">
       <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#00E7FF" stroke-width="0.6" opacity="0.09"/>
@@ -16,8 +16,8 @@
     <pattern id="scanlines" width="4" height="3" patternUnits="userSpaceOnUse">
       <rect width="4" height="1" fill="black" fill-opacity="0.15"/>
     </pattern></defs>
-  <rect width="722" height="314" fill="#07090F"/>
-  <rect width="722" height="314" rx="0" fill="url(#hudgrid)"/><rect width="722" height="314" rx="0" fill="url(#hudgridbold)"/>
+  <rect width="722" height="478" fill="#07090F"/>
+  <rect width="722" height="478" rx="0" fill="url(#hudgrid)"/><rect width="722" height="478" rx="0" fill="url(#hudgridbold)"/>
   
   <g>
     <rect x="0" y="0" width="170" height="150" fill="#07090F" fill-opacity="0.3" stroke="#1c2a3a" stroke-width="1"/>
@@ -62,26 +62,58 @@
   <g>
     <rect x="184" y="164" width="170" height="150" fill="#07090F" fill-opacity="0.3" stroke="#1c2a3a" stroke-width="1"/>
     <path d="M190 186 L190 170 L206 170" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M348 186 L348 170 L332 170" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M190 292 L190 308 L206 308" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M348 292 L348 308 L332 308" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/>
-    <circle cx="269.0" cy="208" r="26" fill="#326CE5" fill-opacity="0.12" stroke="#326CE5" stroke-width="2"/>
-    <text x="269.0" y="216" font-size="22" text-anchor="middle">☸️</text>
-    <text x="269.0" y="264" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">KUBERNETES</text>
+    <circle cx="269.0" cy="208" r="26" fill="#8892BF" fill-opacity="0.12" stroke="#8892BF" stroke-width="2"/>
+    <text x="269.0" y="216" font-size="22" text-anchor="middle">🟣</text>
+    <text x="269.0" y="264" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">PHP</text>
     <text x="269.0" y="282" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">ADVANCED</text>
   </g>
   <g>
     <rect x="368" y="164" width="170" height="150" fill="#07090F" fill-opacity="0.3" stroke="#1c2a3a" stroke-width="1"/>
     <path d="M374 186 L374 170 L390 170" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M532 186 L532 170 L516 170" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M374 292 L374 308 L390 308" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M532 292 L532 308 L516 308" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/>
-    <circle cx="453.0" cy="208" r="26" fill="#336791" fill-opacity="0.12" stroke="#336791" stroke-width="2"/>
-    <text x="453.0" y="216" font-size="22" text-anchor="middle">🐘</text>
-    <text x="453.0" y="264" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">POSTGRESQL</text>
-    <text x="453.0" y="282" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">ADVANCED</text>
+    <circle cx="453.0" cy="208" r="26" fill="#F05032" fill-opacity="0.12" stroke="#F05032" stroke-width="2"/>
+    <text x="453.0" y="216" font-size="22" text-anchor="middle">🔧</text>
+    <text x="453.0" y="264" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">GIT</text>
+    <text x="453.0" y="282" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">EXPERT</text>
   </g>
   <g>
     <rect x="552" y="164" width="170" height="150" fill="#07090F" fill-opacity="0.3" stroke="#1c2a3a" stroke-width="1"/>
     <path d="M558 186 L558 170 L574 170" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M716 186 L716 170 L700 170" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M558 292 L558 308 L574 308" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M716 292 L716 308 L700 308" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/>
-    <circle cx="637.0" cy="208" r="26" fill="#FF9900" fill-opacity="0.12" stroke="#FF9900" stroke-width="2"/>
-    <text x="637.0" y="216" font-size="22" text-anchor="middle">☁️</text>
-    <text x="637.0" y="264" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">AWS</text>
-    <text x="637.0" y="282" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">ADVANCED</text>
+    <circle cx="637.0" cy="208" r="26" fill="#F7DF1E" fill-opacity="0.12" stroke="#F7DF1E" stroke-width="2"/>
+    <text x="637.0" y="216" font-size="22" text-anchor="middle">🟨</text>
+    <text x="637.0" y="264" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">JAVASCRIPT</text>
+    <text x="637.0" y="282" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">EXPERT</text>
   </g>
-  <rect x="0" y="0" width="722" height="314" fill="url(#scanlines)"/>
+  <g>
+    <rect x="0" y="328" width="170" height="150" fill="#07090F" fill-opacity="0.3" stroke="#1c2a3a" stroke-width="1"/>
+    <path d="M6 350 L6 334 L22 334" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M164 350 L164 334 L148 334" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M6 456 L6 472 L22 472" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M164 456 L164 472 L148 472" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/>
+    <circle cx="85.0" cy="372" r="26" fill="#00E7FF" fill-opacity="0.12" stroke="#00E7FF" stroke-width="2"/>
+    <text x="85.0" y="380" font-size="22" text-anchor="middle">🌐</text>
+    <text x="85.0" y="428" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">HTML/CSS</text>
+    <text x="85.0" y="446" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">EXPERT</text>
+  </g>
+  <g>
+    <rect x="184" y="328" width="170" height="150" fill="#07090F" fill-opacity="0.3" stroke="#1c2a3a" stroke-width="1"/>
+    <path d="M190 350 L190 334 L206 334" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M348 350 L348 334 L332 334" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M190 456 L190 472 L206 472" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M348 456 L348 472 L332 472" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/>
+    <circle cx="269.0" cy="372" r="26" fill="#4C8BBE" fill-opacity="0.12" stroke="#4C8BBE" stroke-width="2"/>
+    <text x="269.0" y="380" font-size="22" text-anchor="middle">🗄️</text>
+    <text x="269.0" y="428" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">SQLITE</text>
+    <text x="269.0" y="446" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">ADVANCED</text>
+  </g>
+  <g>
+    <rect x="368" y="328" width="170" height="150" fill="#07090F" fill-opacity="0.3" stroke="#1c2a3a" stroke-width="1"/>
+    <path d="M374 350 L374 334 L390 334" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M532 350 L532 334 L516 334" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M374 456 L374 472 L390 472" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M532 456 L532 472 L516 472" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/>
+    <circle cx="453.0" cy="372" r="26" fill="#00E7FF" fill-opacity="0.12" stroke="#00E7FF" stroke-width="2"/>
+    <text x="453.0" y="380" font-size="22" text-anchor="middle">🅲</text>
+    <text x="453.0" y="428" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">C</text>
+    <text x="453.0" y="446" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">INTERMEDIATE</text>
+  </g>
+  <g>
+    <rect x="552" y="328" width="170" height="150" fill="#07090F" fill-opacity="0.3" stroke="#1c2a3a" stroke-width="1"/>
+    <path d="M558 350 L558 334 L574 334" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M716 350 L716 334 L700 334" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M558 456 L558 472 L574 472" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/><path d="M716 456 L716 472 L700 472" fill="none" stroke="#FFC84D" stroke-width="2" filter="url(#hudglow)"/>
+    <circle cx="637.0" cy="372" r="26" fill="#F5792A" fill-opacity="0.12" stroke="#F5792A" stroke-width="2"/>
+    <text x="637.0" y="380" font-size="22" text-anchor="middle">🧊</text>
+    <text x="637.0" y="428" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">BLENDER</text>
+    <text x="637.0" y="446" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">INTERMEDIATE</text>
+  </g>
+  <rect x="0" y="0" width="722" height="478" fill="url(#scanlines)"/>
 </svg>

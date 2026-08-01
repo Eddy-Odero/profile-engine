@@ -92,29 +92,30 @@ font-weight="700" fill="url(#{gradient_id})" filter="url(#hudglow)">{_esc(value)
 
 def _isometric_cube(cx: float, cy: float, size: float, accent: str, label_lines: list[str]) -> str:
     """
-    A wireframe cube (front face + back face + connecting edges, all
-    outline-only, no fill) in isometric projection - matching the
-    reference's actual style. An earlier filled/shaded isometric block
-    version was tried and didn't match.
+    A wireframe cube in FRONT-VIEW / one-point perspective: you're
+    looking directly at the front face square-on (not from an angled
+    side), with a smaller, CENTERED back face and diagonal edges
+    converging inward toward the middle - like looking straight into a
+    box. An earlier isometric version offset the back face up-and-left,
+    which read as a side/angled view instead of a direct front view.
     """
-    h = size * 0.55  # vertical squash for the isometric angle
+    front_half = size / 2
+    back_half = front_half * 0.55  # smaller back face = the depth cue
 
-    # 8 vertices of the cube in isometric projection: front face (4) + back face (4, offset up-left)
     front = [
-        (cx - size / 2, cy - h / 2),  # front-top-left
-        (cx + size / 2, cy - h / 2),  # front-top-right
-        (cx + size / 2, cy + h),      # front-bottom-right
-        (cx - size / 2, cy + h),      # front-bottom-left
+        (cx - front_half, cy - front_half),  # top-left
+        (cx + front_half, cy - front_half),  # top-right
+        (cx + front_half, cy + front_half),  # bottom-right
+        (cx - front_half, cy + front_half),  # bottom-left
     ]
-    # A small DIAGONAL offset (both x and y) is what actually creates the
-    # 3D illusion - the connecting edges need to be angled lines, not
-    # straight verticals. A previous attempt used depth_x=0 for a
-    # "centered view" fix, but that made every connecting edge perfectly
-    # vertical, which reads as a flat table grid, not a cube. This keeps
-    # the offset small and roughly centered (not heavily skewed to one
-    # side) while still being large enough to read as genuine depth.
-    depth_x, depth_y = size * 0.22, -size * 0.3
-    back = [(x + depth_x, y + depth_y) for x, y in front]
+    # Centered on the same (cx, cy) - this is what keeps it a direct
+    # front view instead of a skewed side view; only the scale differs.
+    back = [
+        (cx - back_half, cy - back_half),
+        (cx + back_half, cy - back_half),
+        (cx + back_half, cy + back_half),
+        (cx - back_half, cy + back_half),
+    ]
 
     def line(p1, p2, width=1.2):
         return f'<line x1="{p1[0]:.1f}" y1="{p1[1]:.1f}" x2="{p2[0]:.1f}" y2="{p2[1]:.1f}" stroke="{accent}" stroke-width="{width}"/>'
@@ -123,7 +124,7 @@ def _isometric_cube(cx: float, cy: float, size: float, accent: str, label_lines:
     for i in range(4):
         edges.append(line(front[i], front[(i + 1) % 4]))  # front face
         edges.append(line(back[i], back[(i + 1) % 4]))    # back face
-        edges.append(line(front[i], back[i]))              # connecting edges
+        edges.append(line(front[i], back[i]))              # diagonal connecting edges
 
     label_svg = "".join(
         f'<text x="{cx:.1f}" y="{cy - 4 + i*13:.1f}" font-family="Consolas, Menlo, monospace" '

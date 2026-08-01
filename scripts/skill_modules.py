@@ -44,6 +44,7 @@ MUTED = "6b7a8c"
 MONOGRAMS: dict[str, str] = {
     "go": "🐹", "javascript": "🟨", "typescript": "🔷", "php": "🟣",
     "node.js": "💚", "nodejs": "💚", "c++": "⚙️", "html": "🌐", "css": "🎨",
+    "html/css": "🌐", "c": "🅲",
     "sqlite": "🗄️", "postgresql": "🐘", "docker": "🐳", "python": "🐍",
     "git": "🔧", "figma": "🎯", "blender": "🧊", "redis": "🔴",
     "rust": "🦀", "kubernetes": "☸️", "aws": "☁️",
