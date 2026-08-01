@@ -111,7 +111,7 @@ def render_quote_svg(quote: str, theme_name: str = DEFAULT_THEME) -> str:
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Quote">
   <defs>{''.join(clip_groups)}{grid_defs}{glow_filter()}{scan_defs}
   </defs>
-  <rect width="{width}" height="{height}" rx="10" fill="#{BG}"/>
+  <rect width="{width}" height="{height}" rx="10" fill="#{BG}" fill-opacity="0.82"/>
   {grid_rect}
   <rect width="{width}" height="{height}" rx="10" fill="none" stroke="#{CARD_BORDER}" stroke-width="1"/>
   <rect width="4" height="{height}" fill="{accent}"/>

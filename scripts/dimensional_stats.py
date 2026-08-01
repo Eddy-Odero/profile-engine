@@ -187,7 +187,7 @@ def render_dimensional_stats_svg(
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dimensional stats">
   <defs>{grid_defs}{glow_filter()}{scan_defs}</defs>
-  <rect width="{width}" height="{height}" fill="#07090F"/>
+  <rect width="{width}" height="{height}" fill="#07090F" fill-opacity="0.82"/>
   {grid_rect}
   {cube_svg}
   {''.join(cards)}

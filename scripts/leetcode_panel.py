@@ -91,7 +91,7 @@ def render_leetcode_panel_svg(stats: dict, theme_name: str = DEFAULT_THEME) -> s
     return f"""<svg width="{WIDTH}" height="{height}" viewBox="0 0 {WIDTH} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LeetCode stats">
   <defs>{grid_defs}{glow_filter()}{scan_defs}</defs>
-  <rect width="{WIDTH}" height="{height}" fill="#{BG}"/>
+  <rect width="{WIDTH}" height="{height}" fill="#{BG}" fill-opacity="0.82"/>
   {grid_rect}
   <rect width="4" height="{height}" fill="{accent}"/>
   {''.join(row_elements)}

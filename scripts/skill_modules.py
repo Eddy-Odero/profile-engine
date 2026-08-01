@@ -134,13 +134,13 @@ def render_skill_modules_svg(
             y = row_i * (CARD_HEIGHT + CARD_GAP)
             badges.append(_badge(x, y, skill, level, accent, bracket_color))
 
-    grid_defs, grid_rect = grid_background(width, height, accent)
+    grid_defs, grid_rect = grid_background(width, height, accent, spacing=20)
     scan_defs, scan_rect = scanline_overlay(width, height)
 
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="System modules">
   <defs>{grid_defs}{glow_filter()}{scan_defs}</defs>
-  <rect width="{width}" height="{height}" fill="#{CARD_BG}"/>
+  <rect width="{width}" height="{height}" fill="#{CARD_BG}" fill-opacity="0.68"/>
   {grid_rect}
   {''.join(badges)}
   {scan_rect}

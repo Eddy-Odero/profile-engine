@@ -1,10 +1,10 @@
 <svg width="722" height="478" viewBox="0 0 722 478" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="System modules">
   <defs>
-    <pattern id="hudgrid" width="24" height="24" patternUnits="userSpaceOnUse">
-      <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#00E7FF" stroke-width="0.6" opacity="0.09"/>
+    <pattern id="hudgrid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#00E7FF" stroke-width="0.6" opacity="0.09"/>
     </pattern>
-    <pattern id="hudgridbold" width="96" height="96" patternUnits="userSpaceOnUse">
-      <path d="M 96 0 L 0 0 0 96" fill="none" stroke="#00E7FF" stroke-width="1" opacity="0.162"/>
+    <pattern id="hudgridbold" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path d="M 80 0 L 0 0 0 80" fill="none" stroke="#00E7FF" stroke-width="1" opacity="0.162"/>
     </pattern>
     <filter id="hudglow" x="-60%" y="-60%" width="220%" height="220%">
       <feGaussianBlur stdDeviation="1.4" result="blur"/>
@@ -16,7 +16,7 @@
     <pattern id="scanlines" width="4" height="3" patternUnits="userSpaceOnUse">
       <rect width="4" height="1" fill="black" fill-opacity="0.15"/>
     </pattern></defs>
-  <rect width="722" height="478" fill="#07090F"/>
+  <rect width="722" height="478" fill="#07090F" fill-opacity="0.68"/>
   <rect width="722" height="478" rx="0" fill="url(#hudgrid)"/><rect width="722" height="478" rx="0" fill="url(#hudgridbold)"/>
   
   <g>

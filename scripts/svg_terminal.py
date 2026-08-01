@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import html
 
+from hud_grid import grid_background
 from themes import DEFAULT_THEME, get_theme
 
 # ── Fixed terminal frame ──────────────────────────────────────────────
@@ -246,11 +247,16 @@ def render_terminal_svg(
 
     avatar_elements = []
     y = FONT_SIZE
+    n_lines = max(len(avatar_lines) - 1, 1)
     for i, line in enumerate(avatar_lines):
+        # A top-to-bottom brightness fade instead of one flat solid color -
+        # brighter near the top, settling to a dimmer, cooler tone by the
+        # bottom, which reads as much less flat on a dense block of ASCII.
+        fade = 1.0 - (i / n_lines) * 0.5
         avatar_elements.append(
             f'<text class="line line-{i}" x="0" y="{y:.1f}" filter="url(#glow)" '
             f'font-family="Consolas, Menlo, monospace" font-size="{FONT_SIZE}" '
-            f'fill="{accent}" xml:space="preserve">{_esc(line)}</text>'
+            f'fill="{accent}" fill-opacity="{fade:.2f}" xml:space="preserve">{_esc(line)}</text>'
         )
         y += LINE_HEIGHT
 
@@ -312,6 +318,7 @@ def render_terminal_svg(
     )
 
     total_lines = line_idx
+    term_grid_defs, term_grid_rect = grid_background(width, height, accent, spacing=20, rx=10)
 
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(username)} terminal">
@@ -327,8 +334,10 @@ xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(username)} termi
     <clipPath id="bodyClip">
       <rect x="0" y="{TITLE_BAR_HEIGHT}" width="{width}" height="{height - TITLE_BAR_HEIGHT}"/>
     </clipPath>
+    {term_grid_defs}
   </defs>
-  <rect width="{width}" height="{height}" rx="10" fill="{bg}"/>
+  <rect width="{width}" height="{height}" rx="10" fill="{bg}" fill-opacity="0.85"/>
+  {term_grid_rect}
   {_title_bar(width, accent, username)}
   <g clip-path="url(#bodyClip)">
     <g class="glitch">
