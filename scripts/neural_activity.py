@@ -25,6 +25,7 @@ step once that's wanted).
 
 from __future__ import annotations
 
+import hashlib
 import html
 
 from hud_grid import glow_filter, grid_background, scanline_overlay
@@ -78,6 +79,8 @@ def render_neural_activity_svg(
     grid_x0 = (width - grid_w) / 2
     grid_y0 = PANEL_PAD_TOP
 
+    GLYPHS = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
     cells = []
     for col, week in enumerate(weeks):
         for row, level in enumerate(week):
@@ -85,17 +88,25 @@ def render_neural_activity_svg(
             x = grid_x0 + col * (CELL + CELL_GAP)
             y = grid_y0 + row * (CELL + CELL_GAP)
             glow = ' filter="url(#hudglow)"' if level >= 3 else ""
-            # Outer faint frame (always visible, even on empty days) plus
-            # a smaller inset fill square for the actual intensity - two
-            # nested squares with a visible gap between them, rather than
-            # one flat-colored square per cell.
-            inset = 2.5
-            cells.append(
-                f'<rect x="{x:.1f}" y="{y:.1f}" width="{CELL}" height="{CELL}" rx="1.5" '
-                f'fill="none" stroke="{color}" stroke-opacity="0.35" stroke-width="0.75"/>'
-                f'<rect x="{x+inset:.1f}" y="{y+inset:.1f}" width="{CELL-inset*2:.1f}" '
-                f'height="{CELL-inset*2:.1f}" rx="1" fill="{color}" fill-opacity="{opacity}"{glow}/>'
+            cell_svg = (
+                f'<rect x="{x:.1f}" y="{y:.1f}" width="{CELL}" height="{CELL}" rx="2" '
+                f'fill="{color}" fill-opacity="{opacity}"{glow}/>'
             )
+            # A small character glyph sits inside each active cell - some
+            # tinted a lighter green so they nearly blend into the fill,
+            # others black so they pop with real contrast - a deliberate
+            # mix, not just decoration. Deterministic per (col,row) so
+            # rebuilds don't flicker the pattern around.
+            if level > 0:
+                h = int(hashlib.md5(f"{col}-{row}".encode()).hexdigest(), 16)
+                glyph = GLYPHS[h % len(GLYPHS)]
+                glyph_color = "#0a0f0c" if (h // len(GLYPHS)) % 2 == 0 else "#bdf5d8"
+                cell_svg += (
+                    f'<text x="{x + CELL/2:.1f}" y="{y + CELL/2 + 2.6:.1f}" '
+                    f'font-family="Consolas, Menlo, monospace" font-size="{CELL*0.62:.1f}" '
+                    f'font-weight="700" fill="{glyph_color}" text-anchor="middle">{glyph}</text>'
+                )
+            cells.append(cell_svg)
 
     bg_defs, bg_rect = grid_background(width, height, accent, spacing=20)
     scan_defs, scan_rect = scanline_overlay(width, height)

@@ -1,22 +1,19 @@
 """
 fragmented_data.py
 
-"Fragmented Data" - a real, from-scratch rebuild distinct from the old
-project-card look, matching the reference exactly: wide LANDSCAPE
-cards (not portrait), with the top-right AND bottom-left corners
-chamfered (cut at a diagonal, giving a hexagonal/HUD-panel silhouette
-rather than a plain rounded rect), a PUBLIC/VIP ribbon tucked into the
-cut top-right notch, icon+name on one line, a 2-line description, and
-a bottom stats row (language dot, stars, forks). Cards are meant to
-sit close together (small gap) in the template's grid, not spaced far
-apart.
+"Fragmented Data" - same card content/layout as the original project
+card (icon centered above the title, centered description, bottom
+stats row, corner ribbon - all reused as-is from project_cards.py),
+with exactly two differences: the card is a wide rectangle instead of
+a portrait rect, and its top-right + bottom-left corners are chamfered
+(cut at 45 degrees) instead of plain rounded corners.
 
-This reuses the icon glyph / star / fork primitives from
-project_cards.py (those don't depend on card width), but everything
-that DOES depend on the card's shape (the outline, the ribbon
-position, the stats row) is implemented fresh here rather than
-delegating to project_cards.render_single_project_card_svg, since that
-function assumes a narrower portrait card.
+The ribbon itself is NOT redrawn or repositioned - it's the exact same
+_ribbon() polygon from project_cards.py. It's wrapped in a clip-path
+using the card's own chamfered outline, so the same diagonal cut that
+slices the card's corner also slices the ribbon sitting in it - that's
+what turns it into the "opposite parallelogram" look, as a side effect
+of one shared clip shape, not a redesigned ribbon.
 
 Usage:
     from fragmented_data import render_fragment_card_svg
@@ -25,51 +22,27 @@ Usage:
 
 from __future__ import annotations
 
-import html
-
-from project_cards import _fork_icon, _project_icon, _star_icon
-from tech_pills import TECH_COLORS
-from themes import DEFAULT_THEME, HUD_COLORS, get_theme
+from hud_grid import grid_background
+from project_cards import (
+    CARD_BG,
+    CARD_BORDER,
+    DESC_COLOR,
+    ICON_RADIUS,
+    _esc,
+    _project_icon,
+    _ribbon,
+    _stats_row,
+    _wrap_description,
+    _wrap_label,
+)
+from themes import DEFAULT_THEME, get_theme
 
 WIDTH = 380
-HEIGHT = 140
-CHAMFER = 20  # size of the cut corner, top-right and bottom-left
-
-BG = "07090F"
-CARD_BORDER = "24384a"
-DESC_COLOR = "8f97a8"
-STAT_COLOR = "7d7d88"
-TITLE_COLOR = "e8e6f0"
-
-RIBBON_COLORS = {"public": HUD_COLORS["ribbon_public"], "vip": HUD_COLORS["ribbon_vip"]}
+HEIGHT = 150
+CHAMFER = 28  # size of the cut corner, top-right and bottom-left
 
 
-def _esc(text: str) -> str:
-    return html.escape(text, quote=True)
-
-
-def _wrap(text: str, max_chars: int = 46) -> list[str]:
-    words = text.split()
-    lines: list[str] = []
-    current = ""
-    for word in words:
-        candidate = f"{current} {word}".strip()
-        if len(candidate) > max_chars and current:
-            lines.append(current)
-            current = word
-        else:
-            current = candidate
-    if current:
-        lines.append(current)
-    return lines[:2] or [""]
-
-
-def _chamfered_outline(width: float, height: float, cut: float) -> str:
-    """
-    The card's own outline: a rectangle with its top-right and
-    bottom-left corners sliced off at 45 degrees - an octagon-ish HUD
-    panel silhouette rather than a plain (rounded) rectangle.
-    """
+def _chamfered_points(width: float, height: float, cut: float) -> str:
     points = [
         (0, 0),
         (width - cut, 0),
@@ -78,92 +51,61 @@ def _chamfered_outline(width: float, height: float, cut: float) -> str:
         (cut, height),
         (0, height - cut),
     ]
-    pts_str = " ".join(f"{x:.1f},{y:.1f}" for x, y in points)
-    return pts_str
-
-
-def _ribbon(visibility: str) -> str:
-    """PUBLIC/VIP ribbon tucked into the chamfered top-right notch."""
-    if not visibility:
-        return ""
-    color = RIBBON_COLORS.get(visibility.lower(), RIBBON_COLORS["public"])
-    label = visibility.upper()
-    return f"""
-  <g>
-    <polygon points="{WIDTH-CHAMFER-46},10 {WIDTH-14},10 {WIDTH-14},{CHAMFER-2} {WIDTH-CHAMFER-24},{CHAMFER-2}" fill="{color}"/>
-    <text x="{WIDTH-CHAMFER-35}" y="{CHAMFER-9}" font-family="Consolas, Menlo, monospace" font-size="8.5" \
-font-weight="700" fill="#0a0a0d" text-anchor="middle">{_esc(label)}</text>
-  </g>"""
-
-
-def _stats_row(y: float, language: str, stars: int, forks: int, accent: str) -> str:
-    lang_hex = TECH_COLORS.get((language or "").lower())
-    lang_color = f"#{lang_hex}" if lang_hex else accent
-
-    parts = []
-    lx = 24
-    if language:
-        parts.append(f'<circle cx="{lx}" cy="{y-3}" r="4" fill="{lang_color}"/>')
-        parts.append(
-            f'<text x="{lx+10}" y="{y}" font-family="Segoe UI, Helvetica, Arial, sans-serif" '
-            f'font-size="10" fill="#{STAT_COLOR}">{_esc(language)}</text>'
-        )
-
-    star_x = WIDTH - 88
-    parts.append(_star_icon(star_x, y - 3, f"#{STAT_COLOR}"))
-    parts.append(
-        f'<text x="{star_x+9}" y="{y}" font-family="Segoe UI, Helvetica, Arial, sans-serif" '
-        f'font-size="10" fill="#{STAT_COLOR}">{stars}</text>'
-    )
-
-    fork_x = WIDTH - 48
-    parts.append(_fork_icon(fork_x, y - 3, f"#{STAT_COLOR}"))
-    parts.append(
-        f'<text x="{fork_x+11}" y="{y}" font-family="Segoe UI, Helvetica, Arial, sans-serif" '
-        f'font-size="10" fill="#{STAT_COLOR}">{forks}</text>'
-    )
-
-    return "".join(parts)
+    return " ".join(f"{x:.1f},{y:.1f}" for x, y in points)
 
 
 def render_fragment_card_svg(project: dict, theme_name: str = DEFAULT_THEME) -> str:
+    """Same card as render_single_project_card_svg, just wide + corner-chamfered."""
     theme = get_theme(theme_name)
     accent = f"#{theme['color']}"
 
     name = project.get("name", "")
     description = project.get("description", "")
     icon_key = project.get("icon", "")
-    visibility = project.get("visibility", "public")
-    language = project.get("language", "")
-    stars = project.get("stars", 0)
-    forks = project.get("forks", 0)
 
-    icon_cx, icon_cy = 34, 38
-    name_x = icon_cx + 30
-    desc_lines = _wrap(description)
+    name_lines = _wrap_label(name)
+    desc_lines = _wrap_description(description, max_chars=50)
 
-    outline_pts = _chamfered_outline(WIDTH, HEIGHT, CHAMFER)
+    icon_cy = 30
+    name_y = icon_cy + ICON_RADIUS + 18
+    desc_start_y = name_y + len(name_lines) * 18 + 4
 
-    name_svg = (
-        f'<text x="{name_x}" y="{icon_cy + 5}" font-family="Segoe UI, Helvetica, Arial, sans-serif" '
-        f'font-size="16" font-weight="700" fill="#{TITLE_COLOR}">{_esc(name)}</text>'
+    name_elements = "".join(
+        f'<text x="{WIDTH / 2}" y="{name_y + i * 18}" '
+        f'font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="14" '
+        f'font-weight="700" fill="white" text-anchor="middle">{_esc(line)}</text>'
+        for i, line in enumerate(name_lines)
     )
-
-    desc_y0 = icon_cy + 32
-    desc_svg = "".join(
-        f'<text x="24" y="{desc_y0 + i*17}" font-family="Segoe UI, Helvetica, Arial, sans-serif" '
-        f'font-size="11" fill="#{DESC_COLOR}">{_esc(line)}</text>'
+    desc_elements = "".join(
+        f'<text x="{WIDTH / 2}" y="{desc_start_y + i * 15}" '
+        f'font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" '
+        f'fill="#{DESC_COLOR}" text-anchor="middle">{_esc(line)}</text>'
         for i, line in enumerate(desc_lines)
     )
 
-    stats_y = HEIGHT - 20
+    outline_pts = _chamfered_points(WIDTH, HEIGHT, CHAMFER)
+    grid_defs, grid_rect = grid_background(WIDTH, HEIGHT, accent, spacing=16)
 
     return f"""<svg width="{WIDTH}" height="{HEIGHT}" viewBox="0 0 {WIDTH} {HEIGHT}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(name)}">
-  <polygon points="{outline_pts}" fill="#{BG}" fill-opacity="0.94" stroke="#{CARD_BORDER}" stroke-width="1"/>
-  {_project_icon(icon_cx, icon_cy, icon_key, accent)}
-  {name_svg}
-  {desc_svg}
-  {_stats_row(stats_y, language, stars, forks, accent)}
-  {_ribbon(visibility)}
+  <defs>
+    {grid_defs}
+    <clipPath id="cardclip">
+      <polygon points="{outline_pts}"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#cardclip)">
+    {grid_rect}
+  </g>
+  <polygon points="{outline_pts}" fill="#{CARD_BG}" fill-opacity="0.93" stroke="#{CARD_BORDER}" stroke-width="1"/>
+  <g clip-path="url(#cardclip)">
+    {_ribbon(project.get("visibility", ""), width=WIDTH)}
+  </g>
+  {_project_icon(WIDTH / 2, icon_cy, icon_key, accent)}
+  {name_elements}
+  {desc_elements}
+  <line x1="14" y1="{HEIGHT - 26}" x2="{WIDTH - 14}" y2="{HEIGHT - 26}" \
+stroke="#{CARD_BORDER}" stroke-width="1"/>
+  {_stats_row(HEIGHT - 10, project.get("language", ""), project.get("stars", 0), \
+project.get("forks", 0), accent, width=WIDTH)}
 </svg>"""

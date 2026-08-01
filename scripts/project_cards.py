@@ -140,7 +140,7 @@ def _project_icon(cx: float, cy: float, icon_key: str, accent: str) -> str:
     )
 
 
-def _ribbon(visibility: str) -> str:
+def _ribbon(visibility: str, width: int = CARD_WIDTH) -> str:
     """A small diagonal corner ribbon showing PUBLIC/VIP, top-right of the card."""
     if not visibility:
         return ""
@@ -149,8 +149,8 @@ def _ribbon(visibility: str) -> str:
     # A small parallelogram tucked into the top-right corner, angled like a ribbon/flag
     return f"""
   <g>
-    <polygon points="{CARD_WIDTH-70},14 {CARD_WIDTH-8},14 {CARD_WIDTH-8},30 {CARD_WIDTH-58},30" fill="{color}"/>
-    <text x="{CARD_WIDTH-39}" y="26" font-family="Consolas, Menlo, monospace" font-size="9" \
+    <polygon points="{width-70},14 {width-8},14 {width-8},30 {width-58},30" fill="{color}"/>
+    <text x="{width-39}" y="26" font-family="Consolas, Menlo, monospace" font-size="9" \
 font-weight="700" fill="#0a0a0d" text-anchor="middle">{_esc(label)}</text>
   </g>"""
 
@@ -179,7 +179,7 @@ def _fork_icon(x: float, y: float, color: str) -> str:
     )
 
 
-def _stats_row(y: float, language: str, stars: int, forks: int, accent: str) -> str:
+def _stats_row(y: float, language: str, stars: int, forks: int, accent: str, width: int = CARD_WIDTH) -> str:
     """Language dot + name, star count, fork count - one row along the card bottom."""
     lang_hex = TECH_COLORS.get((language or "").lower())
     lang_color = f"#{lang_hex}" if lang_hex else accent
@@ -193,14 +193,14 @@ def _stats_row(y: float, language: str, stars: int, forks: int, accent: str) -> 
             f'font-size="10" fill="#{STAT_COLOR}">{_esc(language)}</text>'
         )
 
-    star_x = CARD_WIDTH - 62
+    star_x = width - 62
     parts.append(_star_icon(star_x, y - 3, f"#{STAT_COLOR}"))
     parts.append(
         f'<text x="{star_x+9}" y="{y}" font-family="Segoe UI, Helvetica, Arial, sans-serif" '
         f'font-size="10" fill="#{STAT_COLOR}">{stars}</text>'
     )
 
-    fork_x = CARD_WIDTH - 28
+    fork_x = width - 28
     parts.append(_fork_icon(fork_x, y - 3, f"#{STAT_COLOR}"))
     parts.append(
         f'<text x="{fork_x+11}" y="{y}" font-family="Segoe UI, Helvetica, Arial, sans-serif" '

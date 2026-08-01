@@ -1,12 +1,30 @@
-<svg width="380" height="140" viewBox="0 0 380 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="EDU-FLIX">
-  <polygon points="0.0,0.0 360.0,0.0 380.0,20.0 380.0,140.0 20.0,140.0 0.0,120.0" fill="#07090F" fill-opacity="0.94" stroke="#24384a" stroke-width="1"/>
-  <circle cx="34" cy="38" r="20" fill="#00E7FF" fill-opacity="0.13" stroke="#00E7FF" stroke-width="1.5"/><path transform="translate(28,31)" d="M0 0 L14 7 L0 14 Z" fill="#00E7FF"/>
-  <text x="64" y="43" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#e8e6f0">EDU-FLIX</text>
-  <text x="24" y="70" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" fill="#8f97a8">Netflix-style streaming platform built with Go</text><text x="24" y="87" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" fill="#8f97a8">and SQLite/Turso.</text>
-  <circle cx="24" cy="117" r="4" fill="#00ADD8"/><text x="34" y="120" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#7d7d88">Go</text><polygon points="292.0,112.0 290.7,115.2 287.2,115.5 289.9,117.7 289.1,121.0 292.0,119.2 294.9,121.0 294.1,117.7 296.8,115.5 293.3,115.2" fill="#7d7d88"/><text x="301" y="120" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#7d7d88">0</text><g stroke="#7d7d88" stroke-width="1.3" fill="none"><circle cx="332" cy="113" r="1.8" fill="#7d7d88" stroke="none"/><circle cx="338" cy="113" r="1.8" fill="#7d7d88" stroke="none"/><circle cx="335" cy="121" r="1.8" fill="#7d7d88" stroke="none"/><path d="M332 113 V116 Q332 118 335 118 V121 M338 113 V116 Q338 118 335 118"/></g><text x="343" y="120" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#7d7d88">0</text>
-  
-  <g>
-    <polygon points="314,10 366,10 366,18 336,18" fill="#24FF9A"/>
-    <text x="325" y="11" font-family="Consolas, Menlo, monospace" font-size="8.5" font-weight="700" fill="#0a0a0d" text-anchor="middle">PUBLIC</text>
+<svg width="380" height="150" viewBox="0 0 380 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="EDU-FLIX">
+  <defs>
+    
+    <pattern id="hudgrid" width="16" height="16" patternUnits="userSpaceOnUse">
+      <path d="M 16 0 L 0 0 0 16" fill="none" stroke="#00E7FF" stroke-width="0.6" opacity="0.09"/>
+    </pattern>
+    <pattern id="hudgridbold" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M 64 0 L 0 0 0 64" fill="none" stroke="#00E7FF" stroke-width="1" opacity="0.162"/>
+    </pattern>
+    <clipPath id="cardclip">
+      <polygon points="0.0,0.0 352.0,0.0 380.0,28.0 380.0,150.0 28.0,150.0 0.0,122.0"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#cardclip)">
+    <rect width="380" height="150" rx="0" fill="url(#hudgrid)"/><rect width="380" height="150" rx="0" fill="url(#hudgridbold)"/>
   </g>
+  <polygon points="0.0,0.0 352.0,0.0 380.0,28.0 380.0,150.0 28.0,150.0 0.0,122.0" fill="#07090F" fill-opacity="0.93" stroke="#2a2a33" stroke-width="1"/>
+  <g clip-path="url(#cardclip)">
+    
+  <g>
+    <polygon points="310,14 372,14 372,30 322,30" fill="#24FF9A"/>
+    <text x="341" y="26" font-family="Consolas, Menlo, monospace" font-size="9" font-weight="700" fill="#0a0a0d" text-anchor="middle">PUBLIC</text>
+  </g>
+  </g>
+  <circle cx="190.0" cy="30" r="20" fill="#00E7FF" fill-opacity="0.13" stroke="#00E7FF" stroke-width="1.5"/><path transform="translate(184.0,23)" d="M0 0 L14 7 L0 14 Z" fill="#00E7FF"/>
+  <text x="190.0" y="68" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="white" text-anchor="middle">EDU-FLIX</text>
+  <text x="190.0" y="90" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" fill="#9a9aa5" text-anchor="middle">Netflix-style streaming platform built with Go and</text><text x="190.0" y="105" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" fill="#9a9aa5" text-anchor="middle">SQLite/Turso.</text>
+  <line x1="14" y1="124" x2="366" y2="124" stroke="#2a2a33" stroke-width="1"/>
+  <circle cx="16" cy="137" r="4" fill="#00ADD8"/><text x="26" y="140" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#7d7d88">Go</text><polygon points="318.0,132.0 316.7,135.2 313.2,135.5 315.9,137.7 315.1,141.0 318.0,139.2 320.9,141.0 320.1,137.7 322.8,135.5 319.3,135.2" fill="#7d7d88"/><text x="327" y="140" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#7d7d88">0</text><g stroke="#7d7d88" stroke-width="1.3" fill="none"><circle cx="352" cy="133" r="1.8" fill="#7d7d88" stroke="none"/><circle cx="358" cy="133" r="1.8" fill="#7d7d88" stroke="none"/><circle cx="355" cy="141" r="1.8" fill="#7d7d88" stroke="none"/><path d="M352 133 V136 Q352 138 355 138 V141 M358 133 V136 Q358 138 355 138"/></g><text x="363" y="140" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#7d7d88">0</text>
 </svg>
