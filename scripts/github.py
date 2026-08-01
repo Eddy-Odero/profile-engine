@@ -129,6 +129,12 @@ query($login: String!) {
     contributionsCollection {
       contributionCalendar {
         totalContributions
+        weeks {
+          contributionDays {
+            contributionCount
+            date
+          }
+        }
       }
     }
     pinnedItems(first: 6, types: [REPOSITORY]) {
@@ -145,9 +151,16 @@ query($login: String!) {
 
 def fetch_graphql_extras(username: str) -> dict | None:
     """
-    Fetch contribution count + pinned repos via GraphQL. Returns None
-    (instead of raising) if there's no token or the call fails, so
-    callers can fall back to REST-derived approximations.
+    Fetch contribution count + daily calendar + pinned repos via
+    GraphQL. Returns None (instead of raising) if there's no token or
+    the call fails, so callers can fall back to REST-derived
+    approximations.
+
+    `calendar` is the raw list-of-weeks structure from GitHub (each
+    week a list of {contributionCount, date} dicts, oldest week
+    first) - kept in GitHub's own shape here so any consumer can
+    decide how to bucket it, rather than baking a specific heatmap
+    resolution into this fetch layer.
     """
     headers = github_headers()
     if "Authorization" not in headers:
@@ -162,15 +175,63 @@ def fetch_graphql_extras(username: str) -> dict | None:
         )
         resp.raise_for_status()
         data = resp.json()["data"]["user"]
+        calendar = data["contributionsCollection"]["contributionCalendar"]
         return {
-            "contributions": data["contributionsCollection"]["contributionCalendar"][
-                "totalContributions"
-            ],
+            "contributions": calendar["totalContributions"],
+            "calendar": [week["contributionDays"] for week in calendar["weeks"]],
             "pinned": [node["name"] for node in data["pinnedItems"]["nodes"]],
         }
     except Exception:
         # GraphQL is a nice-to-have here, not essential - REST fallback covers us.
         return None
+
+
+def calendar_to_heatmap(calendar: list[list[dict]]) -> dict:
+    """
+    Convert GitHub's raw {contributionCount, date} weeks structure into
+    what neural_activity.py needs: a 0-4 intensity grid, the current
+    streak (consecutive days up to and including today with at least
+    one contribution), and a count of active (non-zero) days.
+
+    Intensity buckets are quartiles of the actual max day-count in the
+    data (not GitHub's own fixed thresholds, which aren't exposed by
+    this API) - so the busiest real day in the window always reads as
+    the brightest level and the heatmap stays meaningfully shaded
+    regardless of whether someone commits twice a day or fifty times.
+    """
+    all_days = [day for week in calendar for day in week]
+    counts = [d["contributionCount"] for d in all_days]
+    max_count = max(counts) if counts else 0
+
+    def level(count: int) -> int:
+        if count <= 0 or max_count <= 0:
+            return 0
+        ratio = count / max_count
+        if ratio <= 0.25:
+            return 1
+        if ratio <= 0.5:
+            return 2
+        if ratio <= 0.75:
+            return 3
+        return 4
+
+    weeks_levels = [[level(day["contributionCount"]) for day in week] for week in calendar]
+
+    streak = 0
+    for day in reversed(all_days):
+        if day["contributionCount"] > 0:
+            streak += 1
+        else:
+            break
+
+    active_days = sum(1 for c in counts if c > 0)
+
+    return {
+        "weeks": weeks_levels,
+        "streak": streak,
+        "active_days": active_days,
+        "total": sum(counts),
+    }
 
 
 def fetch_github_stats(username: str) -> dict:
@@ -189,9 +250,11 @@ def fetch_github_stats(username: str) -> dict:
     if extras:
         pinned_repos = extras["pinned"] or repo_stats["top_starred_names"]
         contributions = extras["contributions"]
+        heatmap = calendar_to_heatmap(extras["calendar"]) if extras.get("calendar") else None
     else:
         pinned_repos = repo_stats["top_starred_names"]
         contributions = None
+        heatmap = None
 
     return {
         "repo_count": profile.get("public_repos", len(repos)),
@@ -201,6 +264,7 @@ def fetch_github_stats(username: str) -> dict:
         "recent_activity": activity,
         "pinned_repos": pinned_repos,
         "contributions": contributions,
+        "heatmap": heatmap,  # None unless a real token+GraphQL call succeeded
     }
 
 

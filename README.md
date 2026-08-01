@@ -4,21 +4,25 @@
 
 <sub>~ live session · Eddy Odero@github · re-renders every build ~</sub>
 
-![Repos: 23](https://img.shields.io/badge/Repos-23-00E7FF?style=flat-square&labelColor=07090F) ![Stars: 22](https://img.shields.io/badge/Stars-22-00E7FF?style=flat-square&labelColor=07090F) ![Followers: 50](https://img.shields.io/badge/Followers-50-00E7FF?style=flat-square&labelColor=07090F) ![LC Solved: 45](https://img.shields.io/badge/LC_Solved-45-00E7FF?style=flat-square&labelColor=07090F)
+![Repos: 24](https://img.shields.io/badge/Repos-24-00E7FF?style=flat-square&labelColor=07090F) ![Stars: 37](https://img.shields.io/badge/Stars-37-00E7FF?style=flat-square&labelColor=07090F) ![Followers: 12](https://img.shields.io/badge/Followers-12-00E7FF?style=flat-square&labelColor=07090F) ![LC Solved: 120](https://img.shields.io/badge/LC_Solved-120-00E7FF?style=flat-square&labelColor=07090F)
 
 </div>
 
 ---
 
-### System Modules
-
 <div align="center">
+
+![System Modules header](generated/header_2.svg)
 
 ![System Modules](generated/skill_modules.svg)
 
 </div>
 
-### Projects
+<div align="center">
+
+![Projects header](generated/header_3.svg)
+
+</div>
 
 <table>
 <tr>
@@ -65,15 +69,13 @@
 </tr>
 </table>
 
-### Dimensional Stats
-
 <div align="center">
+
+![Dimensional Stats header](generated/header_4.svg)
 
 ![Dimensional Stats](generated/dimensional_stats.svg)
 
 </div>
-
-### A quote I like
 
 <div align="center">
 
@@ -81,9 +83,50 @@
 
 </div>
 
-### Signal Uplink
+<div align="center">
+
+![Event Log header](generated/header_5.svg)
+
+![Event Log](generated/event_log.svg)
+
+</div>
 
 <div align="center">
+
+![Fragmented Data header](generated/header_6.svg)
+
+</div>
+
+<table>
+<tr>
+<td align="center" width="360">
+
+![SatGate](generated/fragment_card_0.svg)
+
+</td>
+<td align="center" width="360">
+
+![EDU-FLIX](generated/fragment_card_1.svg)
+
+</td>
+</tr>
+<tr>
+<td align="center" width="360">
+
+![lem-in colony visualizer](generated/fragment_card_2.svg)
+
+</td>
+<td align="center" width="360">
+
+![Maison POS](generated/fragment_card_3.svg)
+
+</td>
+</tr>
+</table>
+
+<div align="center">
+
+![Signal Uplink header](generated/header_7.svg)
 
 [![Twitter](generated/pill_twitter.svg)](https://x.com/savvyoriah48) [![LinkedIn](generated/pill_linkedin.svg)](https://www.linkedin.com/in/eddy-odero-7b3332346/) [![Dev.to](generated/pill_website.svg)](https://dev.to/edd_odero) [![Email](generated/pill_email.svg)](mailto:odiwuorodero8948@gmail.com) 
 </div>
@@ -93,28 +136,24 @@
 ### `$ github --stats`
 
 ```
-Repositories : 23
-Stars        : 22
-Followers    : 50
-Contributions: 1075
-Top Languages: Go, HTML, Python
-Pinned       : SatGate
+Repositories : 24
+Stars        : 37
+Followers    : 12
+Contributions: N/A
+Top Languages: Go, JavaScript, Python
+Pinned       : SatGate, EDU-FLIX, lem-in
 ```
 
 ### `$ github --activity`
 
 ```
-pushed to Eddy-Odero/profile-engine
-pushed to Eddy-Odero/Introduction-to-Algorithms-Go
-pushed to Eddy-Odero/Introduction-to-Algorithms-Go
-pushed to Eddy-Odero/Introduction-to-Algorithms-Go
-pushed to Eddy-Odero/Introduction-to-Algorithms-Go
+pushed to profile-engine
 ```
 
 ### `$ leetcode --stats`
 
 ```
-Solved       : 45 (Easy 12 / Medium 22 / Hard 11)
+Solved       : 120 (Easy 55 / Medium 50 / Hard 15)
 Rating       : unrated
 Global Rank  : N/A
 Top %        : N/A
@@ -125,4 +164,14 @@ Badges       : none yet
 
 ---
 
-<sub>Last rendered: 2026-08-01 08:02 UTC · theme: hud · auto-generated, do not edit by hand</sub>
+<div align="center">
+
+![Neural Activity header](generated/header_8.svg)
+
+![Neural Activity](generated/neural_activity.svg)
+
+</div>
+
+---
+
+<sub>Last rendered: 2026-08-01 06:12 UTC · theme: hud · auto-generated, do not edit by hand</sub>

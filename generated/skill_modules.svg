@@ -12,7 +12,10 @@
         <feMergeNode in="blur"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
-    </filter></defs>
+    </filter>
+    <pattern id="scanlines" width="4" height="3" patternUnits="userSpaceOnUse">
+      <rect width="4" height="1" fill="black" fill-opacity="0.15"/>
+    </pattern></defs>
   <rect width="722" height="314" fill="#07090F"/>
   <rect width="722" height="314" rx="0" fill="url(#hudgrid)"/><rect width="722" height="314" rx="0" fill="url(#hudgridbold)"/>
   
@@ -80,4 +83,5 @@
     <text x="637.0" y="264" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">AWS</text>
     <text x="637.0" y="282" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">ADVANCED</text>
   </g>
+  <rect x="0" y="0" width="722" height="314" fill="url(#scanlines)"/>
 </svg>

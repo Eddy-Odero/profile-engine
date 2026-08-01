@@ -30,11 +30,15 @@ import avatar
 import badges
 import dimensional_stats
 import effects
+import event_log
+import fragmented_data
 import github
 import leetcode
+import neural_activity
 import project_cards
 import quote_card
 import renderer
+import section_header
 import signal_uplink
 import skill_modules
 import svg_terminal
@@ -134,6 +138,28 @@ PROJECTS = [
         "forks": 0,
     },
 ]
+# Event Log - dated milestones for the timeline section. Content is
+# real (drawn from actual project history), but the exact dates below
+# are PLACEHOLDERS - swap in the real dates before this goes live.
+# Newest first, matching the reference's ordering.
+EVENT_LOG = [
+    {
+        "date": "2026.07.15 -- 09:00 UTC",  # TODO: confirm real date
+        "title": "Won Kisumu Bitcoin Bootcamp Hackathon 2026",
+        "description": "Built SatGate, a Lightning Network-powered anti-spam gate, with a 7-person team.",
+    },
+    {
+        "date": "2026.06.20 -- 18:00 UTC",  # TODO: confirm real date
+        "title": "Go Forum: Auth System Shipped",
+        "description": "Phase 4 complete - bcrypt auth, UUID sessions, WithUser middleware, RequireAuth guard.",
+    },
+    {
+        "date": "2026.05.10 -- 12:00 UTC",  # TODO: confirm real date
+        "title": "EDU-FLIX Deployed",
+        "description": "Netflix-style streaming app shipped to Render with JWT auth and role-based access.",
+    },
+]
+
 # NOTE: repo_url values above are guessed from the naming convention -
 # double check they match your actual repo names/casing. stars/forks
 # are placeholders (0) - update with real counts, or wire up a live
@@ -205,6 +231,28 @@ def build_avatar_ascii() -> str:
 # --- Fallback data if the live GitHub fetch fails -----------------------
 # Same shape as github.fetch_github_stats() returns, so build_context()
 # doesn't need to care which one it got.
+def _mock_heatmap(weeks: int = 52) -> dict:
+    """
+    A deterministic (not random-per-build) placeholder heatmap, so the
+    Neural Activity section always has something to render when the
+    real GraphQL calendar isn't available (no token, or the call
+    failed) - same "never hard-fail, degrade gracefully" pattern as
+    every other live-data section here.
+    """
+    import hashlib
+
+    grid = []
+    for w in range(weeks):
+        col = []
+        for d in range(7):
+            h = int(hashlib.md5(f"{w}-{d}".encode()).hexdigest(), 16)
+            col.append(h % 5)
+        grid.append(col)
+    total = sum(sum(col) for col in grid)
+    active_days = sum(1 for col in grid for v in col if v > 0)
+    return {"weeks": grid, "streak": 12, "active_days": active_days, "total": total}
+
+
 MOCK_GITHUB_STATS = {
     "repo_count": 24,
     "stars": 37,
@@ -213,12 +261,16 @@ MOCK_GITHUB_STATS = {
     "recent_activity": ["pushed to profile-engine"],
     "pinned_repos": ["SatGate", "EDU-FLIX", "lem-in"],
     "contributions": None,
+    "heatmap": _mock_heatmap(),
 }
 
 
 def build_github_stats() -> dict:
     try:
-        return github.fetch_github_stats(GITHUB_USERNAME)
+        stats = github.fetch_github_stats(GITHUB_USERNAME)
+        if not stats.get("heatmap"):
+            stats["heatmap"] = _mock_heatmap()
+        return stats
     except Exception as exc:  # noqa: BLE001 - build must never hard-fail here
         print(f"[github] live fetch failed, using mock stats: {exc}", file=sys.stderr)
         return MOCK_GITHUB_STATS
@@ -299,7 +351,13 @@ def build_context() -> dict:
         ),
         "project_cards": [
             {**p, "card_svg_path": _write_svg(
-                project_cards.render_single_project_card_svg(p, THEME), f"project_card_{i}.svg"
+                project_cards.render_project_card_simple_svg(p, THEME), f"project_card_{i}.svg"
+            )}
+            for i, p in enumerate(PROJECTS)
+        ],
+        "fragment_cards": [
+            {**p, "card_svg_path": _write_svg(
+                fragmented_data.render_fragment_card_svg(p, THEME), f"fragment_card_{i}.svg"
             )}
             for i, p in enumerate(PROJECTS)
         ],
@@ -321,16 +379,28 @@ def build_context() -> dict:
                     ("Contest Rating", combined_stats.get("rating") or "unrated"),
                     ("Problems Solved", combined_stats.get("solved", {}).get("total", 0)),
                     ("GitHub Stars", combined_stats.get("stars", 0)),
-                    # NOTE: the reference shows "Max Streak" here, which isn't
-                    # data this pipeline tracks (no streak-detection logic
-                    # exists yet) - substituted with Repos, a real stat we do
-                    # have, rather than fabricate a streak number.
-                    ("Repos", combined_stats.get("repo_count", 0)),
+                    # Now backed by real streak-detection logic
+                    # (github.calendar_to_heatmap), matching the reference's
+                    # "Max Streak" card instead of the earlier Repos stand-in.
+                    ("Max Streak", combined_stats.get("heatmap", {}).get("streak", 0)),
                 ],
                 [str(combined_stats.get("rating") or combined_stats.get("solved", {}).get("total", 0))],
                 THEME,
             ),
             "dimensional_stats.svg",
+        ),
+        "event_log_svg_path": _write_svg(
+            event_log.render_event_log_svg(EVENT_LOG, THEME), "event_log.svg"
+        ),
+        "neural_activity_svg_path": _write_svg(
+            neural_activity.render_neural_activity_svg(
+                combined_stats.get("heatmap", {}).get("weeks", []),
+                combined_stats.get("heatmap", {}).get("total", 0),
+                combined_stats.get("heatmap", {}).get("streak", 0),
+                combined_stats.get("heatmap", {}).get("active_days", 0),
+                THEME,
+            ),
+            "neural_activity.svg",
         ),
         "social_links": [
             {
@@ -345,6 +415,23 @@ def build_context() -> dict:
             for link in SOCIAL_LINKS
         ],
         "quote_svg_path": _write_svg(quote_card.render_quote_svg(quote, THEME), "quote.svg"),
+        "section_headers": {
+            name: _write_svg(
+                section_header.render_section_header_svg(i, name, THEME), f"header_{i}.svg"
+            )
+            for i, name in enumerate(
+                [
+                    "System Modules",
+                    "Projects",
+                    "Dimensional Stats",
+                    "Event Log",
+                    "Fragmented Data",
+                    "Signal Uplink",
+                    "Neural Activity",
+                ],
+                start=2,  # SEC-1 is the terminal hero, which has no separate header
+            )
+        },
         "build_time": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
         "stat_badges": badges.build_stat_badges(combined_stats, THEME),
         "theme": THEME,

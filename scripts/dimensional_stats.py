@@ -23,7 +23,7 @@ from __future__ import annotations
 
 import html
 
-from hud_grid import glow_filter, grid_background
+from hud_grid import glow_filter, grid_background, scanline_overlay
 from themes import DEFAULT_THEME, HUD_COLORS, get_theme
 
 CARD_WIDTH = 280  # multiple of the 20px grid spacing below
@@ -176,12 +176,14 @@ def render_dimensional_stats_svg(
         cards.append(_stat_card(x, y, label, value, accent, i))
 
     grid_defs, grid_rect = grid_background(width, height, accent, spacing=20)
+    scan_defs, scan_rect = scanline_overlay(width, height)
 
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dimensional stats">
-  <defs>{grid_defs}{glow_filter()}</defs>
+  <defs>{grid_defs}{glow_filter()}{scan_defs}</defs>
   <rect width="{width}" height="{height}" fill="#07090F"/>
   {grid_rect}
   {cube_svg}
   {''.join(cards)}
+  {scan_rect}
 </svg>"""

@@ -43,7 +43,7 @@ CARD_WIDTH = 210
 CARD_HEIGHT = 158  # +28 from the original 130 to fit the new stats row
 ICON_RADIUS = 20
 
-CARD_BG = "16161c"  # dark, muted - close to a typical dark page background
+CARD_BG = "07090F"  # exact background from spec (was "16161c", an approximation)
 CARD_BORDER = "2a2a33"  # subtle, barely-lighter-than-bg border
 DESC_COLOR = "9a9aa5"  # muted gray for description text, per the reference's hierarchy
 STAT_COLOR = "7d7d88"
@@ -255,6 +255,62 @@ stroke="#{CARD_BORDER}" stroke-width="1"/>
 stroke="#{CARD_BORDER}" stroke-width="1"/>
   {_stats_row(CARD_HEIGHT - 10, project.get("language", ""), project.get("stars", 0), \
 project.get("forks", 0), accent)}
+</svg>"""
+
+
+def render_project_card_simple_svg(project: dict, theme_name: str = DEFAULT_THEME) -> str:
+    """
+    The PLAIN project card used for the "Projects" section: icon, name,
+    description - no PUBLIC/VIP ribbon, no language/star/fork stats
+    row. Those live one level down, on the "Fragmented Data" section's
+    cards (see fragmented_data.py, which reuses
+    render_single_project_card_svg above) - the two sections show the
+    same real project list but at different levels of detail, which is
+    what actually distinguishes them visually, per the reference.
+
+    This card is taller in the description area (no stats row eating
+    into it) since the View/Code badges are rendered as separate images
+    by the template, directly underneath.
+    """
+    theme = get_theme(theme_name)
+    accent = f"#{theme['color']}"
+
+    name = project.get("name", "")
+    description = project.get("description", "")
+    icon_key = project.get("icon", "")
+
+    name_lines = _wrap_label(name)
+    desc_lines = _wrap_description(description, max_chars=32)
+
+    icon_cy = 34
+    name_y = icon_cy + ICON_RADIUS + 20
+    desc_start_y = name_y + len(name_lines) * 18 + 6
+    card_height = desc_start_y + len(desc_lines) * 15 + 18
+
+    name_elements = "".join(
+        f'<text x="{CARD_WIDTH / 2}" y="{name_y + i * 18}" '
+        f'font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="14" '
+        f'font-weight="700" fill="white" text-anchor="middle">{_esc(line)}</text>'
+        for i, line in enumerate(name_lines)
+    )
+    desc_elements = "".join(
+        f'<text x="{CARD_WIDTH / 2}" y="{desc_start_y + i * 15}" '
+        f'font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" '
+        f'fill="#{DESC_COLOR}" text-anchor="middle">{_esc(line)}</text>'
+        for i, line in enumerate(desc_lines)
+    )
+
+    grid_defs, grid_rect = grid_background(CARD_WIDTH, card_height, accent, spacing=16, rx=10)
+
+    return f"""<svg width="{CARD_WIDTH}" height="{card_height}" viewBox="0 0 {CARD_WIDTH} {card_height}" \
+xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(name)}">
+  <defs>{grid_defs}</defs>
+  {grid_rect}
+  <rect width="{CARD_WIDTH}" height="{card_height}" rx="10" fill="#{CARD_BG}" fill-opacity="0.93" \
+stroke="#{CARD_BORDER}" stroke-width="1"/>
+  {_project_icon(CARD_WIDTH / 2, icon_cy, icon_key, accent)}
+  {name_elements}
+  {desc_elements}
 </svg>"""
 
 

@@ -25,7 +25,7 @@ from themes import DEFAULT_THEME, get_theme
 
 PILL_WIDTH = 150
 PILL_HEIGHT = 44
-PILL_BG = "0a0c14"
+PILL_BG = "07090F"  # exact background from spec (was "0a0c14", a near-miss approximation)
 PILL_BORDER_INACTIVE = "2a3040"
 
 

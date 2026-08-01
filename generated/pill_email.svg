@@ -13,7 +13,7 @@
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter></defs>
-  <rect width="150" height="44" rx="22" fill="#0a0c14" stroke="#00E7FF" stroke-width="1.3"/>
+  <rect width="150" height="44" rx="22" fill="#07090F" stroke="#00E7FF" stroke-width="1.3"/>
   <rect width="150" height="44" rx="22" fill="url(#hudgrid)"/><rect width="150" height="44" rx="22" fill="url(#hudgridbold)"/>
   <g transform="translate(17,16.0)" fill="none" stroke="#00E7FF" stroke-width="1.3"><rect x="0" y="0" width="18" height="12" rx="1"/><path d="M0 1 L9 8 L18 1"/></g>
   <text x="46" y="27.0" font-family="Consolas, Menlo, monospace" font-size="13" font-weight="600" fill="#00E7FF" filter="url(#hudglow)">Email</text>

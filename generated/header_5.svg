@@ -1,0 +1,15 @@
+<svg width="820" height="34" viewBox="0 0 820 34" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Event Log">
+  <defs>
+    <filter id="hudglow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="1.4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter></defs>
+  <rect width="820" height="34" fill="#07090F"/>
+  <rect x="0" y="7.0" width="46" height="20" fill="#00E7FF" fill-opacity="0.15" stroke="#00E7FF" stroke-width="1"/>
+  <text x="23.0" y="22.0" font-family="Consolas, Menlo, monospace" font-size="10" font-weight="700" fill="#00E7FF" text-anchor="middle" letter-spacing="0.5">SEC-5</text>
+  <text x="60" y="22.0" font-family="Consolas, Menlo, monospace" font-size="14" font-weight="700" fill="#00E7FF" letter-spacing="2" filter="url(#hudglow)">EVENT LOG</text>
+  <line x1="161.5" y1="17.0" x2="820" y2="17.0" stroke="#00E7FF" stroke-width="1" stroke-opacity="0.5"/>
+</svg>

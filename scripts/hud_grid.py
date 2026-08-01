@@ -49,6 +49,29 @@ opacity="{min(opacity * 1.8, 0.9)}"/>
     return defs, rect
 
 
+def scanline_overlay(
+    width: float, height: float, y_offset: float = 0, opacity: float = 0.15
+) -> tuple[str, str]:
+    """
+    The same horizontal scanline texture svg_terminal.py already uses,
+    pulled out here so every HUD section can share it - the spec calls
+    for this "CRT scanline/noise feel" throughout the design, not just
+    on the terminal card, so every section-level SVG should layer this
+    on top of its grid background.
+
+    Returns (defs_markup, rect_markup), same calling convention as
+    grid_background() - caller places defs_markup inside <defs> and
+    rect_markup as a late-painted overlay (after content, so the
+    scanlines sit on top).
+    """
+    defs = f"""
+    <pattern id="scanlines" width="4" height="3" patternUnits="userSpaceOnUse">
+      <rect width="4" height="1" fill="black" fill-opacity="{opacity}"/>
+    </pattern>"""
+    rect = f'<rect x="0" y="{y_offset}" width="{width}" height="{height - y_offset}" fill="url(#scanlines)"/>'
+    return defs, rect
+
+
 def glow_filter(filter_id: str = "hudglow", strength: float = 1.4) -> str:
     """
     A soft bloom/glow filter - the hazy, slightly-blurred-highlight look

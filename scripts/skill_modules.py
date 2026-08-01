@@ -22,7 +22,7 @@ from __future__ import annotations
 
 import html
 
-from hud_grid import glow_filter, grid_background
+from hud_grid import glow_filter, grid_background, scanline_overlay
 from tech_pills import TECH_COLORS
 from themes import DEFAULT_THEME, HUD_COLORS, get_theme
 
@@ -134,11 +134,13 @@ def render_skill_modules_svg(
             badges.append(_badge(x, y, skill, level, accent, bracket_color))
 
     grid_defs, grid_rect = grid_background(width, height, accent)
+    scan_defs, scan_rect = scanline_overlay(width, height)
 
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="System modules">
-  <defs>{grid_defs}{glow_filter()}</defs>
+  <defs>{grid_defs}{glow_filter()}{scan_defs}</defs>
   <rect width="{width}" height="{height}" fill="#{CARD_BG}"/>
   {grid_rect}
   {''.join(badges)}
+  {scan_rect}
 </svg>"""
