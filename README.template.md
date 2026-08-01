@@ -54,11 +54,11 @@
 
 </div>
 
-<table>
+<table cellpadding="3" cellspacing="4" border="0">
 {% for row in fragment_cards|batch(2) %}
 <tr>
 {% for project in row %}
-<td align="center" width="360">
+<td align="center">
 
 ![{{ project.name }}]({{ project.card_svg_path }})
 

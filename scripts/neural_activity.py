@@ -30,7 +30,7 @@ import html
 from hud_grid import glow_filter, grid_background, scanline_overlay
 from themes import DEFAULT_THEME, HUD_COLORS
 
-CELL = 11
+CELL = 13
 CELL_GAP = 3
 ROWS = 7
 
@@ -85,9 +85,16 @@ def render_neural_activity_svg(
             x = grid_x0 + col * (CELL + CELL_GAP)
             y = grid_y0 + row * (CELL + CELL_GAP)
             glow = ' filter="url(#hudglow)"' if level >= 3 else ""
+            # Outer faint frame (always visible, even on empty days) plus
+            # a smaller inset fill square for the actual intensity - two
+            # nested squares with a visible gap between them, rather than
+            # one flat-colored square per cell.
+            inset = 2.5
             cells.append(
-                f'<rect x="{x:.1f}" y="{y:.1f}" width="{CELL}" height="{CELL}" rx="2" '
-                f'fill="{color}" fill-opacity="{opacity}"{glow}/>'
+                f'<rect x="{x:.1f}" y="{y:.1f}" width="{CELL}" height="{CELL}" rx="1.5" '
+                f'fill="none" stroke="{color}" stroke-opacity="0.35" stroke-width="0.75"/>'
+                f'<rect x="{x+inset:.1f}" y="{y+inset:.1f}" width="{CELL-inset*2:.1f}" '
+                f'height="{CELL-inset*2:.1f}" rx="1" fill="{color}" fill-opacity="{opacity}"{glow}/>'
             )
 
     bg_defs, bg_rect = grid_background(width, height, accent, spacing=20)

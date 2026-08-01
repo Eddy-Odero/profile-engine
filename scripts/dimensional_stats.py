@@ -92,15 +92,18 @@ font-weight="700" fill="url(#{gradient_id})" filter="url(#hudglow)">{_esc(value)
 
 def _isometric_cube(cx: float, cy: float, size: float, accent: str, label_lines: list[str]) -> str:
     """
-    A wireframe cube in FRONT-VIEW / one-point perspective: you're
-    looking directly at the front face square-on (not from an angled
-    side), with a smaller, CENTERED back face and diagonal edges
-    converging inward toward the middle - like looking straight into a
-    box. An earlier isometric version offset the back face up-and-left,
-    which read as a side/angled view instead of a direct front view.
+    A wireframe cube in near-front view: looking almost directly at the
+    front face, but with the back face very slightly squeezed toward
+    the bottom-right (smaller margin on the right/bottom than on the
+    left/top) - a small directional offset is what actually reads as a
+    real box being looked at, rather than two perfectly concentric
+    squares (which reads as flat/decorative, not dimensional). A
+    previous version offset the back face by a LOT toward one corner,
+    which read as a skewed side view instead - this keeps the offset
+    small.
     """
     front_half = size / 2
-    back_half = front_half * 0.55  # smaller back face = the depth cue
+    back_half = front_half * 0.74  # back face close in size to front - a shallow, near-front box
 
     front = [
         (cx - front_half, cy - front_half),  # top-left
@@ -108,13 +111,15 @@ def _isometric_cube(cx: float, cy: float, size: float, accent: str, label_lines:
         (cx + front_half, cy + front_half),  # bottom-right
         (cx - front_half, cy + front_half),  # bottom-left
     ]
-    # Centered on the same (cx, cy) - this is what keeps it a direct
-    # front view instead of a skewed side view; only the scale differs.
+    # Small offset toward bottom-right - back face margin is tighter on
+    # the right/bottom than the left/top, giving the natural-box read.
+    offset_x, offset_y = size * 0.09, size * 0.06
+    back_cx, back_cy = cx + offset_x, cy + offset_y
     back = [
-        (cx - back_half, cy - back_half),
-        (cx + back_half, cy - back_half),
-        (cx + back_half, cy + back_half),
-        (cx - back_half, cy + back_half),
+        (back_cx - back_half, back_cy - back_half),
+        (back_cx + back_half, back_cy - back_half),
+        (back_cx + back_half, back_cy + back_half),
+        (back_cx - back_half, back_cy + back_half),
     ]
 
     def line(p1, p2, width=1.2):

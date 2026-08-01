@@ -4,7 +4,7 @@
 
 <sub>~ live session · Eddy Odero@github · re-renders every build ~</sub>
 
-![Repos: 23](https://img.shields.io/badge/Repos-23-00E7FF?style=flat-square&labelColor=07090F) ![Stars: 22](https://img.shields.io/badge/Stars-22-00E7FF?style=flat-square&labelColor=07090F) ![Followers: 50](https://img.shields.io/badge/Followers-50-00E7FF?style=flat-square&labelColor=07090F) ![LC Solved: 45](https://img.shields.io/badge/LC_Solved-45-00E7FF?style=flat-square&labelColor=07090F)
+![Repos: 24](https://img.shields.io/badge/Repos-24-00E7FF?style=flat-square&labelColor=07090F) ![Stars: 37](https://img.shields.io/badge/Stars-37-00E7FF?style=flat-square&labelColor=07090F) ![Followers: 12](https://img.shields.io/badge/Followers-12-00E7FF?style=flat-square&labelColor=07090F) ![LC Solved: 120](https://img.shields.io/badge/LC_Solved-120-00E7FF?style=flat-square&labelColor=07090F)
 
 </div>
 
@@ -54,26 +54,26 @@
 
 </div>
 
-<table>
+<table cellpadding="3" cellspacing="4" border="0">
 <tr>
-<td align="center" width="360">
+<td align="center">
 
 ![SatGate](generated/fragment_card_0.svg)
 
 </td>
-<td align="center" width="360">
+<td align="center">
 
 ![EDU-FLIX](generated/fragment_card_1.svg)
 
 </td>
 </tr>
 <tr>
-<td align="center" width="360">
+<td align="center">
 
 ![lem-in colony visualizer](generated/fragment_card_2.svg)
 
 </td>
-<td align="center" width="360">
+<td align="center">
 
 ![Maison POS](generated/fragment_card_3.svg)
 
@@ -100,4 +100,4 @@
 
 ---
 
-<sub>Last rendered: 2026-08-01 11:39 UTC · theme: hud · auto-generated, do not edit by hand</sub>
+<sub>Last rendered: 2026-08-01 11:59 UTC · theme: hud · auto-generated, do not edit by hand</sub>
