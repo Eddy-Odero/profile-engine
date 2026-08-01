@@ -60,13 +60,15 @@ def _cell_color(level: int, accent: str) -> tuple[str, float]:
 def render_neural_activity_svg(
     weeks: list[list[int]],
     total_contributions: int,
-    streak: int,
+    current_streak: int,
+    longest_streak: int,
     active_days: int,
     theme_name: str = DEFAULT_THEME,
 ) -> str:
     """
     Build the Neural Activity SVG: big total-contributions number,
-    LIVE chip, active/streak readout, and the heatmap grid itself.
+    LIVE chip, active-days/current-streak/longest-streak readout, and
+    the heatmap grid itself.
     """
     accent = HUD_COLORS["activity"]
 
@@ -131,14 +133,52 @@ fill="{accent}" fill-opacity="0.12" stroke="{accent}" stroke-width="1"/>
 font-size="10" font-weight="700" fill="{accent}" letter-spacing="1">LIVE</text>
   </g>"""
 
-    # Active days / streak readout, below the chip, right-aligned
-    stats_line = (
-        f'TOTAL ACTIVE: {active_days}  |  STREAK: {streak}'
-    )
+    # Active days / streak readout, below the chip, right-aligned -
+    # split across two lines now that there are three numbers instead
+    # of one combined "streak".
+    stats_line_1 = f"TOTAL_ACTIVE: {active_days}"
+    stats_line_2 = f"CURRENT_STREAK: {current_streak}  |  LONGEST_STREAK: {longest_streak}"
     stats_text = f"""
-  <text x="{width - PANEL_PAD_X}" y="{chip_y + chip_h + 20}" \
+  <text x="{width - PANEL_PAD_X}" y="{chip_y + chip_h + 18}" \
 font-family="Consolas, Menlo, monospace" font-size="10" fill="#8a7fa8" \
-text-anchor="end" letter-spacing="0.5">{_esc(stats_line)}</text>"""
+text-anchor="end" letter-spacing="0.5">{_esc(stats_line_1)}</text>
+  <text x="{width - PANEL_PAD_X}" y="{chip_y + chip_h + 34}" \
+font-family="Consolas, Menlo, monospace" font-size="10" fill="#8a7fa8" \
+text-anchor="end" letter-spacing="0.5">{_esc(stats_line_2)}</text>"""
+
+    # A small rocket flying across the grid on a gentle wave path, with a
+    # fading trail of particles behind it - one fun animated focal point
+    # instead of more HUD chrome. It fades in/out right at the canvas
+    # edges so the animation loop resets while invisible, avoiding a
+    # visible snap-back.
+    rocket_duration = 9
+    path_d = (
+        f"M {grid_x0 - 24:.1f},{grid_y0 + grid_h * 0.55:.1f} "
+        f"Q {grid_x0 + grid_w * 0.25:.1f},{grid_y0 - 14:.1f} "
+        f"{grid_x0 + grid_w * 0.5:.1f},{grid_y0 + grid_h * 0.5:.1f} "
+        f"Q {grid_x0 + grid_w * 0.75:.1f},{grid_y0 + grid_h + 16:.1f} "
+        f"{grid_x0 + grid_w + 24:.1f},{grid_y0 + grid_h * 0.45:.1f}"
+    )
+    fade_anim = (
+        '<animate attributeName="opacity" values="0;1;1;0" '
+        'keyTimes="0;0.08;0.9;1" dur="{d}s" begin="{b}s" repeatCount="indefinite"/>'
+    )
+    trail = []
+    n_particles = 5
+    for i in range(n_particles, 0, -1):
+        delay = -(i * 0.18)
+        r = max(1, 3.2 - i * 0.4)
+        trail.append(f"""
+  <circle r="{r:.1f}" fill="{accent}" opacity="0">
+    <animateMotion path="{path_d}" dur="{rocket_duration}s" begin="{delay}s" repeatCount="indefinite"/>
+    {fade_anim.format(d=rocket_duration, b=delay)}
+  </circle>""")
+
+    rocket = f"""
+  <text font-size="15" opacity="0" text-anchor="middle" dominant-baseline="middle">🚀
+    <animateMotion path="{path_d}" dur="{rocket_duration}s" repeatCount="indefinite"/>
+    {fade_anim.format(d=rocket_duration, b=0)}
+  </text>"""
 
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Neural activity">
@@ -149,5 +189,7 @@ xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Neural activity">
   {live_chip}
   {stats_text}
   <g>{''.join(cells)}</g>
+  {''.join(trail)}
+  {rocket}
   {scan_rect}
 </svg>"""

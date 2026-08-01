@@ -7,7 +7,6 @@
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter></defs>
-  <rect width="820" height="34" fill="#07090F"/>
   <rect x="0" y="7.0" width="46" height="20" fill="#00E7FF" fill-opacity="0.15" stroke="#00E7FF" stroke-width="1"/>
   <text x="23.0" y="22.0" font-family="Consolas, Menlo, monospace" font-size="10" font-weight="700" fill="#00E7FF" text-anchor="middle" letter-spacing="0.5">SEC-7</text>
   <text x="60" y="22.0" font-family="Consolas, Menlo, monospace" font-size="14" font-weight="700" fill="#00E7FF" letter-spacing="2" filter="url(#hudglow)">SIGNAL UPLINK</text>

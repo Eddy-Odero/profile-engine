@@ -36,6 +36,11 @@
 
 ![{{ project.name }}]({{ project.card_svg_path }})
 
+<table><tr>
+<td align="left">{% if project.preview_url %}[![View]({{ badge_view_path }})]({{ project.preview_url }}){% else %}![not hosted]({{ badge_disabled_path }})<br><sub>not hosted yet</sub>{% endif %}</td>
+<td align="right">[![Code]({{ badge_code_path }})]({{ project.repo_url }})</td>
+</tr></table>
+
 </td>
 {% endfor %}
 </tr>

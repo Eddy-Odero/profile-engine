@@ -217,18 +217,29 @@ def calendar_to_heatmap(calendar: list[list[dict]]) -> dict:
 
     weeks_levels = [[level(day["contributionCount"]) for day in week] for week in calendar]
 
-    streak = 0
+    current_streak = 0
     for day in reversed(all_days):
         if day["contributionCount"] > 0:
-            streak += 1
+            current_streak += 1
         else:
             break
+
+    longest_streak = 0
+    running = 0
+    for day in all_days:
+        if day["contributionCount"] > 0:
+            running += 1
+            longest_streak = max(longest_streak, running)
+        else:
+            running = 0
 
     active_days = sum(1 for c in counts if c > 0)
 
     return {
         "weeks": weeks_levels,
-        "streak": streak,
+        "streak": current_streak,  # kept for backward compat (Dimensional Stats' Max Streak card)
+        "current_streak": current_streak,
+        "longest_streak": longest_streak,
         "active_days": active_days,
         "total": sum(counts),
     }

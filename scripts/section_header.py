@@ -52,7 +52,6 @@ def render_section_header_svg(
     return f"""<svg width="{WIDTH}" height="{HEIGHT}" viewBox="0 0 {WIDTH} {HEIGHT}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(title)}">
   <defs>{glow_filter()}</defs>
-  <rect width="{WIDTH}" height="{HEIGHT}" fill="#{BG}"/>
   <rect x="0" y="{box_y}" width="{CODE_BOX_W}" height="{CODE_BOX_H}" fill="{color}" fill-opacity="0.15" \
 stroke="{color}" stroke-width="1"/>
   <text x="{CODE_BOX_W/2}" y="{label_y}" font-family="Consolas, Menlo, monospace" font-size="10" \

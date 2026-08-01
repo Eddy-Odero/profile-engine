@@ -36,6 +36,7 @@ import github
 import leetcode
 import leetcode_panel
 import neural_activity
+import project_cards
 import quote_card
 import renderer
 import section_header
@@ -255,7 +256,29 @@ def _mock_heatmap(weeks: int = 52) -> dict:
         grid.append(col)
     total = sum(sum(col) for col in grid)
     active_days = sum(1 for col in grid for v in col if v > 0)
-    return {"weeks": grid, "streak": 12, "active_days": active_days, "total": total}
+    flat = [v for col in grid for v in col]
+    current_streak = 0
+    for v in reversed(flat):
+        if v > 0:
+            current_streak += 1
+        else:
+            break
+    longest_streak = 0
+    running = 0
+    for v in flat:
+        if v > 0:
+            running += 1
+            longest_streak = max(longest_streak, running)
+        else:
+            running = 0
+    return {
+        "weeks": grid,
+        "streak": current_streak,
+        "current_streak": current_streak,
+        "longest_streak": longest_streak,
+        "active_days": active_days,
+        "total": total,
+    }
 
 
 MOCK_GITHUB_STATS = {
@@ -364,6 +387,15 @@ def build_context() -> dict:
             )}
             for i, p in enumerate(PROJECTS)
         ],
+        "badge_view_path": _write_svg(
+            project_cards.render_link_badge_svg("view", THEME), "badge_view.svg"
+        ),
+        "badge_code_path": _write_svg(
+            project_cards.render_link_badge_svg("code", THEME), "badge_code.svg"
+        ),
+        "badge_disabled_path": _write_svg(
+            project_cards.render_link_badge_svg("view", THEME, disabled=True), "badge_disabled.svg"
+        ),
         "skill_modules_svg_path": _write_svg(
             skill_modules.render_skill_modules_svg(SKILLS, THEME), "skill_modules.svg"
         ),
@@ -393,7 +425,8 @@ def build_context() -> dict:
             neural_activity.render_neural_activity_svg(
                 combined_stats.get("heatmap", {}).get("weeks", []),
                 combined_stats.get("heatmap", {}).get("total", 0),
-                combined_stats.get("heatmap", {}).get("streak", 0),
+                combined_stats.get("heatmap", {}).get("current_streak", 0),
+                combined_stats.get("heatmap", {}).get("longest_streak", 0),
                 combined_stats.get("heatmap", {}).get("active_days", 0),
                 THEME,
             ),
