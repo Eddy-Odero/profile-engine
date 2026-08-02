@@ -101,7 +101,7 @@ fill="{accent}" fill-opacity="0.85"/>""")
     return f"""<svg width="{WIDTH}" height="{height}" viewBox="0 0 {WIDTH} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LeetCode stats">
   <defs>{grid_defs}{glow_filter()}{scan_defs}</defs>
-  <rect width="{WIDTH}" height="{height}" fill="#{BG}" fill-opacity="0.82"/>
+  <rect width="{WIDTH}" height="{height}" fill="#{BG}" fill-opacity="0.6"/>
   {grid_rect}
   <text x="{PAD_X}" y="{TITLE_Y}" font-family="Segoe UI, Helvetica, Arial, sans-serif" \
 font-size="17" font-weight="700" fill="#{TITLE_COLOR}">Problem Difficulty</text>

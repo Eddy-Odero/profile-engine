@@ -183,7 +183,7 @@ text-anchor="end" letter-spacing="0.5">{_esc(stats_line_2)}</text>"""
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Neural activity">
   <defs>{bg_defs}{glow_filter()}{scan_defs}</defs>
-  <rect width="{width}" height="{height}" fill="#{BG}" fill-opacity="0.82"/>
+  <rect width="{width}" height="{height}" fill="#{BG}" fill-opacity="0.6"/>
   {bg_rect}
   {number_block}
   {live_chip}

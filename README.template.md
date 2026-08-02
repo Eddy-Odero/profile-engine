@@ -10,10 +10,6 @@
 
 ![System Modules]({{ skill_modules_svg_path }})
 
-![Dimensional Stats header]({{ section_headers['Dimensional Stats'] }})
-
-![Dimensional Stats]({{ dimensional_stats_svg_path }})
-
 ![Quote]({{ quote_svg_path }})
 
 ![LeetCode Stats header]({{ section_headers['LeetCode Stats'] }})
@@ -36,10 +32,7 @@
 
 ![{{ project.name }}]({{ project.card_svg_path }})
 
-<table><tr>
-<td align="left">{% if project.preview_url %}[![View]({{ badge_view_path }})]({{ project.preview_url }}){% else %}![not hosted]({{ badge_disabled_path }})<br><sub>not hosted yet</sub>{% endif %}</td>
-<td align="right">[![Code]({{ badge_code_path }})]({{ project.repo_url }})</td>
-</tr></table>
+{% if project.preview_url %}[![View]({{ badge_view_path }})]({{ project.preview_url }}){% else %}![View disabled]({{ badge_disabled_path }}){% endif %} [![Code]({{ badge_code_path }})]({{ project.repo_url }})
 
 </td>
 {% endfor %}

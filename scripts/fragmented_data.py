@@ -97,7 +97,7 @@ xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(name)}">
   <g clip-path="url(#cardclip)">
     {grid_rect}
   </g>
-  <polygon points="{outline_pts}" fill="#{CARD_BG}" fill-opacity="0.85" stroke="#{CARD_BORDER}" stroke-width="1"/>
+  <polygon points="{outline_pts}" fill="#{CARD_BG}" fill-opacity="0.65" stroke="#{CARD_BORDER}" stroke-width="1"/>
   <g clip-path="url(#cardclip)">
     {_ribbon(project.get("visibility", ""), width=WIDTH)}
   </g>

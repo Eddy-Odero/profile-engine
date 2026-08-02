@@ -16,7 +16,7 @@ from __future__ import annotations
 import html
 
 from hud_grid import grid_background
-from themes import DEFAULT_THEME, HUD_COLORS, get_theme
+from themes import DEFAULT_THEME, get_theme
 
 # ── Fixed terminal frame ──────────────────────────────────────────────
 TERM_WIDTH = 820
@@ -276,11 +276,8 @@ def render_terminal_svg(
     y += LINE_HEIGHT
     line_idx += 1
 
-    stat_value_color = HUD_COLORS["stats"]  # bright pink/magenta - reads as real contrast
-    # against the cyan ASCII art and cyan labels, rather than blending in
-    # (plain white sat too flat next to the cyan; cyber-blue was tried
-    # mentally and rejected since it's too close to the ASCII's own cyan
-    # to read as a second, distinct color).
+    stat_value_color = "#5C8FCC"  # a muted, dark-ish blue - reads as distinct
+    # from the cyan ASCII/labels without shouting the way the bright pink did.
     for key, value in stat_rows:
         k, dots, v = _dotted_row(key, value)
         right_elements.append(
@@ -341,7 +338,7 @@ xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(username)} termi
     </clipPath>
     {term_grid_defs}
   </defs>
-  <rect width="{width}" height="{height}" rx="10" fill="{bg}" fill-opacity="0.85"/>
+  <rect width="{width}" height="{height}" rx="10" fill="{bg}" fill-opacity="0.65"/>
   {term_grid_rect}
   {_title_bar(width, accent, username)}
   <g clip-path="url(#bodyClip)">

@@ -28,7 +28,6 @@ import sys
 
 import avatar
 import badges
-import dimensional_stats
 import effects
 import event_log
 import fragmented_data
@@ -399,22 +398,6 @@ def build_context() -> dict:
         "skill_modules_svg_path": _write_svg(
             skill_modules.render_skill_modules_svg(SKILLS, THEME), "skill_modules.svg"
         ),
-        "dimensional_stats_svg_path": _write_svg(
-            dimensional_stats.render_dimensional_stats_svg(
-                [
-                    ("Contest Rating", combined_stats.get("rating") or "unrated"),
-                    ("Problems Solved", combined_stats.get("solved", {}).get("total", 0)),
-                    ("GitHub Stars", combined_stats.get("stars", 0)),
-                    # Now backed by real streak-detection logic
-                    # (github.calendar_to_heatmap), matching the reference's
-                    # "Max Streak" card instead of the earlier Repos stand-in.
-                    ("Max Streak", combined_stats.get("heatmap", {}).get("streak", 0)),
-                ],
-                [str(combined_stats.get("rating") or combined_stats.get("solved", {}).get("total", 0))],
-                THEME,
-            ),
-            "dimensional_stats.svg",
-        ),
         "leetcode_panel_svg_path": _write_svg(
             leetcode_panel.render_leetcode_panel_svg(leetcode_stats, THEME), "leetcode_panel.svg"
         ),
@@ -452,7 +435,6 @@ def build_context() -> dict:
             for i, name in enumerate(
                 [
                     "System Modules",
-                    "Dimensional Stats",
                     "LeetCode Stats",
                     "Event Log",
                     "Fragmented Data",

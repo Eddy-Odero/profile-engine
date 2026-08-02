@@ -16,7 +16,7 @@
     <pattern id="scanlines" width="4" height="3" patternUnits="userSpaceOnUse">
       <rect width="4" height="1" fill="black" fill-opacity="0.15"/>
     </pattern></defs>
-  <rect width="722" height="478" fill="#07090F" fill-opacity="0.68"/>
+  <rect width="722" height="478" fill="#07090F" fill-opacity="0.5"/>
   <rect width="722" height="478" rx="0" fill="url(#hudgrid)"/><rect width="722" height="478" rx="0" fill="url(#hudgridbold)"/>
   
   <g>
