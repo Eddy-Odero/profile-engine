@@ -19,23 +19,23 @@
   <rect width="820" height="262" fill="#07090F" fill-opacity="0.6"/>
   <rect width="820" height="262" rx="0" fill="url(#hudgrid)"/><rect width="820" height="262" rx="0" fill="url(#hudgridbold)"/>
   <text x="28" y="30" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" font-weight="700" fill="#e8e6f0">Problem Difficulty</text>
-  <text x="28" y="48" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6b6478">breakdown of 120 solved, all time</text>
+  <text x="28" y="48" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6b6478">breakdown of 45 solved, all time</text>
   
   <text x="28" y="78" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#c9c4d6">Easy</text>
-  <text x="792" y="78" font-family="Consolas, Menlo, monospace" font-size="12" fill="#8a7fa8" text-anchor="end">55 (46%)</text>
+  <text x="792" y="78" font-family="Consolas, Menlo, monospace" font-size="12" fill="#8a7fa8" text-anchor="end">12 (27%)</text>
   <rect x="28" y="88" width="764" height="6" rx="3" fill="#2a2438"/>
   <circle cx="31" cy="91.0" r="3" fill="#FF38F8" filter="url(#hudglow)"/>
-  <rect x="28" y="88" width="350.2" height="6" rx="3" fill="#FF38F8" fill-opacity="0.85"/>
+  <rect x="28" y="88" width="203.7" height="6" rx="3" fill="#FF38F8" fill-opacity="0.85"/>
   <text x="28" y="124" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#c9c4d6">Medium</text>
-  <text x="792" y="124" font-family="Consolas, Menlo, monospace" font-size="12" fill="#8a7fa8" text-anchor="end">50 (42%)</text>
+  <text x="792" y="124" font-family="Consolas, Menlo, monospace" font-size="12" fill="#8a7fa8" text-anchor="end">22 (49%)</text>
   <rect x="28" y="134" width="764" height="6" rx="3" fill="#2a2438"/>
   <circle cx="31" cy="137.0" r="3" fill="#FF38F8" filter="url(#hudglow)"/>
-  <rect x="28" y="134" width="318.3" height="6" rx="3" fill="#FF38F8" fill-opacity="0.85"/>
+  <rect x="28" y="134" width="373.5" height="6" rx="3" fill="#FF38F8" fill-opacity="0.85"/>
   <text x="28" y="170" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#c9c4d6">Hard</text>
-  <text x="792" y="170" font-family="Consolas, Menlo, monospace" font-size="12" fill="#8a7fa8" text-anchor="end">15 (12%)</text>
+  <text x="792" y="170" font-family="Consolas, Menlo, monospace" font-size="12" fill="#8a7fa8" text-anchor="end">11 (24%)</text>
   <rect x="28" y="180" width="764" height="6" rx="3" fill="#2a2438"/>
   <circle cx="31" cy="183.0" r="3" fill="#FF38F8" filter="url(#hudglow)"/>
-  <rect x="28" y="180" width="95.5" height="6" rx="3" fill="#FF38F8" fill-opacity="0.85"/>
+  <rect x="28" y="180" width="186.8" height="6" rx="3" fill="#FF38F8" fill-opacity="0.85"/>
   <line x1="28" y1="206" x2="792" y2="206" stroke="#2a2438" stroke-width="1"/>
   <text x="28.0" y="230" font-family="Consolas, Menlo, monospace" font-size="9.5" fill="#6b6478" letter-spacing="0.5">RATING</text><text x="28.0" y="248" font-family="Consolas, Menlo, monospace" font-size="13" font-weight="700" fill="#e8e6f0">unrated</text><text x="219.0" y="230" font-family="Consolas, Menlo, monospace" font-size="9.5" fill="#6b6478" letter-spacing="0.5">GLOBAL RANK</text><text x="219.0" y="248" font-family="Consolas, Menlo, monospace" font-size="13" font-weight="700" fill="#e8e6f0">N/A</text><text x="410.0" y="230" font-family="Consolas, Menlo, monospace" font-size="9.5" fill="#6b6478" letter-spacing="0.5">TOP %</text><text x="410.0" y="248" font-family="Consolas, Menlo, monospace" font-size="13" font-weight="700" fill="#e8e6f0">N/A</text><text x="601.0" y="230" font-family="Consolas, Menlo, monospace" font-size="9.5" fill="#6b6478" letter-spacing="0.5">CONTESTS</text><text x="601.0" y="248" font-family="Consolas, Menlo, monospace" font-size="13" font-weight="700" fill="#e8e6f0">0</text>
   <rect x="0" y="0" width="820" height="262" fill="url(#scanlines)"/>
