@@ -14,16 +14,10 @@
     "PostgreSQL",
     "Docker"
   ],
-<<<<<<< HEAD
-  "cursor": "_",
-  "system_message": "> checking for updates... none, as usual",
-  "quote": "There are only two hard things in computer science: cache invalidation, naming things, and off-by-one errors.",
-=======
-  "cursor": "\u2588",
-  "system_message": "> uptime: 3 days, 14 hours, still debugging",
-  "quote": "Code never lies, comments sometimes do.",
->>>>>>> 31dad0a7e1db0cc3c86960953d6aaef01df57662
-  "status": "Deploying Services",
+  "cursor": " ",
+  "system_message": "[WARNING] coffee levels critical",
+  "quote": "A user interface is like a joke. If you have to explain it, it's not that good.",
+  "status": "Compiling new ideas...",
   "terminal_svg_path": "generated/terminal.svg",
   "fragment_cards": [
     {
@@ -117,11 +111,7 @@
     "Signal Uplink": "generated/header_6.svg",
     "Neural Activity": "generated/header_7.svg"
   },
-<<<<<<< HEAD
-  "build_time": "2026-08-02 19:14 UTC",
-=======
-  "build_time": "2026-08-02 17:05 UTC",
->>>>>>> 31dad0a7e1db0cc3c86960953d6aaef01df57662
+  "build_time": "2026-08-02 19:32 UTC",
   "stat_badges": [
     "![Repos: 23](https://img.shields.io/badge/Repos-23-007f8c?style=flat-square&labelColor=07090F)",
     "![Stars: 22](https://img.shields.io/badge/Stars-22-007f8c?style=flat-square&labelColor=07090F)",
@@ -147,7 +137,7 @@
   "pinned_repos": [
     "SatGate"
   ],
-  "contributions": 1086,
+  "contributions": 1088,
   "heatmap": {
     "weeks": [
       [
@@ -619,14 +609,14 @@
         2
       ],
       [
-        1
+        2
       ]
     ],
     "streak": 30,
     "current_streak": 30,
     "longest_streak": 30,
     "active_days": 238,
-    "total": 1067
+    "total": 1069
   },
   "solved": {
     "total": 45,

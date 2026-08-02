@@ -70,8 +70,4 @@
 
 </div>
 
-<<<<<<< HEAD
-<sub>Last rendered: 2026-08-02 19:14 UTC · theme: hud · auto-generated, do not edit by hand</sub>
-=======
-<sub>Last rendered: 2026-08-02 17:05 UTC · theme: hud · auto-generated, do not edit by hand</sub>
->>>>>>> 31dad0a7e1db0cc3c86960953d6aaef01df57662
+<sub>Last rendered: 2026-08-02 19:32 UTC · theme: hud · auto-generated, do not edit by hand</sub>
