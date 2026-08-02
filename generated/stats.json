@@ -15,9 +15,9 @@
     "Docker"
   ],
   "cursor": "_",
-  "system_message": "> uptime: 3 days, 14 hours, still debugging",
-  "quote": "The best error message is the one that never shows up.",
-  "status": "Debugging in production (again)",
+  "system_message": "> checking for updates... none, as usual",
+  "quote": "There are only two hard things in computer science: cache invalidation, naming things, and off-by-one errors.",
+  "status": "Deploying Services",
   "terminal_svg_path": "generated/terminal.svg",
   "fragment_cards": [
     {
@@ -111,7 +111,7 @@
     "Signal Uplink": "generated/header_6.svg",
     "Neural Activity": "generated/header_7.svg"
   },
-  "build_time": "2026-08-02 13:01 UTC",
+  "build_time": "2026-08-02 19:14 UTC",
   "stat_badges": [
     "![Repos: 24](https://img.shields.io/badge/Repos-24-007f8c?style=flat-square&labelColor=07090F)",
     "![Stars: 37](https://img.shields.io/badge/Stars-37-007f8c?style=flat-square&labelColor=07090F)",

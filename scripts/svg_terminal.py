@@ -26,8 +26,13 @@ PADDING = 16
 
 MAX_CONTENT_HEIGHT = TERM_HEIGHT - TITLE_BAR_HEIGHT - PADDING - 5  # 327
 
-LEFT_COL_RATIO = 0.42
-RIGHT_COL_RATIO = 0.52
+LEFT_COL_RATIO = 0.46
+RIGHT_COL_RATIO = 0.54
+# These now sum to exactly 1.0 - they used to sum to 0.94, leaving ~6%
+# of the usable width as dead space between the two columns that
+# neither the ASCII art nor the stats column ever used. Left also
+# picked up a bit more of the split, giving the avatar more room to
+# scale into (it was rendering smaller than it needed to).
 COLUMN_GAP = 20
 
 FONT_SIZE = 13
@@ -311,7 +316,9 @@ def render_terminal_svg(
 
     right_elements.append(
         f'<text class="line line-{line_idx}" x="0" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
-        f'font-size="{FONT_SIZE}" fill="{accent}" xml:space="preserve">{_esc(status_line)}</text>'
+        f'font-size="{FONT_SIZE}" xml:space="preserve">'
+        f'<tspan fill="{accent}">$ status: </tspan>'
+        f'<tspan fill="#FF4D5A" font-weight="700">{_esc(status)}</tspan></text>'
     )
     line_idx += 1
 
