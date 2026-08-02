@@ -20,7 +20,7 @@ from __future__ import annotations
 import html
 
 from hud_grid import glow_filter, grid_background, scanline_overlay
-from themes import DEFAULT_THEME, HUD_COLORS
+from themes import DEFAULT_THEME
 
 WIDTH = 820
 PAD_X = 28
@@ -45,7 +45,7 @@ def _esc(text: str) -> str:
 
 
 def render_leetcode_panel_svg(stats: dict, theme_name: str = DEFAULT_THEME) -> str:
-    accent = HUD_COLORS["stats"]
+    accent = "#FF2279"  # exact rose-pink sampled from the reference screenshot
 
     solved = stats.get("solved", {}) or {}
     total = solved.get("total", 0) or 0

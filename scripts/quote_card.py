@@ -23,7 +23,7 @@ from __future__ import annotations
 import html
 import textwrap
 
-from themes import DEFAULT_THEME, HUD_COLORS
+from themes import DEFAULT_THEME
 
 FONT_SIZE = 16
 LINE_HEIGHT = 26
@@ -65,7 +65,8 @@ def _line_reveal_animate(index: int, total_lines: int, full_width: float) -> str
 
 def render_quote_svg(quote: str, theme_name: str = DEFAULT_THEME) -> str:
     """Build the SVG markup for the typewriter quote card."""
-    accent = HUD_COLORS["stats"]  # pink/magenta vertical bar
+    accent = "#FF2279"  # exact rose-pink sampled from the reference screenshot,
+    # not the brighter HUD_COLORS magenta used elsewhere
 
     lines = textwrap.wrap(quote, width=WRAP_CHARS)[:MAX_LINES]
     if not lines:

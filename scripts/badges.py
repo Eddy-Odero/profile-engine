@@ -33,12 +33,27 @@ def _escape_segment(text: str) -> str:
     return quote(text, safe="_")
 
 
+def _darken(hex_color: str, factor: float = 0.55) -> str:
+    """
+    Shields.io badges render their message-side box at full, flat
+    saturation - fine for most themes, but HUD's neon cyan reads as too
+    bright/glary at that size and solidity. Scale RGB down instead of
+    swapping the whole theme's accent, so every other component that
+    reads the same theme.color for glow/line work is unaffected.
+    """
+    r = int(hex_color[0:2], 16)
+    g = int(hex_color[2:4], 16)
+    b = int(hex_color[4:6], 16)
+    r, g, b = (max(0, int(c * factor)) for c in (r, g, b))
+    return f"{r:02x}{g:02x}{b:02x}"
+
+
 def badge_markdown(label: str, message: str, theme_name: str = DEFAULT_THEME) -> str:
     """Build one markdown image badge string for `label: message`, theme-colored."""
     theme = get_theme(theme_name)
     url = (
         f"https://img.shields.io/badge/{_escape_segment(label)}-{_escape_segment(message)}"
-        f"-{theme['color']}"
+        f"-{_darken(theme['color'])}"
         f"?style={theme['style']}&labelColor={theme['label_color']}"
     )
     alt = f"{label}: {message}"

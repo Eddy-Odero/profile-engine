@@ -271,8 +271,9 @@ def render_terminal_svg(
     y += LINE_HEIGHT
     line_idx += 1
 
-    stat_value_color = "#5C8FCC"  # a muted, dark-ish blue - reads as distinct
-    # from the cyan ASCII/labels without shouting the way the bright pink did.
+    stat_value_color = "white"  # back to the original - the dark blue/pink
+    # experiments were for the separate stat badges shown after the
+    # terminal, not this dotted-row text inside it.
     for key, value in stat_rows:
         k, dots, v = _dotted_row(key, value)
         right_elements.append(
@@ -280,7 +281,7 @@ def render_terminal_svg(
             f'font-size="{FONT_SIZE}" xml:space="preserve">'
             f'<tspan fill="{accent}" font-weight="700">{_esc(k)}</tspan>'
             f'<tspan fill="{accent}" fill-opacity="0.35">{dots}</tspan>'
-            f'<tspan fill="{stat_value_color}" font-weight="700">{_esc(v)}</tspan></text>'
+            f'<tspan fill="{stat_value_color}" fill-opacity="0.9" font-weight="700">{_esc(v)}</tspan></text>'
         )
         y += LINE_HEIGHT
         line_idx += 1
@@ -289,10 +290,18 @@ def render_terminal_svg(
     line_idx += 1
 
     for line in boot_lines:
+        if line.startswith("[INFO]"):
+            rest = _esc(line[len("[INFO]"):])
+            line_markup = (
+                f'<tspan fill="#FF4D5A" font-weight="700">[INFO]</tspan>'
+                f'<tspan fill="{accent}" fill-opacity="0.55">{rest}</tspan>'
+            )
+        else:
+            line_markup = f'<tspan fill="{accent}" fill-opacity="0.55">{_esc(line)}</tspan>'
         right_elements.append(
             f'<text class="line line-{line_idx}" x="0" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
-            f'font-size="{FONT_SIZE}" fill="{accent}" fill-opacity="0.55" xml:space="preserve">'
-            f"{_esc(line)}</text>"
+            f'font-size="{FONT_SIZE}" xml:space="preserve">'
+            f"{line_markup}</text>"
         )
         y += LINE_HEIGHT
         line_idx += 1

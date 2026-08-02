@@ -36,8 +36,8 @@ CELL_GAP = 3
 ROWS = 7
 
 PANEL_PAD_X = 24
-PANEL_PAD_TOP = 90  # room for the big number + stats row above the grid
-PANEL_PAD_BOTTOM = 66
+PANEL_PAD_TOP = 138  # room for the number/chip row + the centered streak badge row
+PANEL_PAD_BOTTOM = 20
 
 BG = "07090F"
 
@@ -157,8 +157,7 @@ font-weight="700" fill="{accent}" filter="url(#hudglow)">{value} days</text>
   </g>"""
 
     badge_w, badge_h, badge_gap = 168, 34, 14
-    badges_row_w = badge_w * 2 + badge_gap
-    badges_y = height - PANEL_PAD_BOTTOM - badge_h - 4
+    badges_y = 92  # centered row, below the number/LIVE-chip row, above the grid
     left_cx = width / 2 - badge_gap / 2 - badge_w / 2
     right_cx = width / 2 + badge_gap / 2 + badge_w / 2
     streak_badges = (
