@@ -4,7 +4,7 @@
 
 <sub>~ live session · Eddy Odero@github · re-renders every build ~</sub>
 
-![Repos: 23](https://img.shields.io/badge/Repos-23-007f8c?style=flat-square&labelColor=07090F) ![Stars: 22](https://img.shields.io/badge/Stars-22-007f8c?style=flat-square&labelColor=07090F) ![Followers: 52](https://img.shields.io/badge/Followers-52-007f8c?style=flat-square&labelColor=07090F) ![LC Solved: 45](https://img.shields.io/badge/LC_Solved-45-007f8c?style=flat-square&labelColor=07090F)
+![Repos: 24](https://img.shields.io/badge/Repos-24-007f8c?style=flat-square&labelColor=07090F) ![Stars: 37](https://img.shields.io/badge/Stars-37-007f8c?style=flat-square&labelColor=07090F) ![Followers: 12](https://img.shields.io/badge/Followers-12-007f8c?style=flat-square&labelColor=07090F) ![LC Solved: 120](https://img.shields.io/badge/LC_Solved-120-007f8c?style=flat-square&labelColor=07090F)
 
 ![System Modules header](generated/header_2.svg)
 
@@ -30,14 +30,14 @@
 
 ![SatGate](generated/fragment_card_0.svg)
 
-![View disabled](generated/badge_disabled.svg) [![Code](generated/badge_code.svg)](https://github.com/Eddy-Odero/SatGate)
+[![View](generated/badge_view.svg)](https://satgate-2.onrender.com/) [![Code](generated/badge_code.svg)](https://github.com/Eddy-Odero/SatGate)
 
 </td>
 <td align="center">
 
 ![EDU-FLIX](generated/fragment_card_1.svg)
 
-![View disabled](generated/badge_disabled.svg) [![Code](generated/badge_code.svg)](https://github.com/Eddy-Odero/EDU-FLIX)
+[![View](generated/badge_view.svg)](https://edu-flix.onrender.com/) [![Code](generated/badge_code.svg)](https://github.com/Eddy-Odero/EDU-FLIX)
 
 </td>
 </tr>
@@ -53,7 +53,7 @@
 
 ![Maison POS](generated/fragment_card_3.svg)
 
-![View disabled](generated/badge_disabled.svg) [![Code](generated/badge_code.svg)](https://github.com/Eddy-Odero/Maison-POS)
+[![View](generated/badge_view.svg)](https://tinah-cosmetics.vercel.app/) [![Code](generated/badge_code.svg)](https://github.com/Eddy-Odero/Maison-POS)
 
 </td>
 </tr>
@@ -70,4 +70,4 @@
 
 </div>
 
-<sub>Last rendered: 2026-08-02 19:47 UTC · theme: hud · auto-generated, do not edit by hand</sub>
+<sub>Last rendered: 2026-08-02 19:54 UTC · theme: hud · auto-generated, do not edit by hand</sub>

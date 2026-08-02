@@ -166,13 +166,13 @@ font-weight="700" fill="{accent}" filter="url(#hudglow)">{value} days</text>
         + _streak_badge(right_cx, badges_y, "🏆", "LONGEST STREAK", longest_streak, badge_w, badge_h)
     )
 
-    # A small rocket flying across the grid, with a fading trail behind
-    # it - one animated focal point instead of more HUD chrome. Three
-    # laps chained into a single path so it alternates direction each
-    # time instead of always flying the same way: left-to-right, then
-    # right-to-left on a mirrored wave, then a diagonal bottom-to-top
-    # pass. Each lap fades in/out at its own edges so the jump between
-    # laps (and the loop reset back to lap 1) happens while invisible.
+    # A shark chasing a few small fish across the grid - one animated
+    # focal point instead of more HUD chrome. Three laps chained into a
+    # single path so it alternates direction each time instead of always
+    # swimming the same way: left-to-right, then right-to-left on a
+    # mirrored wave, then a diagonal bottom-to-top pass. Each lap fades
+    # in/out at its own edges so the jump between laps (and the loop
+    # reset back to lap 1) happens while invisible.
     lap_duration = 6
     n_laps = 3
     rocket_duration = lap_duration * n_laps
@@ -216,19 +216,22 @@ font-weight="700" fill="{accent}" filter="url(#hudglow)">{value} days</text>
         f'<animate attributeName="opacity" values="{fade_values_str}" '
         'keyTimes="{keytimes}" dur="{d}s" begin="{b}s" repeatCount="indefinite"/>'
     )
-    trail = []
-    n_particles = 5
-    for i in range(n_particles, 0, -1):
-        delay = -(i * 0.18)
-        r = max(1, 3.2 - i * 0.4)
-        trail.append(f"""
-  <circle r="{r:.1f}" fill="{accent}" opacity="0">
-    <animateMotion path="{path_d}" dur="{rocket_duration}s" begin="{delay}s" repeatCount="indefinite"/>
-    {fade_anim.format(keytimes=fade_keytimes_str, d=rocket_duration, b=delay)}
-  </circle>""")
+    # A few small fish swimming ahead of the shark, not a fading comet
+    # trail - negative `begin` puts an element FURTHER ALONG the path at
+    # any given moment (its clock started earlier), which is exactly
+    # "ahead of / fleeing from" the shark at begin=0. Bigger negative
+    # offset = further out in front of the pack.
+    fish = []
+    fish_offsets = [0.35, 0.75, 1.2]
+    for i, lead in enumerate(fish_offsets):
+        fish.append(f"""
+  <text font-size="11" opacity="0" text-anchor="middle" dominant-baseline="middle">🐟
+    <animateMotion path="{path_d}" dur="{rocket_duration}s" begin="{-lead:.2f}s" repeatCount="indefinite"/>
+    {fade_anim.format(keytimes=fade_keytimes_str, d=rocket_duration, b=-lead)}
+  </text>""")
 
     rocket = f"""
-  <text font-size="15" opacity="0" text-anchor="middle" dominant-baseline="middle">🚀
+  <text font-size="18" opacity="0" text-anchor="middle" dominant-baseline="middle">🦈
     <animateMotion path="{path_d}" dur="{rocket_duration}s" repeatCount="indefinite"/>
     {fade_anim.format(keytimes=fade_keytimes_str, d=rocket_duration, b=0)}
   </text>"""
@@ -242,7 +245,7 @@ xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Neural activity">
   {live_chip}
   {active_text}
   <g>{''.join(cells)}</g>
-  {''.join(trail)}
+  {''.join(fish)}
   {rocket}
   {streak_badges}
   {scan_rect}
