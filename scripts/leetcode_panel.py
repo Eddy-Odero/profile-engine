@@ -20,7 +20,7 @@ from __future__ import annotations
 import html
 
 from hud_grid import glow_filter, grid_background, scanline_overlay
-from themes import DEFAULT_THEME
+from themes import DEFAULT_THEME, get_theme
 
 WIDTH = 820
 PAD_X = 28
@@ -46,6 +46,7 @@ def _esc(text: str) -> str:
 
 def render_leetcode_panel_svg(stats: dict, theme_name: str = DEFAULT_THEME) -> str:
     accent = "#FF2279"  # exact rose-pink sampled from the reference screenshot
+    bg = get_theme(theme_name)["label_color"]
 
     solved = stats.get("solved", {}) or {}
     total = solved.get("total", 0) or 0
@@ -101,7 +102,7 @@ fill="{accent}" fill-opacity="0.85"/>""")
     return f"""<svg width="{WIDTH}" height="{height}" viewBox="0 0 {WIDTH} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LeetCode stats">
   <defs>{grid_defs}{glow_filter()}{scan_defs}</defs>
-  <rect width="{WIDTH}" height="{height}" fill="#{BG}" fill-opacity="0.6"/>
+  <rect width="{WIDTH}" height="{height}" fill="#{bg}" fill-opacity="0.6"/>
   {grid_rect}
   <text x="{PAD_X}" y="{TITLE_Y}" font-family="Segoe UI, Helvetica, Arial, sans-serif" \
 font-size="17" font-weight="700" fill="#{TITLE_COLOR}">Problem Difficulty</text>

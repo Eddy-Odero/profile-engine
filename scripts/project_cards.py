@@ -245,7 +245,7 @@ def render_single_project_card_svg(project: dict, theme_name: str = DEFAULT_THEM
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(name)}">
   <defs>{grid_defs}</defs>
   {grid_rect}
-  <rect width="{CARD_WIDTH}" height="{CARD_HEIGHT}" rx="10" fill="#{CARD_BG}" fill-opacity="0.93" \
+  <rect width="{CARD_WIDTH}" height="{CARD_HEIGHT}" rx="10" fill="#{theme['label_color']}" fill-opacity="0.93" \
 stroke="#{CARD_BORDER}" stroke-width="1"/>
   {_ribbon(project.get("visibility", ""))}
   {_project_icon(CARD_WIDTH / 2, icon_cy, icon_key, accent)}
@@ -306,7 +306,7 @@ def render_project_card_simple_svg(project: dict, theme_name: str = DEFAULT_THEM
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(name)}">
   <defs>{grid_defs}</defs>
   {grid_rect}
-  <rect width="{CARD_WIDTH}" height="{card_height}" rx="10" fill="#{CARD_BG}" fill-opacity="0.93" \
+  <rect width="{CARD_WIDTH}" height="{card_height}" rx="10" fill="#{theme['label_color']}" fill-opacity="0.93" \
 stroke="#{CARD_BORDER}" stroke-width="1"/>
   {_project_icon(CARD_WIDTH / 2, icon_cy, icon_key, accent)}
   {name_elements}

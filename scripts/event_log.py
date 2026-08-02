@@ -20,7 +20,7 @@ from __future__ import annotations
 import html
 
 from hud_grid import glow_filter, grid_background, scanline_overlay
-from themes import DEFAULT_THEME, HUD_COLORS
+from themes import DEFAULT_THEME, HUD_COLORS, get_theme
 
 WIDTH = 820
 PAD_X = 40
@@ -61,6 +61,7 @@ def _wrap(text: str, max_chars: int = 78) -> list[str]:
 
 def render_event_log_svg(events: list[dict], theme_name: str = DEFAULT_THEME) -> str:
     accent = HUD_COLORS["timeline"]
+    bg = get_theme(theme_name)["label_color"]
 
     # Pre-measure each entry's height so nodes land exactly on their
     # entry's vertical center regardless of how many description lines wrap.
@@ -114,7 +115,7 @@ def render_event_log_svg(events: list[dict], theme_name: str = DEFAULT_THEME) ->
     return f"""<svg width="{WIDTH}" height="{height}" viewBox="0 0 {WIDTH} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Event log">
   <defs>{bg_defs}{glow_filter()}{scan_defs}</defs>
-  <rect width="{WIDTH}" height="{height}" fill="#{BG}" fill-opacity="0.6"/>
+  <rect width="{WIDTH}" height="{height}" fill="#{bg}" fill-opacity="0.6"/>
   {bg_rect}
   {timeline_line}
   {''.join(parts)}

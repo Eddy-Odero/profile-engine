@@ -140,7 +140,7 @@ def render_skill_modules_svg(
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="System modules">
   <defs>{grid_defs}{glow_filter()}{scan_defs}</defs>
-  <rect width="{width}" height="{height}" fill="#{CARD_BG}" fill-opacity="0.5"/>
+  <rect width="{width}" height="{height}" fill="#{theme['label_color']}" fill-opacity="0.5"/>
   {grid_rect}
   {''.join(badges)}
   {scan_rect}

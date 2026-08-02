@@ -29,7 +29,7 @@ import hashlib
 import html
 
 from hud_grid import glow_filter, grid_background, scanline_overlay
-from themes import DEFAULT_THEME, HUD_COLORS
+from themes import DEFAULT_THEME, HUD_COLORS, get_theme
 
 CELL = 13
 CELL_GAP = 3
@@ -71,6 +71,7 @@ def render_neural_activity_svg(
     the heatmap grid itself.
     """
     accent = HUD_COLORS["activity"]
+    bg = get_theme(theme_name)["label_color"]
 
     grid_w = len(weeks) * (CELL + CELL_GAP) - CELL_GAP
     grid_h = ROWS * (CELL + CELL_GAP) - CELL_GAP
@@ -165,22 +166,55 @@ font-weight="700" fill="{accent}" filter="url(#hudglow)">{value} days</text>
         + _streak_badge(right_cx, badges_y, "🏆", "LONGEST STREAK", longest_streak, badge_w, badge_h)
     )
 
-    # A small rocket flying across the grid on a gentle wave path, with a
-    # fading trail of particles behind it - one fun animated focal point
-    # instead of more HUD chrome. It fades in/out right at the canvas
-    # edges so the animation loop resets while invisible, avoiding a
-    # visible snap-back.
-    rocket_duration = 9
-    path_d = (
+    # A small rocket flying across the grid, with a fading trail behind
+    # it - one animated focal point instead of more HUD chrome. Three
+    # laps chained into a single path so it alternates direction each
+    # time instead of always flying the same way: left-to-right, then
+    # right-to-left on a mirrored wave, then a diagonal bottom-to-top
+    # pass. Each lap fades in/out at its own edges so the jump between
+    # laps (and the loop reset back to lap 1) happens while invisible.
+    lap_duration = 6
+    n_laps = 3
+    rocket_duration = lap_duration * n_laps
+
+    lap_1 = (
         f"M {grid_x0 - 24:.1f},{grid_y0 + grid_h * 0.55:.1f} "
         f"Q {grid_x0 + grid_w * 0.25:.1f},{grid_y0 - 14:.1f} "
         f"{grid_x0 + grid_w * 0.5:.1f},{grid_y0 + grid_h * 0.5:.1f} "
         f"Q {grid_x0 + grid_w * 0.75:.1f},{grid_y0 + grid_h + 16:.1f} "
-        f"{grid_x0 + grid_w + 24:.1f},{grid_y0 + grid_h * 0.45:.1f}"
+        f"{grid_x0 + grid_w + 24:.1f},{grid_y0 + grid_h * 0.45:.1f} "
     )
+    lap_2 = (  # right-to-left, mirrored wave (dips the opposite way)
+        f"M {grid_x0 + grid_w + 24:.1f},{grid_y0 + grid_h * 0.4:.1f} "
+        f"Q {grid_x0 + grid_w * 0.75:.1f},{grid_y0 + grid_h + 18:.1f} "
+        f"{grid_x0 + grid_w * 0.5:.1f},{grid_y0 + grid_h * 0.5:.1f} "
+        f"Q {grid_x0 + grid_w * 0.25:.1f},{grid_y0 - 16:.1f} "
+        f"{grid_x0 - 24:.1f},{grid_y0 + grid_h * 0.6:.1f} "
+    )
+    lap_3 = (  # diagonal, bottom-left to top-right
+        f"M {grid_x0 + grid_w * 0.1:.1f},{grid_y0 + grid_h + 20:.1f} "
+        f"Q {grid_x0 + grid_w * 0.5:.1f},{grid_y0 + grid_h * 0.3:.1f} "
+        f"{grid_x0 + grid_w * 0.9:.1f},{grid_y0 - 20:.1f} "
+    )
+    path_d = lap_1 + lap_2 + lap_3
+
+    # One fade pulse per lap: invisible during the jump between laps,
+    # visible while actually flying.
+    fade_values = []
+    fade_keytimes = []
+    edge = 0.02  # fraction of one lap spent fading in/out
+    for lap in range(n_laps):
+        start = lap / n_laps
+        end = (lap + 1) / n_laps
+        fade_values += ["0", "1", "1", "0"]
+        fade_keytimes += [
+            f"{start:.4f}", f"{start + edge:.4f}", f"{end - edge:.4f}", f"{end:.4f}"
+        ]
+    fade_values_str = ";".join(fade_values)
+    fade_keytimes_str = ";".join(fade_keytimes)
     fade_anim = (
-        '<animate attributeName="opacity" values="0;1;1;0" '
-        'keyTimes="0;0.08;0.9;1" dur="{d}s" begin="{b}s" repeatCount="indefinite"/>'
+        f'<animate attributeName="opacity" values="{fade_values_str}" '
+        'keyTimes="{keytimes}" dur="{d}s" begin="{b}s" repeatCount="indefinite"/>'
     )
     trail = []
     n_particles = 5
@@ -190,19 +224,19 @@ font-weight="700" fill="{accent}" filter="url(#hudglow)">{value} days</text>
         trail.append(f"""
   <circle r="{r:.1f}" fill="{accent}" opacity="0">
     <animateMotion path="{path_d}" dur="{rocket_duration}s" begin="{delay}s" repeatCount="indefinite"/>
-    {fade_anim.format(d=rocket_duration, b=delay)}
+    {fade_anim.format(keytimes=fade_keytimes_str, d=rocket_duration, b=delay)}
   </circle>""")
 
     rocket = f"""
   <text font-size="15" opacity="0" text-anchor="middle" dominant-baseline="middle">🚀
     <animateMotion path="{path_d}" dur="{rocket_duration}s" repeatCount="indefinite"/>
-    {fade_anim.format(d=rocket_duration, b=0)}
+    {fade_anim.format(keytimes=fade_keytimes_str, d=rocket_duration, b=0)}
   </text>"""
 
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Neural activity">
   <defs>{bg_defs}{glow_filter()}{scan_defs}</defs>
-  <rect width="{width}" height="{height}" fill="#{BG}" fill-opacity="0.6"/>
+  <rect width="{width}" height="{height}" fill="#{bg}" fill-opacity="0.6"/>
   {bg_rect}
   {number_block}
   {live_chip}

@@ -114,7 +114,7 @@ def render_link_pill_svg(
 viewBox="0 0 {PILL_WIDTH} {PILL_HEIGHT}" xmlns="http://www.w3.org/2000/svg" \
 role="img" aria-label="{_esc(label)}">
   <defs>{grid_defs}{glow_defs}</defs>
-  <rect width="{PILL_WIDTH}" height="{PILL_HEIGHT}" rx="22" fill="#{PILL_BG}" \
+  <rect width="{PILL_WIDTH}" height="{PILL_HEIGHT}" rx="22" fill="#{theme['label_color']}" \
 stroke="{border}" stroke-width="1.3"/>
   {grid_rect}
   {icon_svg}
