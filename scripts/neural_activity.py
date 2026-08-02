@@ -37,7 +37,7 @@ ROWS = 7
 
 PANEL_PAD_X = 24
 PANEL_PAD_TOP = 90  # room for the big number + stats row above the grid
-PANEL_PAD_BOTTOM = 20
+PANEL_PAD_BOTTOM = 66
 
 BG = "07090F"
 
@@ -133,18 +133,38 @@ fill="{accent}" fill-opacity="0.12" stroke="{accent}" stroke-width="1"/>
 font-size="10" font-weight="700" fill="{accent}" letter-spacing="1">LIVE</text>
   </g>"""
 
-    # Active days / streak readout, below the chip, right-aligned -
-    # split across two lines now that there are three numbers instead
-    # of one combined "streak".
-    stats_line_1 = f"TOTAL_ACTIVE: {active_days}"
-    stats_line_2 = f"CURRENT_STREAK: {current_streak}  |  LONGEST_STREAK: {longest_streak}"
-    stats_text = f"""
+    # Active-days readout stays as a small right-aligned caption under
+    # the LIVE chip; current/longest streak get their own centered
+    # badge pills instead - same visual language as the LIVE chip, but
+    # centered and given room to actually read as a highlight rather
+    # than a line buried in small text.
+    active_text = f"""
   <text x="{width - PANEL_PAD_X}" y="{chip_y + chip_h + 18}" \
 font-family="Consolas, Menlo, monospace" font-size="10" fill="#8a7fa8" \
-text-anchor="end" letter-spacing="0.5">{_esc(stats_line_1)}</text>
-  <text x="{width - PANEL_PAD_X}" y="{chip_y + chip_h + 34}" \
-font-family="Consolas, Menlo, monospace" font-size="10" fill="#8a7fa8" \
-text-anchor="end" letter-spacing="0.5">{_esc(stats_line_2)}</text>"""
+text-anchor="end" letter-spacing="0.5">TOTAL_ACTIVE: {active_days}</text>"""
+
+    def _streak_badge(cx: float, y: float, icon: str, label: str, value: int, w: float, h: float) -> str:
+        x = cx - w / 2
+        return f"""
+  <g>
+    <rect x="{x:.1f}" y="{y}" width="{w}" height="{h}" rx="{h/2:.1f}" \
+fill="{accent}" fill-opacity="0.10" stroke="{accent}" stroke-width="1"/>
+    <text x="{x+16:.1f}" y="{y+h/2+5:.1f}" font-size="14" text-anchor="middle">{icon}</text>
+    <text x="{x+30:.1f}" y="{y+h/2-2:.1f}" font-family="Consolas, Menlo, monospace" font-size="8.5" \
+fill="#8a7fa8" letter-spacing="0.5">{label}</text>
+    <text x="{x+30:.1f}" y="{y+h/2+12:.1f}" font-family="Consolas, Menlo, monospace" font-size="13" \
+font-weight="700" fill="{accent}" filter="url(#hudglow)">{value} days</text>
+  </g>"""
+
+    badge_w, badge_h, badge_gap = 168, 34, 14
+    badges_row_w = badge_w * 2 + badge_gap
+    badges_y = height - PANEL_PAD_BOTTOM - badge_h - 4
+    left_cx = width / 2 - badge_gap / 2 - badge_w / 2
+    right_cx = width / 2 + badge_gap / 2 + badge_w / 2
+    streak_badges = (
+        _streak_badge(left_cx, badges_y, "🔥", "CURRENT STREAK", current_streak, badge_w, badge_h)
+        + _streak_badge(right_cx, badges_y, "🏆", "LONGEST STREAK", longest_streak, badge_w, badge_h)
+    )
 
     # A small rocket flying across the grid on a gentle wave path, with a
     # fading trail of particles behind it - one fun animated focal point
@@ -187,9 +207,10 @@ xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Neural activity">
   {bg_rect}
   {number_block}
   {live_chip}
-  {stats_text}
+  {active_text}
   <g>{''.join(cells)}</g>
   {''.join(trail)}
   {rocket}
+  {streak_badges}
   {scan_rect}
 </svg>"""

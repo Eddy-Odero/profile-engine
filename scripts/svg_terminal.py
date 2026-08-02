@@ -247,16 +247,11 @@ def render_terminal_svg(
 
     avatar_elements = []
     y = FONT_SIZE
-    n_lines = max(len(avatar_lines) - 1, 1)
     for i, line in enumerate(avatar_lines):
-        # A top-to-bottom brightness fade instead of one flat solid color -
-        # brighter near the top, settling to a dimmer, cooler tone by the
-        # bottom, which reads as much less flat on a dense block of ASCII.
-        fade = 1.0 - (i / n_lines) * 0.5
         avatar_elements.append(
             f'<text class="line line-{i}" x="0" y="{y:.1f}" filter="url(#glow)" '
             f'font-family="Consolas, Menlo, monospace" font-size="{FONT_SIZE}" '
-            f'fill="{accent}" fill-opacity="{fade:.2f}" xml:space="preserve">{_esc(line)}</text>'
+            f'fill="{accent}" xml:space="preserve">{_esc(line)}</text>'
         )
         y += LINE_HEIGHT
 
