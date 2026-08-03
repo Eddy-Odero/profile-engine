@@ -216,6 +216,45 @@ font-weight="700" fill="{accent}" filter="url(#hudglow)">{value} days</text>
         f'<animate attributeName="opacity" values="{fade_values_str}" '
         'keyTimes="{keytimes}" dur="{d}s" begin="{b}s" repeatCount="indefinite"/>'
     )
+
+    # Direction-facing fix: laps 1 and 3 move left-to-right, lap 2 moves
+    # right-to-left, but nothing was flipping to match - moving right
+    # while still facing left (or vice versa) reads as swimming
+    # backwards. `calcMode="discrete"` steps between values instead of
+    # smoothly interpolating, so the flip happens as an instant mirror
+    # at each lap boundary (while the element is invisible anyway, mid-
+    # fade), not a gradual squish through zero.
+    def _direction_flip_anim(begin: float, faces_right_by_default: bool) -> str:
+        right_lap, left_lap = ("1,1", "-1,1") if faces_right_by_default else ("-1,1", "1,1")
+        values = f"{right_lap};{left_lap};{right_lap};{right_lap}"
+        return (
+            f'<animateTransform attributeName="transform" type="scale" '
+            f'values="{values}" keyTimes="0;{1/n_laps:.4f};{2/n_laps:.4f};1" '
+            f'calcMode="discrete" dur="{rocket_duration}s" begin="{begin}s" repeatCount="indefinite"/>'
+        )
+
+    def _shark_svg(color: str) -> str:
+        """
+        A drawn shark instead of the 🦈 emoji: a straight/streamlined
+        body (not the rounded emoji silhouette), dorsal + tail fins, and
+        a separate lower-jaw piece that rotates open/closed on its own
+        fast independent loop - a "chomping" mouth, not just a static
+        glyph. Drawn nose-right by default (see faces_right_by_default
+        above).
+        """
+        return f"""
+    <g fill="{color}" fill-opacity="0.85" stroke="{color}" stroke-width="1" filter="url(#hudglow)">
+      <path d="M -16,0 Q -16,-4.5 -7,-4 L 9,-2.5 L 16,0 L 9,1 L -7,4 Q -16,4.5 -16,0 Z"/>
+      <path d="M -2,-4 L 1,-4 L -1,-11 Z"/>
+      <path d="M -15,-1 L -23,-6 L -21,0 L -23,6 L -15,1 Z"/>
+    </g>
+    <g fill="{color}" fill-opacity="0.85" stroke="{color}" stroke-width="1">
+      <path d="M 16,0 L 9,1.5 L 14,4.5 Z">
+        <animateTransform attributeName="transform" type="rotate" values="0 16 0;28 16 0;0 16 0" \
+dur="0.7s" repeatCount="indefinite"/>
+      </path>
+    </g>"""
+
     # A few small fish swimming ahead of the shark, not a fading comet
     # trail - negative `begin` puts an element FURTHER ALONG the path at
     # any given moment (its clock started earlier), which is exactly
@@ -225,16 +264,24 @@ font-weight="700" fill="{accent}" filter="url(#hudglow)">{value} days</text>
     fish_offsets = [0.35, 0.75, 1.2]
     for i, lead in enumerate(fish_offsets):
         fish.append(f"""
-  <text font-size="11" opacity="0" text-anchor="middle" dominant-baseline="middle">🐟
+  <g opacity="0">
     <animateMotion path="{path_d}" dur="{rocket_duration}s" begin="{-lead:.2f}s" repeatCount="indefinite"/>
     {fade_anim.format(keytimes=fade_keytimes_str, d=rocket_duration, b=-lead)}
-  </text>""")
+    <g>
+      {_direction_flip_anim(-lead, faces_right_by_default=False)}
+      <text font-size="11" text-anchor="middle" dominant-baseline="middle">🐟</text>
+    </g>
+  </g>""")
 
     rocket = f"""
-  <text font-size="18" opacity="0" text-anchor="middle" dominant-baseline="middle">🦈
+  <g opacity="0">
     <animateMotion path="{path_d}" dur="{rocket_duration}s" repeatCount="indefinite"/>
     {fade_anim.format(keytimes=fade_keytimes_str, d=rocket_duration, b=0)}
-  </text>"""
+    <g>
+      {_direction_flip_anim(0, faces_right_by_default=True)}
+      {_shark_svg(accent)}
+    </g>
+  </g>"""
 
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Neural activity">
