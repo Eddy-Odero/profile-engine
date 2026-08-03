@@ -14,10 +14,10 @@
     "PostgreSQL",
     "Docker"
   ],
-  "cursor": "_",
-  "system_message": "> checking for updates... none, as usual",
-  "quote": "Make it work, make it right, make it fast.",
-  "status": "Refactoring at 2am",
+  "cursor": "\u2588",
+  "system_message": "[DEBUG] still figuring it out",
+  "quote": "Code never lies, comments sometimes do.",
+  "status": "Coffee Loading...",
   "terminal_svg_path": "generated/terminal.svg",
   "fragment_cards": [
     {
@@ -111,7 +111,7 @@
     "Signal Uplink": "generated/header_6.svg",
     "Neural Activity": "generated/header_7.svg"
   },
-  "build_time": "2026-08-03 09:10 UTC",
+  "build_time": "2026-08-03 09:22 UTC",
   "stat_badges": [
     "![Repos: 23](https://img.shields.io/badge/Repos-23-007f8c?style=flat-square&labelColor=07090F)",
     "![Stars: 22](https://img.shields.io/badge/Stars-22-007f8c?style=flat-square&labelColor=07090F)",
