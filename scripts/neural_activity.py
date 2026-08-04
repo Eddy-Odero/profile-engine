@@ -167,15 +167,25 @@ font-weight="700" fill="{accent}" filter="url(#hudglow)">{value} days</text>
     )
 
     # A shark chasing a few small fish across the grid - one animated
-    # focal point instead of more HUD chrome. Three laps chained into a
-    # single path so it alternates direction each time instead of always
-    # swimming the same way: left-to-right, then right-to-left on a
-    # mirrored wave, then a diagonal bottom-to-top pass. Each lap fades
-    # in/out at its own edges so the jump between laps (and the loop
-    # reset back to lap 1) happens while invisible.
+    # focal point instead of more HUD chrome. Three laps alternate
+    # direction: left-to-right, then right-to-left on a mirrored wave,
+    # then a diagonal bottom-to-top pass.
+    #
+    # Each lap is its OWN <animateMotion>, chained to the next via
+    # begin="prevId.end" instead of one concatenated path with assumed
+    # equal-thirds timing. That equal-thirds assumption was the actual
+    # bug behind "changes direction before reaching the edge": a single
+    # animateMotion paces itself by constant speed over the path's real
+    # arc length, and lap 3 (a short diagonal) is geometrically much
+    # shorter than laps 1/2 (wide S-curves) - so it was eating time that
+    # rightfully belonged to lap 2, cutting lap 2 off early. Chaining
+    # separate per-lap animations means each one always plays its own
+    # path fully, in its own dur, regardless of how the other laps'
+    # lengths compare.
     lap_duration = 6
     n_laps = 3
     rocket_duration = lap_duration * n_laps
+    SHARK_COLOR = "#8C93A6"  # grey, like the original shark emoji - not the green accent
 
     lap_1 = (
         f"M {grid_x0 - 24:.1f},{grid_y0 + grid_h * 0.55:.1f} "
@@ -196,7 +206,22 @@ font-weight="700" fill="{accent}" filter="url(#hudglow)">{value} days</text>
         f"Q {grid_x0 + grid_w * 0.5:.1f},{grid_y0 + grid_h * 0.3:.1f} "
         f"{grid_x0 + grid_w * 0.9:.1f},{grid_y0 - 20:.1f} "
     )
-    path_d = lap_1 + lap_2 + lap_3
+    laps = [lap_1, lap_2, lap_3]
+
+    def _chained_motion(entity_id: str, initial_lead: float) -> str:
+        """3 chained animateMotion elements for one entity - each lap
+        begins exactly when the previous one ends, so every lap always
+        gets its full, equal time slice."""
+        parts = []
+        for i, lap_path in enumerate(laps):
+            this_id = f"{entity_id}_lap{i}"
+            prev_id = f"{entity_id}_lap{(i - 1) % n_laps}"
+            begin = f"{-initial_lead:.2f}s;{prev_id}.end" if i == 0 else f"{prev_id}.end"
+            parts.append(
+                f'<animateMotion id="{this_id}" path="{lap_path}" dur="{lap_duration}s" '
+                f'begin="{begin}" fill="freeze"/>'
+            )
+        return "".join(parts)
 
     # One fade pulse per lap: invisible during the jump between laps,
     # visible while actually flying.
@@ -240,15 +265,16 @@ font-weight="700" fill="{accent}" filter="url(#hudglow)">{value} days</text>
         a separate lower-jaw piece that rotates open/closed on its own
         fast independent loop - a "chomping" mouth, not just a static
         glyph. Drawn nose-right by default (see faces_right_by_default
-        above).
+        above). Grey, matching the look of the original shark emoji
+        rather than the green section accent.
         """
         return f"""
-    <g fill="{color}" fill-opacity="0.85" stroke="{color}" stroke-width="1" filter="url(#hudglow)">
+    <g fill="{color}" fill-opacity="0.9" stroke="{color}" stroke-width="1">
       <path d="M -16,0 Q -16,-4.5 -7,-4 L 9,-2.5 L 16,0 L 9,1 L -7,4 Q -16,4.5 -16,0 Z"/>
       <path d="M -2,-4 L 1,-4 L -1,-11 Z"/>
       <path d="M -15,-1 L -23,-6 L -21,0 L -23,6 L -15,1 Z"/>
     </g>
-    <g fill="{color}" fill-opacity="0.85" stroke="{color}" stroke-width="1">
+    <g fill="{color}" fill-opacity="0.9" stroke="{color}" stroke-width="1">
       <path d="M 16,0 L 9,1.5 L 14,4.5 Z">
         <animateTransform attributeName="transform" type="rotate" values="0 16 0;28 16 0;0 16 0" \
 dur="0.7s" repeatCount="indefinite"/>
@@ -263,9 +289,10 @@ dur="0.7s" repeatCount="indefinite"/>
     fish = []
     fish_offsets = [0.35, 0.75, 1.2]
     for i, lead in enumerate(fish_offsets):
+        fish_id = f"fish{i}"
         fish.append(f"""
   <g opacity="0">
-    <animateMotion path="{path_d}" dur="{rocket_duration}s" begin="{-lead:.2f}s" repeatCount="indefinite"/>
+    {_chained_motion(fish_id, lead)}
     {fade_anim.format(keytimes=fade_keytimes_str, d=rocket_duration, b=-lead)}
     <g>
       {_direction_flip_anim(-lead, faces_right_by_default=False)}
@@ -275,11 +302,11 @@ dur="0.7s" repeatCount="indefinite"/>
 
     rocket = f"""
   <g opacity="0">
-    <animateMotion path="{path_d}" dur="{rocket_duration}s" repeatCount="indefinite"/>
+    {_chained_motion("shark", 0)}
     {fade_anim.format(keytimes=fade_keytimes_str, d=rocket_duration, b=0)}
     <g>
       {_direction_flip_anim(0, faces_right_by_default=True)}
-      {_shark_svg(accent)}
+      {_shark_svg(SHARK_COLOR)}
     </g>
   </g>"""
 

@@ -217,8 +217,16 @@ def calendar_to_heatmap(calendar: list[list[dict]]) -> dict:
 
     weeks_levels = [[level(day["contributionCount"]) for day in week] for week in calendar]
 
+    # If the most recent day has zero contributions, it's most likely
+    # "today" and just isn't over yet - counting it as a break would zero
+    # out an otherwise-real streak every single morning before the first
+    # commit lands. Drop it and count backward from the day before.
+    streak_days = list(all_days)
+    if streak_days and streak_days[-1]["contributionCount"] == 0:
+        streak_days = streak_days[:-1]
+
     current_streak = 0
-    for day in reversed(all_days):
+    for day in reversed(streak_days):
         if day["contributionCount"] > 0:
             current_streak += 1
         else:
