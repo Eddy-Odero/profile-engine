@@ -26,10 +26,14 @@ from utils import GENERATED_DIR, github_headers
 
 GITHUB_API = "https://api.github.com/users/{username}"
 
-
+# Dense-to-sparse brightness ramp (dark chars = bright pixels, since
+# terminals are usually light-text-on-dark-background). ~70 levels
+# gives noticeably smoother gradients than the classic 10-char ramp.
 ASCII_RAMP = " .'`^\",:;Il!i><~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$"
 
-
+# Terminal characters are taller than they are wide. Without correcting
+# for this, ASCII art comes out vertically stretched. ~0.5-0.55 is the
+# standard fudge factor for monospace fonts.
 CHAR_ASPECT_CORRECTION = 0.5
 
 

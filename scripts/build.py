@@ -256,8 +256,9 @@ def _mock_heatmap(weeks: int = 52) -> dict:
     total = sum(sum(col) for col in grid)
     active_days = sum(1 for col in grid for v in col if v > 0)
     flat = [v for col in grid for v in col]
+    streak_flat = flat[:-1] if flat and flat[-1] == 0 else flat
     current_streak = 0
-    for v in reversed(flat):
+    for v in reversed(streak_flat):
         if v > 0:
             current_streak += 1
         else:
