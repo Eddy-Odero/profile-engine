@@ -260,21 +260,31 @@ font-weight="700" fill="{accent}" filter="url(#hudglow)">{value} days</text>
 
     def _shark_svg(color: str) -> str:
         """
-        A drawn shark instead of the 🦈 emoji: a straight/streamlined
-        body (not the rounded emoji silhouette), dorsal + tail fins, and
-        a separate lower-jaw piece that rotates open/closed on its own
-        fast independent loop - a "chomping" mouth, not just a static
-        glyph. Drawn nose-right by default (see faces_right_by_default
-        above). Grey, matching the look of the original shark emoji
-        rather than the green section accent.
+        A drawn shark modeled on the reference image: two-tone body
+        (darker slate-grey top, lighter grey belly), a curved dorsal
+        fin, a forked tail, a pectoral fin, a small eye, and a few teeth
+        at the mouth - a separate lower-jaw piece still rotates open/
+        closed on its own fast independent loop. Drawn nose-right by
+        default (see faces_right_by_default above).
         """
+        belly = "#C7CBD1"  # lighter grey, like the reference's underside
+        dark = "#454B57"  # darker slate for the top-body outline/shade
         return f"""
-    <g fill="{color}" fill-opacity="0.9" stroke="{color}" stroke-width="1">
-      <path d="M -16,0 Q -16,-4.5 -7,-4 L 9,-2.5 L 16,0 L 9,1 L -7,4 Q -16,4.5 -16,0 Z"/>
-      <path d="M -2,-4 L 1,-4 L -1,-11 Z"/>
-      <path d="M -15,-1 L -23,-6 L -21,0 L -23,6 L -15,1 Z"/>
+    <g stroke="{dark}" stroke-width="0.6">
+      <path fill="{color}" d="M -18,1 Q -18,-6 -7,-6.5 L 6,-5.5 Q 13,-5 16,0 \
+Q 13,4.5 6,6 L -7,6.5 Q -18,7 -18,1 Z"/>
+      <path fill="{belly}" fill-opacity="0.85" d="M -15,3 Q -6,6.5 5,5.8 \
+Q 11,5.2 15,2 Q 10,5 3,4.8 Q -8,4.6 -15,3 Z"/>
+      <path fill="{color}" d="M -3,-5.5 Q 0,-13 3,-5" />
+      <path fill="{color}" d="M -16,0.5 L -25,-7 L -21,-1 L -26,5 L -17,2 Z"/>
+      <path fill="{color}" d="M -3,5.5 L -7,12 L 1,6.5 Z"/>
+      <circle cx="10.5" cy="-1.8" r="1.1" fill="#1a1a1f"/>
     </g>
-    <g fill="{color}" fill-opacity="0.9" stroke="{color}" stroke-width="1">
+    <g fill="#e9eaee" stroke="{dark}" stroke-width="0.4">
+      <path d="M 12,-2 L 14,0.5 L 10.5,0.8 Z"/>
+      <path d="M 13,1.5 L 15,3 L 11,2.8 Z"/>
+    </g>
+    <g fill="{color}" stroke="{dark}" stroke-width="0.6">
       <path d="M 16,0 L 9,1.5 L 14,4.5 Z">
         <animateTransform attributeName="transform" type="rotate" values="0 16 0;28 16 0;0 16 0" \
 dur="0.7s" repeatCount="indefinite"/>

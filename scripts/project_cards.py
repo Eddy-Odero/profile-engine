@@ -333,7 +333,11 @@ def render_link_badge_svg(
     for "not hosted yet").
     """
     theme = get_theme(theme_name)
-    accent = f"#{theme['color']}" if not disabled else "#5a5a66"
+    # A dedicated violet instead of theme['color'] (cyan) - cyan's
+    # already carrying the terminal, section headers, and System
+    # Modules; this gives the buttons their own identity instead of
+    # reusing a color that's everywhere else on the page.
+    accent = "#B15CFF" if not disabled else "#5a5a66"
     dark = f"#{theme['label_color']}"
     label = "View" if kind == "view" else "Code"
 
