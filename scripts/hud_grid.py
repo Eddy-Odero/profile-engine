@@ -72,6 +72,81 @@ def scanline_overlay(
     return defs, rect
 
 
+def glass_frame_rect(
+    width: float, height: float, accent: str, rx: int = 16, pattern_id: str = "glass"
+) -> tuple[str, str]:
+    """
+    The "premium glass panel" finish: a border that's a gradient (bright
+    where light would catch the top-left edge, fading toward the
+    bottom-right) instead of a flat single-color stroke, plus a soft
+    diagonal sheen overlay across the upper portion of the panel - the
+    two things that actually read as "glassmorphism" rather than just
+    "translucent rectangle". Real backdrop-blur isn't reliable in
+    GitHub's SVG rendering, so this fakes the same premium-glass cue
+    with gradients instead of blur.
+
+    Returns (defs_markup, overlay_markup). `defs_markup` goes in <defs>;
+    `overlay_markup` is painted LAST (border needs to sit crisply on
+    top of everything, sheen needs to sit above the fill but the text
+    still reads through it since it's low-opacity white).
+    """
+    border_id = f"{pattern_id}Border"
+    sheen_id = f"{pattern_id}Sheen"
+    defs = f"""
+    <linearGradient id="{border_id}" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="{accent}" stop-opacity="0.65"/>
+      <stop offset="45%" stop-color="{accent}" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="{accent}" stop-opacity="0.06"/>
+    </linearGradient>
+    <linearGradient id="{sheen_id}" x1="0%" y1="0%" x2="30%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.10"/>
+      <stop offset="55%" stop-color="#ffffff" stop-opacity="0.02"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="{pattern_id}Clip">
+      <rect width="{width}" height="{height}" rx="{rx}"/>
+    </clipPath>"""
+    overlay = (
+        f'<rect width="{width}" height="{height}" rx="{rx}" fill="url(#{sheen_id})" '
+        f'clip-path="url(#{pattern_id}Clip)"/>'
+        f'<rect x="0.5" y="0.5" width="{width-1}" height="{height-1}" rx="{rx}" '
+        f'fill="none" stroke="url(#{border_id})" stroke-width="1.2"/>'
+    )
+    return defs, overlay
+
+
+def glass_frame_polygon(points: str, accent: str, pattern_id: str = "glass") -> tuple[str, str]:
+    """
+    Same premium-glass border+sheen treatment as glass_frame_rect, for
+    panels with a non-rectangular outline (the chamfered Fragmented
+    Data cards) - takes the same `points` string used for the panel's
+    own fill/stroke polygon so the glass edge follows the exact same
+    silhouette instead of a plain rectangle poking out past the cut
+    corners.
+    """
+    border_id = f"{pattern_id}Border"
+    sheen_id = f"{pattern_id}Sheen"
+    defs = f"""
+    <linearGradient id="{border_id}" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="{accent}" stop-opacity="0.65"/>
+      <stop offset="45%" stop-color="{accent}" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="{accent}" stop-opacity="0.06"/>
+    </linearGradient>
+    <linearGradient id="{sheen_id}" x1="0%" y1="0%" x2="30%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.10"/>
+      <stop offset="55%" stop-color="#ffffff" stop-opacity="0.02"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="{pattern_id}Clip">
+      <polygon points="{points}"/>
+    </clipPath>"""
+    overlay = (
+        f'<polygon points="{points}" fill="url(#{sheen_id})" clip-path="url(#{pattern_id}Clip)"/>'
+        f'<polygon points="{points}" fill="none" stroke="url(#{border_id})" stroke-width="1.2"/>'
+    )
+    return defs, overlay
+
+
 def glow_filter(filter_id: str = "hudglow", strength: float = 1.4) -> str:
     """
     A soft bloom/glow filter - the hazy, slightly-blurred-highlight look

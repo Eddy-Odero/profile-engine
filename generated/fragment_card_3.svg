@@ -7,6 +7,20 @@
     <pattern id="hudgridbold" width="64" height="64" patternUnits="userSpaceOnUse">
       <path d="M 64 0 L 0 0 0 64" fill="none" stroke="#00E7FF" stroke-width="1" opacity="0.162"/>
     </pattern>
+    
+    <linearGradient id="fragglassBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00E7FF" stop-opacity="0.65"/>
+      <stop offset="45%" stop-color="#00E7FF" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#00E7FF" stop-opacity="0.06"/>
+    </linearGradient>
+    <linearGradient id="fragglassSheen" x1="0%" y1="0%" x2="30%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.10"/>
+      <stop offset="55%" stop-color="#ffffff" stop-opacity="0.02"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="fragglassClip">
+      <polygon points="0.0,0.0 352.0,0.0 380.0,28.0 380.0,150.0 28.0,150.0 0.0,122.0"/>
+    </clipPath>
     <clipPath id="cardclip">
       <polygon points="0.0,0.0 352.0,0.0 380.0,28.0 380.0,150.0 28.0,150.0 0.0,122.0"/>
     </clipPath>
@@ -27,4 +41,5 @@
   <text x="190.0" y="90" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" fill="#9a9aa5" text-anchor="middle">Point-of-sale system for retail, built with</text><text x="190.0" y="105" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" fill="#9a9aa5" text-anchor="middle">vanilla JS.</text>
   <line x1="14" y1="124" x2="366" y2="124" stroke="#2a2a33" stroke-width="1"/>
   <circle cx="16" cy="137" r="4" fill="#F7DF1E"/><text x="26" y="140" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#7d7d88">JavaScript</text><polygon points="318.0,132.0 316.7,135.2 313.2,135.5 315.9,137.7 315.1,141.0 318.0,139.2 320.9,141.0 320.1,137.7 322.8,135.5 319.3,135.2" fill="#7d7d88"/><text x="327" y="140" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#7d7d88">0</text><g stroke="#7d7d88" stroke-width="1.3" fill="none"><circle cx="352" cy="133" r="1.8" fill="#7d7d88" stroke="none"/><circle cx="358" cy="133" r="1.8" fill="#7d7d88" stroke="none"/><circle cx="355" cy="141" r="1.8" fill="#7d7d88" stroke="none"/><path d="M352 133 V136 Q352 138 355 138 V141 M358 133 V136 Q358 138 355 138"/></g><text x="363" y="140" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#7d7d88">0</text>
+  <polygon points="0.0,0.0 352.0,0.0 380.0,28.0 380.0,150.0 28.0,150.0 0.0,122.0" fill="url(#fragglassSheen)" clip-path="url(#fragglassClip)"/><polygon points="0.0,0.0 352.0,0.0 380.0,28.0 380.0,150.0 28.0,150.0 0.0,122.0" fill="none" stroke="url(#fragglassBorder)" stroke-width="1.2"/>
 </svg>

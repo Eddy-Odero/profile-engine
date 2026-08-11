@@ -19,7 +19,7 @@ from __future__ import annotations
 
 import html
 
-from hud_grid import glow_filter, grid_background, scanline_overlay
+from hud_grid import glass_frame_rect, glow_filter, grid_background, scanline_overlay
 from themes import DEFAULT_THEME, get_theme
 
 WIDTH = 820
@@ -96,13 +96,14 @@ fill="{accent}" fill-opacity="0.85"/>""")
 
     height = footer_y + 32
 
-    grid_defs, grid_rect = grid_background(WIDTH, height, accent, spacing=20)
+    grid_defs, grid_rect = grid_background(WIDTH, height, accent, spacing=20, rx=16)
     scan_defs, scan_rect = scanline_overlay(WIDTH, height)
+    glass_defs, glass_overlay = glass_frame_rect(WIDTH, height, accent, rx=16, pattern_id="lcglass")
 
     return f"""<svg width="{WIDTH}" height="{height}" viewBox="0 0 {WIDTH} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LeetCode stats">
-  <defs>{grid_defs}{glow_filter()}{scan_defs}</defs>
-  <rect width="{WIDTH}" height="{height}" fill="#{bg}" fill-opacity="0.6"/>
+  <defs>{grid_defs}{glow_filter()}{scan_defs}{glass_defs}</defs>
+  <rect width="{WIDTH}" height="{height}" rx="16" fill="#{bg}" fill-opacity="0.6"/>
   {grid_rect}
   <text x="{PAD_X}" y="{TITLE_Y}" font-family="Segoe UI, Helvetica, Arial, sans-serif" \
 font-size="17" font-weight="700" fill="#{TITLE_COLOR}">Problem Difficulty</text>
@@ -113,4 +114,5 @@ font-size="12" fill="#{SUBTITLE_COLOR}">breakdown of {total} solved, all time</t
 stroke="#{BAR_TRACK_COLOR}" stroke-width="1"/>
   {''.join(footer_svg)}
   {scan_rect}
+  {glass_overlay}
 </svg>"""

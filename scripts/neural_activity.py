@@ -28,7 +28,7 @@ from __future__ import annotations
 import hashlib
 import html
 
-from hud_grid import glow_filter, grid_background, scanline_overlay
+from hud_grid import glass_frame_rect, glow_filter, grid_background, scanline_overlay
 from themes import DEFAULT_THEME, HUD_COLORS, get_theme
 
 CELL = 13
@@ -111,8 +111,9 @@ def render_neural_activity_svg(
                 )
             cells.append(cell_svg)
 
-    bg_defs, bg_rect = grid_background(width, height, accent, spacing=20)
+    bg_defs, bg_rect = grid_background(width, height, accent, spacing=20, rx=16)
     scan_defs, scan_rect = scanline_overlay(width, height)
+    glass_defs, glass_overlay = glass_frame_rect(width, height, accent, rx=16, pattern_id="neuralglass")
 
     # Big number, top-left
     number_block = f"""
@@ -322,8 +323,8 @@ dur="0.7s" repeatCount="indefinite"/>
 
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Neural activity">
-  <defs>{bg_defs}{glow_filter()}{scan_defs}</defs>
-  <rect width="{width}" height="{height}" fill="#{bg}" fill-opacity="0.6"/>
+  <defs>{bg_defs}{glow_filter()}{scan_defs}{glass_defs}</defs>
+  <rect width="{width}" height="{height}" rx="16" fill="#{bg}" fill-opacity="0.6"/>
   {bg_rect}
   {number_block}
   {live_chip}
@@ -333,4 +334,5 @@ xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Neural activity">
   {rocket}
   {streak_badges}
   {scan_rect}
+  {glass_overlay}
 </svg>"""

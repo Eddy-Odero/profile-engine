@@ -15,9 +15,22 @@
     </filter>
     <pattern id="scanlines" width="4" height="3" patternUnits="userSpaceOnUse">
       <rect width="4" height="1" fill="black" fill-opacity="0.15"/>
-    </pattern></defs>
-  <rect width="722" height="478" fill="#07090F" fill-opacity="0.5"/>
-  <rect width="722" height="478" rx="0" fill="url(#hudgrid)"/><rect width="722" height="478" rx="0" fill="url(#hudgridbold)"/>
+    </pattern>
+    <linearGradient id="modglassBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00E7FF" stop-opacity="0.65"/>
+      <stop offset="45%" stop-color="#00E7FF" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#00E7FF" stop-opacity="0.06"/>
+    </linearGradient>
+    <linearGradient id="modglassSheen" x1="0%" y1="0%" x2="30%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.10"/>
+      <stop offset="55%" stop-color="#ffffff" stop-opacity="0.02"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="modglassClip">
+      <rect width="722" height="478" rx="16"/>
+    </clipPath></defs>
+  <rect width="722" height="478" rx="16" fill="#07090F" fill-opacity="0.5"/>
+  <rect width="722" height="478" rx="16" fill="url(#hudgrid)"/><rect width="722" height="478" rx="16" fill="url(#hudgridbold)"/>
   
   <g>
     <rect x="0" y="0" width="170" height="150" fill="#07090F" fill-opacity="0.3" stroke="#1c2a3a" stroke-width="1"/>
@@ -116,4 +129,5 @@
     <text x="637.0" y="446" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" text-anchor="middle" letter-spacing="1">INTERMEDIATE</text>
   </g>
   <rect x="0" y="0" width="722" height="478" fill="url(#scanlines)"/>
+  <rect width="722" height="478" rx="16" fill="url(#modglassSheen)" clip-path="url(#modglassClip)"/><rect x="0.5" y="0.5" width="721" height="477" rx="16" fill="none" stroke="url(#modglassBorder)" stroke-width="1.2"/>
 </svg>

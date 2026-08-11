@@ -22,7 +22,7 @@ Usage:
 
 from __future__ import annotations
 
-from hud_grid import grid_background
+from hud_grid import glass_frame_polygon, grid_background
 from project_cards import (
     CARD_BORDER,
     DESC_COLOR,
@@ -84,11 +84,13 @@ def render_fragment_card_svg(project: dict, theme_name: str = DEFAULT_THEME) -> 
 
     outline_pts = _chamfered_points(WIDTH, HEIGHT, CHAMFER)
     grid_defs, grid_rect = grid_background(WIDTH, HEIGHT, accent, spacing=16)
+    glass_defs, glass_overlay = glass_frame_polygon(outline_pts, accent, pattern_id="fragglass")
 
     return f"""<svg width="{WIDTH}" height="{HEIGHT}" viewBox="0 0 {WIDTH} {HEIGHT}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(name)}">
   <defs>
     {grid_defs}
+    {glass_defs}
     <clipPath id="cardclip">
       <polygon points="{outline_pts}"/>
     </clipPath>
@@ -107,4 +109,5 @@ xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(name)}">
 stroke="#{CARD_BORDER}" stroke-width="1"/>
   {_stats_row(HEIGHT - 10, project.get("language", ""), project.get("stars", 0), \
 project.get("forks", 0), accent, width=WIDTH)}
+  {glass_overlay}
 </svg>"""

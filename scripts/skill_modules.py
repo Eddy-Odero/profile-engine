@@ -22,7 +22,7 @@ from __future__ import annotations
 
 import html
 
-from hud_grid import glow_filter, grid_background, scanline_overlay
+from hud_grid import glass_frame_rect, glow_filter, grid_background, scanline_overlay
 from tech_pills import TECH_COLORS
 from themes import DEFAULT_THEME, HUD_COLORS, get_theme
 
@@ -134,14 +134,16 @@ def render_skill_modules_svg(
             y = row_i * (CARD_HEIGHT + CARD_GAP)
             badges.append(_badge(x, y, skill, level, accent, bracket_color))
 
-    grid_defs, grid_rect = grid_background(width, height, accent, spacing=20)
+    grid_defs, grid_rect = grid_background(width, height, accent, spacing=20, rx=16)
     scan_defs, scan_rect = scanline_overlay(width, height)
+    glass_defs, glass_overlay = glass_frame_rect(width, height, accent, rx=16, pattern_id="modglass")
 
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="System modules">
-  <defs>{grid_defs}{glow_filter()}{scan_defs}</defs>
-  <rect width="{width}" height="{height}" fill="#{theme['label_color']}" fill-opacity="0.5"/>
+  <defs>{grid_defs}{glow_filter()}{scan_defs}{glass_defs}</defs>
+  <rect width="{width}" height="{height}" rx="16" fill="#{theme['label_color']}" fill-opacity="0.5"/>
   {grid_rect}
   {''.join(badges)}
   {scan_rect}
+  {glass_overlay}
 </svg>"""

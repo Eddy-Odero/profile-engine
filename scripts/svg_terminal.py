@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import html
 
-from hud_grid import grid_background
+from hud_grid import glass_frame_rect, grid_background
 from themes import DEFAULT_THEME, get_theme
 
 # ── Fixed terminal frame ──────────────────────────────────────────────
@@ -332,6 +332,7 @@ def render_terminal_svg(
 
     total_lines = line_idx
     term_grid_defs, term_grid_rect = grid_background(width, height, accent, spacing=20, rx=10)
+    glass_defs, glass_overlay = glass_frame_rect(width, height, accent, rx=10, pattern_id="termglass")
 
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(username)} terminal">
@@ -348,6 +349,7 @@ xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(username)} termi
       <rect x="0" y="{TITLE_BAR_HEIGHT}" width="{width}" height="{height - TITLE_BAR_HEIGHT}"/>
     </clipPath>
     {term_grid_defs}
+    {glass_defs}
   </defs>
   <rect width="{width}" height="{height}" rx="10" fill="{bg}" fill-opacity="0.65"/>
   {term_grid_rect}
@@ -365,4 +367,5 @@ xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(username)} termi
     {_scan_band(width, accent)}
     {_scanline_texture(width, height)}
   </g>
+  {glass_overlay}
 </svg>"""

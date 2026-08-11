@@ -19,7 +19,7 @@ from __future__ import annotations
 
 import html
 
-from hud_grid import glow_filter, grid_background, scanline_overlay
+from hud_grid import glass_frame_rect, glow_filter, grid_background, scanline_overlay
 from themes import DEFAULT_THEME, HUD_COLORS, get_theme
 
 WIDTH = 820
@@ -109,15 +109,17 @@ def render_event_log_svg(events: list[dict], theme_name: str = DEFAULT_THEME) ->
         f'stroke="{accent}" stroke-width="1.5" stroke-opacity="0.5"/>'
     )
 
-    bg_defs, bg_rect = grid_background(WIDTH, height, accent, spacing=20)
+    bg_defs, bg_rect = grid_background(WIDTH, height, accent, spacing=20, rx=16)
     scan_defs, scan_rect = scanline_overlay(WIDTH, height)
+    glass_defs, glass_overlay = glass_frame_rect(WIDTH, height, accent, rx=16, pattern_id="eventglass")
 
     return f"""<svg width="{WIDTH}" height="{height}" viewBox="0 0 {WIDTH} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Event log">
-  <defs>{bg_defs}{glow_filter()}{scan_defs}</defs>
-  <rect width="{WIDTH}" height="{height}" fill="#{bg}" fill-opacity="0.6"/>
+  <defs>{bg_defs}{glow_filter()}{scan_defs}{glass_defs}</defs>
+  <rect width="{WIDTH}" height="{height}" rx="16" fill="#{bg}" fill-opacity="0.6"/>
   {bg_rect}
   {timeline_line}
   {''.join(parts)}
   {scan_rect}
+  {glass_overlay}
 </svg>"""
