@@ -20,7 +20,7 @@ from themes import DEFAULT_THEME, get_theme
 
 # ── Fixed terminal frame ──────────────────────────────────────────────
 TERM_WIDTH = 820
-TERM_HEIGHT = 380
+TERM_HEIGHT = 420
 TITLE_BAR_HEIGHT = 32
 PADDING = 16
 
@@ -47,7 +47,6 @@ GLITCH_LOOP_SECONDS = 6
 
 RIGHT_COL_CHARS = 44
 MIN_DOTS = 3
-MIN_SCALE = 0.35
 
 # Print speed: seconds per line
 PRINT_DELAY_PER_LINE = 0.06
@@ -171,19 +170,29 @@ def _build_stat_rows(stats: dict) -> list[tuple[str, str]]:
 
 def _fit_scale(natural_w: float, natural_h: float, max_w: float, max_h: float) -> float:
     """
-    Compute the scale factor needed so content fits BOTH max_w and max_h -
-    not just height. The original version only checked height overflow,
-    which meant a wide-but-short art piece could overflow its column
-    horizontally with no correction (verified: a 120x20-char piece would
-    render at ~900px inside a ~322px column). Taking the min of both
-    axis constraints fixes that for any aspect ratio.
+    Compute the scale factor that makes content fill as much of the
+    (max_w, max_h) box as possible while preserving aspect ratio -
+    scaling UP for content smaller than the box, not just down for
+    content that overflows it.
+
+    Two real bugs lived here before:
+    1. `scale` started at 1.0 and only ever got reduced, never
+       increased - so naturally-small ASCII art (fewer rows/cols)
+       just rendered small in a mostly-empty box instead of filling
+       it, which is the "images appear small" symptom.
+    2. A `MIN_SCALE = 0.35` floor clamped how far large/tall art could
+       shrink - once the actually-needed scale dropped below that
+       floor, the floor won instead of the real fit, so oversized art
+       overflowed its column and visually overlapped/crowded the next
+       one ("large ones get squished").
+
+    Taking min(max_w/natural_w, max_h/natural_h) with no floor or
+    starting cap fixes both: it's always exactly the scale that fits
+    the content to the box on its tighter axis, in either direction.
     """
-    scale = 1.0
-    if natural_h > max_h:
-        scale = min(scale, max_h / natural_h)
-    if natural_w > max_w:
-        scale = min(scale, max_w / natural_w)
-    return max(scale, MIN_SCALE)
+    if natural_w <= 0 or natural_h <= 0:
+        return 1.0
+    return min(max_w / natural_w, max_h / natural_h)
 
 
 def render_terminal_svg(
@@ -228,7 +237,6 @@ def render_terminal_svg(
     right_row_count = 1 + len(stat_rows) + 1 + len(boot_lines) + 1 + 1
     right_natural_h = right_row_count * LINE_HEIGHT
     right_natural_w = RIGHT_COL_CHARS * CHAR_WIDTH
-
     # Cap content height, scale taller column if needed
     natural_content_h = max(avatar_natural_h, right_natural_h)
     content_height = min(natural_content_h, MAX_CONTENT_HEIGHT)
@@ -238,6 +246,15 @@ def render_terminal_svg(
     # this fixes).
     avatar_scale = _fit_scale(avatar_natural_w, avatar_natural_h, left_col_w, MAX_CONTENT_HEIGHT)
     right_scale = _fit_scale(right_natural_w, right_natural_h, right_col_w, MAX_CONTENT_HEIGHT)
+
+    # The scale above is driven by the taller axis (there are usually
+    # many more lines than the fixed 44-char width would need), which
+    # left real horizontal space unused - "a lot of space left on the
+    # right frame". Recompute how many characters ACTUALLY fit across
+    # the full column width at the final scale, and use that (not the
+    # fixed RIGHT_COL_CHARS) for anything that should stretch to fill
+    # the row - the dotted fill and the separator line.
+    fill_chars = max(RIGHT_COL_CHARS, int(right_col_w / (CHAR_WIDTH * right_scale)))
 
     scaled_avatar_h = avatar_natural_h * avatar_scale
     scaled_right_h = right_natural_h * right_scale
@@ -271,7 +288,7 @@ def render_terminal_svg(
     right_elements.append(
         f'<text class="line line-{line_idx}" x="0" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
         f'font-size="{FONT_SIZE}" fill="{accent}" fill-opacity="0.4" xml:space="preserve">'
-        f'{"-" * RIGHT_COL_CHARS}</text>'
+        f'{"-" * fill_chars}</text>'
     )
     y += LINE_HEIGHT
     line_idx += 1
@@ -280,7 +297,7 @@ def render_terminal_svg(
     # experiments were for the separate stat badges shown after the
     # terminal, not this dotted-row text inside it.
     for key, value in stat_rows:
-        k, dots, v = _dotted_row(key, value)
+        k, dots, v = _dotted_row(key, value, total_chars=fill_chars)
         right_elements.append(
             f'<text class="line line-{line_idx}" x="0" y="{y:.1f}" font-family="Consolas, Menlo, monospace" '
             f'font-size="{FONT_SIZE}" xml:space="preserve">'

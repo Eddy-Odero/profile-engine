@@ -64,7 +64,16 @@ jobs:
 
       - name: Generate README
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # NOT secrets.GITHUB_TOKEN - that's an auto-provided,
+          # single-repo-scoped token with no read:user access, so it
+          # can't see private-repo contributions or your full account
+          # activity (this was silently undercounting streaks). Create
+          # a personal access token instead: GitHub -> Settings ->
+          # Developer settings -> Personal access tokens -> generate one
+          # with the read:user scope (add repo too if you want private
+          # repos counted), then add it as a NEW repository secret named
+          # PROFILE_PAT (Settings -> Secrets and variables -> Actions).
+          GITHUB_TOKEN: ${{ secrets.PROFILE_PAT }}
           # workflow_dispatch runs can override the intensity; scheduled/push
           # runs fall back to build.py's own default ("subtle") since the
           # input doesn't exist on those triggers.
