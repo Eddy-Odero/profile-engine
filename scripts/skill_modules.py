@@ -6,11 +6,12 @@ component: a circular icon badge, corner-bracket frame decorations
 (like a targeting reticle/scanner UI), the skill name, and a
 proficiency level. Modeled directly on a design reference provided.
 
-Doesn't try to reproduce real brand logos (trademark/copyright risk,
-and most are complex multi-color marks that don't reduce well to a
-tiny circle) - each badge shows the skill's color (reusing
-tech_pills.TECH_COLORS for consistency with the tech stack chips
-elsewhere) and a short 1-3 letter monogram instead.
+Real per-skill logos via devicon (MIT-licensed, individual SVG icons:
+https://github.com/devicons/devicon), embedded as <image> references
+to jsdelivr's CDN mirror - not custom-drawn glyphs or emoji stand-ins.
+Falls back to a plain 2-letter text glyph only for a skill with no
+entry in ICON_URLS, so an unmapped skill degrades gracefully instead
+of showing a broken image reference.
 
 Usage:
     from skill_modules import render_skill_modules_svg
@@ -22,7 +23,7 @@ from __future__ import annotations
 
 import html
 
-from hud_grid import glass_frame_rect, glow_filter, grid_background, scanline_overlay
+from hud_grid import glow_filter
 from tech_pills import TECH_COLORS
 from themes import DEFAULT_THEME, HUD_COLORS, get_theme
 
@@ -38,16 +39,34 @@ CARD_BG = "07090F"  # exact background from spec, subtle navy tint
 CARD_BORDER = "1c2a3a"
 MUTED = "6b7a8c"
 
-# Real recognizable emoji per skill - standard Unicode characters, not
-# custom trademarked logo art, but immediately recognizable per language/
-# tool (the snake for Python, the whale for Docker, etc.)
-MONOGRAMS: dict[str, str] = {
-    "go": "🐹", "javascript": "🟨", "typescript": "🔷", "php": "🟣",
-    "node.js": "💚", "nodejs": "💚", "c++": "⚙️", "html": "🌐", "css": "🎨",
-    "html/css": "🌐", "c": "🅲",
-    "sqlite": "🗄️", "postgresql": "🐘", "docker": "🐳", "python": "🐍",
-    "git": "🔧", "figma": "🎯", "blender": "🧊", "redis": "🔴",
-    "rust": "🦀", "kubernetes": "☸️", "aws": "☁️",
+# Real language/tool logos via devicon (MIT-licensed, individual SVG per
+# icon: https://github.com/devicons/devicon) instead of emoji stand-ins -
+# embedded as <image> elements pulled from jsdelivr's CDN mirror of the
+# devicon repo, not redrawn/recreated locally.
+_DEVICON_BASE = "https://cdn.jsdelivr.net/gh/devicons/devicon/icons"
+ICON_URLS: dict[str, str] = {
+    "python": f"{_DEVICON_BASE}/python/python-original.svg",
+    "go": f"{_DEVICON_BASE}/go/go-original-wordmark.svg",
+    "javascript": f"{_DEVICON_BASE}/javascript/javascript-original.svg",
+    "typescript": f"{_DEVICON_BASE}/typescript/typescript-original.svg",
+    "php": f"{_DEVICON_BASE}/php/php-original.svg",
+    "node.js": f"{_DEVICON_BASE}/nodejs/nodejs-original.svg",
+    "nodejs": f"{_DEVICON_BASE}/nodejs/nodejs-original.svg",
+    "c++": f"{_DEVICON_BASE}/cplusplus/cplusplus-original.svg",
+    "html": f"{_DEVICON_BASE}/html5/html5-original.svg",
+    "css": f"{_DEVICON_BASE}/css3/css3-original.svg",
+    "html/css": f"{_DEVICON_BASE}/html5/html5-original.svg",
+    "c": f"{_DEVICON_BASE}/c/c-original.svg",
+    "sqlite": f"{_DEVICON_BASE}/sqlite/sqlite-original.svg",
+    "postgresql": f"{_DEVICON_BASE}/postgresql/postgresql-original.svg",
+    "docker": f"{_DEVICON_BASE}/docker/docker-original.svg",
+    "git": f"{_DEVICON_BASE}/git/git-original.svg",
+    "figma": f"{_DEVICON_BASE}/figma/figma-original.svg",
+    "blender": f"{_DEVICON_BASE}/blender/blender-original.svg",
+    "redis": f"{_DEVICON_BASE}/redis/redis-original.svg",
+    "rust": f"{_DEVICON_BASE}/rust/rust-original.svg",
+    "kubernetes": f"{_DEVICON_BASE}/kubernetes/kubernetes-plain.svg",
+    "aws": f"{_DEVICON_BASE}/amazonwebservices/amazonwebservices-original.svg",
 }
 
 
@@ -55,8 +74,8 @@ def _esc(text: str) -> str:
     return html.escape(text, quote=True)
 
 
-def _monogram(label: str) -> str:
-    return MONOGRAMS.get(label.lower(), label[:2].upper())
+def _icon_url(label: str) -> str | None:
+    return ICON_URLS.get(label.lower())
 
 
 def _skill_color(label: str, fallback: str) -> str:
@@ -85,6 +104,20 @@ def _badge(x: float, y: float, skill: str, level: str, accent: str, bracket_colo
     color = _skill_color(skill, accent)
     badge_cx = x + CARD_WIDTH / 2
     badge_cy = y + 44
+    icon_url = _icon_url(skill)
+    icon_size = 26
+    if icon_url:
+        icon_markup = (
+            f'<image href="{icon_url}" x="{badge_cx - icon_size/2:.1f}" '
+            f'y="{badge_cy - icon_size/2:.1f}" width="{icon_size}" height="{icon_size}"/>'
+        )
+    else:
+        # Unmapped skill - fall back to a plain text glyph rather than a
+        # broken image reference.
+        icon_markup = (
+            f'<text x="{badge_cx}" y="{badge_cy + 8}" font-size="22" '
+            f'text-anchor="middle">{_esc(skill[:2].upper())}</text>'
+        )
 
     return f"""
   <g>
@@ -93,8 +126,7 @@ stroke="#{CARD_BORDER}" stroke-width="1"/>
     {_corner_brackets(x, y, bracket_color)}
     <circle cx="{badge_cx}" cy="{badge_cy}" r="{BADGE_RADIUS}" fill="{color}" fill-opacity="0.12" \
 stroke="{color}" stroke-width="2"/>
-    <text x="{badge_cx}" y="{badge_cy + 8}" font-size="22" \
-text-anchor="middle">{_esc(_monogram(skill))}</text>
+    {icon_markup}
     <text x="{badge_cx}" y="{y + 100}" font-family="Consolas, Menlo, monospace" font-size="12" \
 font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.5">{_esc(skill.upper())}</text>
     <text x="{badge_cx}" y="{y + 118}" font-family="Consolas, Menlo, monospace" font-size="9" \
@@ -134,16 +166,8 @@ def render_skill_modules_svg(
             y = row_i * (CARD_HEIGHT + CARD_GAP)
             badges.append(_badge(x, y, skill, level, accent, bracket_color))
 
-    grid_defs, grid_rect = grid_background(width, height, accent, spacing=20, rx=16)
-    scan_defs, scan_rect = scanline_overlay(width, height)
-    glass_defs, glass_overlay = glass_frame_rect(width, height, accent, rx=16, pattern_id="modglass")
-
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="System modules">
-  <defs>{grid_defs}{glow_filter()}{scan_defs}{glass_defs}</defs>
-  <rect width="{width}" height="{height}" rx="16" fill="#{theme['label_color']}" fill-opacity="0.5"/>
-  {grid_rect}
+  <defs>{glow_filter()}</defs>
   {''.join(badges)}
-  {scan_rect}
-  {glass_overlay}
 </svg>"""
