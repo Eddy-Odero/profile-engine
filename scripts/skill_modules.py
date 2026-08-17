@@ -7,11 +7,24 @@ component: a circular icon badge, corner-bracket frame decorations
 proficiency level. Modeled directly on a design reference provided.
 
 Real per-skill logos via devicon (MIT-licensed, individual SVG icons:
-https://github.com/devicons/devicon), embedded as <image> references
-to jsdelivr's CDN mirror - not custom-drawn glyphs or emoji stand-ins.
+https://github.com/devicons/devicon), pulled from the actual npm
+package and stored locally in assets/icons/, then embedded INLINE
+(their <path>/<g> content copied directly into our own SVG) rather
+than referenced by external URL.
+
+That distinction matters: a first version used <image href="https://
+...">, but browsers refuse to let an SVG loaded via a plain <img> tag
+(which is exactly how GitHub renders a markdown image) make its own
+secondary network requests for referenced resources inside it - a
+security restriction on "image context" SVGs, not a GitHub-specific
+quirk. So external icon references silently don't load, no matter how
+correct the URL is. Inlining the actual path data sidesteps that
+entirely since there's no second request to make - the whole image is
+one self-contained file.
+
 Falls back to a plain 2-letter text glyph only for a skill with no
-entry in ICON_URLS, so an unmapped skill degrades gracefully instead
-of showing a broken image reference.
+local icon file, so an unmapped skill degrades gracefully instead of
+showing nothing.
 
 Usage:
     from skill_modules import render_skill_modules_svg
@@ -22,10 +35,12 @@ Usage:
 from __future__ import annotations
 
 import html
+import re
 
-from hud_grid import glow_filter
+from hud_grid import glow_filter, grid_background
 from tech_pills import TECH_COLORS
 from themes import DEFAULT_THEME, HUD_COLORS, get_theme
+from utils import ASSETS_DIR
 
 CARD_WIDTH = 170
 CARD_HEIGHT = 150
@@ -39,43 +54,74 @@ CARD_BG = "07090F"  # exact background from spec, subtle navy tint
 CARD_BORDER = "1c2a3a"
 MUTED = "6b7a8c"
 
-# Real language/tool logos via devicon (MIT-licensed, individual SVG per
-# icon: https://github.com/devicons/devicon) instead of emoji stand-ins -
-# embedded as <image> elements pulled from jsdelivr's CDN mirror of the
-# devicon repo, not redrawn/recreated locally.
-_DEVICON_BASE = "https://cdn.jsdelivr.net/gh/devicons/devicon/icons"
-ICON_URLS: dict[str, str] = {
-    "python": f"{_DEVICON_BASE}/python/python-original.svg",
-    "go": f"{_DEVICON_BASE}/go/go-original-wordmark.svg",
-    "javascript": f"{_DEVICON_BASE}/javascript/javascript-original.svg",
-    "typescript": f"{_DEVICON_BASE}/typescript/typescript-original.svg",
-    "php": f"{_DEVICON_BASE}/php/php-original.svg",
-    "node.js": f"{_DEVICON_BASE}/nodejs/nodejs-original.svg",
-    "nodejs": f"{_DEVICON_BASE}/nodejs/nodejs-original.svg",
-    "c++": f"{_DEVICON_BASE}/cplusplus/cplusplus-original.svg",
-    "html": f"{_DEVICON_BASE}/html5/html5-original.svg",
-    "css": f"{_DEVICON_BASE}/css3/css3-original.svg",
-    "html/css": f"{_DEVICON_BASE}/html5/html5-original.svg",
-    "c": f"{_DEVICON_BASE}/c/c-original.svg",
-    "sqlite": f"{_DEVICON_BASE}/sqlite/sqlite-original.svg",
-    "postgresql": f"{_DEVICON_BASE}/postgresql/postgresql-original.svg",
-    "docker": f"{_DEVICON_BASE}/docker/docker-original.svg",
-    "git": f"{_DEVICON_BASE}/git/git-original.svg",
-    "figma": f"{_DEVICON_BASE}/figma/figma-original.svg",
-    "blender": f"{_DEVICON_BASE}/blender/blender-original.svg",
-    "redis": f"{_DEVICON_BASE}/redis/redis-original.svg",
-    "rust": f"{_DEVICON_BASE}/rust/rust-original.svg",
-    "kubernetes": f"{_DEVICON_BASE}/kubernetes/kubernetes-plain.svg",
-    "aws": f"{_DEVICON_BASE}/amazonwebservices/amazonwebservices-original.svg",
+# Real language/tool logos, stored locally as assets/icons/*.svg (pulled
+# from the actual devicon npm package - see module docstring for why
+# they're inlined rather than linked).
+ICON_FILES: dict[str, str] = {
+    "python": "python-original.svg",
+    "go": "go-original.svg",
+    "javascript": "javascript-original.svg",
+    "typescript": "typescript-original.svg",
+    "php": "php-original.svg",
+    "node.js": "nodejs-original.svg",
+    "nodejs": "nodejs-original.svg",
+    "c++": "cplusplus-original.svg",
+    "html": "html5-original.svg",
+    "css": "css3-original.svg",
+    "html/css": "html5-original.svg",
+    "c": "c-original.svg",
+    "sqlite": "sqlite-original.svg",
+    "postgresql": "postgresql-original.svg",
+    "docker": "docker-original.svg",
+    "git": "git-original.svg",
+    "figma": "figma-original.svg",
+    "blender": "blender-original.svg",
+    "redis": "redis-original.svg",
+    "rust": "rust-original.svg",
+    "kubernetes": "kubernetes-plain.svg",
 }
+
+_ICON_INNER_RE = re.compile(r"<svg[^>]*>(.*)</svg>", re.DOTALL)
+_icon_cache: dict[str, str] = {}
+
+
+def _icon_inner_markup(label: str) -> str | None:
+    """
+    Read a local devicon SVG file and return just its inner content
+    (everything between the outer <svg> tags), cached after first
+    read. All of these share a 128x128 viewBox, so the caller can
+    apply one consistent scale/translate regardless of which icon it
+    is.
+    """
+    filename = ICON_FILES.get(label.lower())
+    if not filename:
+        return None
+    if filename in _icon_cache:
+        return _icon_cache[filename]
+    path = ASSETS_DIR / "icons" / filename
+    try:
+        raw = path.read_text(encoding="utf-8")
+    except OSError:
+        return None
+    match = _ICON_INNER_RE.search(raw)
+    inner = match.group(1) if match else None
+    if inner:
+        # Some source icons (e.g. Go) use xlink:href inside a <use>,
+        # with xmlns:xlink declared on the SOURCE file's own root <svg>
+        # tag - which we don't keep, since we only extract inner
+        # content. Plain `href` is the modern SVG2 attribute and needs
+        # no namespace declaration at all, so swap to that instead of
+        # re-declaring xmlns:xlink on every file that embeds an icon.
+        inner = inner.replace("xlink:href", "href")
+    _icon_cache[filename] = inner
+    return inner
 
 
 def _esc(text: str) -> str:
     return html.escape(text, quote=True)
 
 
-def _icon_url(label: str) -> str | None:
-    return ICON_URLS.get(label.lower())
+
 
 
 def _skill_color(label: str, fallback: str) -> str:
@@ -104,16 +150,19 @@ def _badge(x: float, y: float, skill: str, level: str, accent: str, bracket_colo
     color = _skill_color(skill, accent)
     badge_cx = x + CARD_WIDTH / 2
     badge_cy = y + 44
-    icon_url = _icon_url(skill)
+    icon_inner = _icon_inner_markup(skill)
     icon_size = 26
-    if icon_url:
-        icon_markup = (
-            f'<image href="{icon_url}" x="{badge_cx - icon_size/2:.1f}" '
-            f'y="{badge_cy - icon_size/2:.1f}" width="{icon_size}" height="{icon_size}"/>'
-        )
+    if icon_inner:
+        # All source icons share a 128x128 viewBox, so one scale factor
+        # works for all of them: scale to icon_size, then translate so
+        # that scaled icon is centered on (badge_cx, badge_cy).
+        scale = icon_size / 128
+        tx = badge_cx - icon_size / 2
+        ty = badge_cy - icon_size / 2
+        icon_markup = f'<g transform="translate({tx:.1f},{ty:.1f}) scale({scale:.4f})">{icon_inner}</g>'
     else:
-        # Unmapped skill - fall back to a plain text glyph rather than a
-        # broken image reference.
+        # Unmapped skill - fall back to a plain text glyph rather than
+        # showing nothing.
         icon_markup = (
             f'<text x="{badge_cx}" y="{badge_cy + 8}" font-size="22" '
             f'text-anchor="middle">{_esc(skill[:2].upper())}</text>'
@@ -166,8 +215,11 @@ def render_skill_modules_svg(
             y = row_i * (CARD_HEIGHT + CARD_GAP)
             badges.append(_badge(x, y, skill, level, accent, bracket_color))
 
+    grid_defs, grid_rect = grid_background(width, height, accent, spacing=20)
+
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="System modules">
-  <defs>{glow_filter()}</defs>
+  <defs>{grid_defs}{glow_filter()}</defs>
+  {grid_rect}
   {''.join(badges)}
 </svg>"""
