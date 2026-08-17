@@ -14,10 +14,10 @@
     "PostgreSQL",
     "Docker"
   ],
-  "cursor": "_",
-  "system_message": "[INFO] garbage collector taking a smoke break",
-  "quote": "Simplicity is the soul of efficiency.",
-  "status": "Building APIs",
+  "cursor": " ",
+  "system_message": "[DEBUG] still figuring it out",
+  "quote": "Talk is cheap. Show me the code.",
+  "status": "Writing Go",
   "terminal_svg_path": "generated/terminal.svg",
   "fragment_cards": [
     {
@@ -111,7 +111,7 @@
     "Signal Uplink": "generated/header_6.svg",
     "Neural Activity": "generated/header_7.svg"
   },
-  "build_time": "2026-08-17 06:01 UTC",
+  "build_time": "2026-08-17 06:32 UTC",
   "stat_badges": [
     "![Repos: 24](https://img.shields.io/badge/Repos-24-007f8c?style=flat-square&labelColor=07090F)",
     "![Stars: 23](https://img.shields.io/badge/Stars-23-007f8c?style=flat-square&labelColor=07090F)",
