@@ -48,7 +48,11 @@ CARD_BORDER = "2a2a33"  # subtle, barely-lighter-than-bg border
 DESC_COLOR = "9a9aa5"  # muted gray for description text, per the reference's hierarchy
 STAT_COLOR = "7d7d88"
 
-RIBBON_COLORS = {"public": HUD_COLORS["ribbon_public"], "vip": HUD_COLORS["ribbon_vip"]}
+RIBBON_COLORS = {
+    "public": HUD_COLORS["ribbon_public"],
+    "vip": HUD_COLORS["ribbon_vip"],
+    "private": HUD_COLORS["ribbon_private"],
+}
 
 BADGE_WIDTH = 88
 BADGE_HEIGHT = 30
@@ -140,17 +144,32 @@ def _project_icon(cx: float, cy: float, icon_key: str, accent: str) -> str:
     )
 
 
-def _ribbon(visibility: str, width: int = CARD_WIDTH) -> str:
-    """A small diagonal corner ribbon showing PUBLIC/VIP, top-right of the card."""
+def _ribbon(
+    visibility: str, width: int = CARD_WIDTH, y_top: float = 14, y_bottom: float = 30, x_right: float = None
+) -> str:
+    """A small diagonal corner ribbon showing PUBLIC/VIP/PRIVATE, top-right of the card."""
     if not visibility:
         return ""
     color = RIBBON_COLORS.get(visibility.lower(), RIBBON_COLORS["public"])
     label = visibility.upper()
-    # A small parallelogram tucked into the top-right corner, angled like a ribbon/flag
+    x_right = width - 8 if x_right is None else x_right
+    label_y = (y_top + y_bottom) / 2 + 3
+
+    # The left edge's slope needs to match the right side's slope (the
+    # chamfer clip, which is always a 45-degree cut - equal rise and
+    # run). A fixed horizontal offset here (e.g. always -12px) gives a
+    # much steeper angle than 45 degrees regardless of y_bottom-y_top,
+    # so the two slanted edges look disproportionate to each other.
+    # Deriving the run from the same vertical span keeps them at the
+    # same angle automatically, whatever y_top/y_bottom end up being.
+    rise = y_bottom - y_top
+    flat_len = 40  # length of the ribbon's flat top/bottom edges
+    label_x = x_right - flat_len / 2 - rise / 2
+
     return f"""
   <g>
-    <polygon points="{width-70},14 {width-8},14 {width-8},30 {width-58},30" fill="{color}"/>
-    <text x="{width-39}" y="26" font-family="Consolas, Menlo, monospace" font-size="9" \
+    <polygon points="{x_right-flat_len-rise},{y_top} {x_right},{y_top} {x_right},{y_bottom} {x_right-flat_len},{y_bottom}" fill="{color}"/>
+    <text x="{label_x}" y="{label_y}" font-family="Consolas, Menlo, monospace" font-size="9" \
 font-weight="700" fill="#0a0a0d" text-anchor="middle">{_esc(label)}</text>
   </g>"""
 

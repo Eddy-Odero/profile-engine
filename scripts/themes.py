@@ -88,6 +88,7 @@ HUD_COLORS = {
     "timeline_end": "#FF4D5A",
     "ribbon_public": "#24FF9A",
     "ribbon_vip": "#FFC84D",
+    "ribbon_private": "#FF4D5A",
 }
 
 # Switched away from an all-pink default per direct feedback - most

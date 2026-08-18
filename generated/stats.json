@@ -14,10 +14,10 @@
     "PostgreSQL",
     "Docker"
   ],
-  "cursor": " ",
-  "system_message": "[DEBUG] still figuring it out",
-  "quote": "Talk is cheap. Show me the code.",
-  "status": "Writing Go",
+  "cursor": "\u2588",
+  "system_message": "> uptime: 3 days, 14 hours, still debugging",
+  "quote": "First, solve the problem. Then, write the code.",
+  "status": "Compiling new ideas...",
   "terminal_svg_path": "generated/terminal.svg",
   "fragment_cards": [
     {
@@ -38,20 +38,20 @@
       "repo_url": "https://github.com/Eddy-Odero/EDU-FLIX",
       "preview_url": "https://edu-flix.onrender.com/",
       "icon": "play",
-      "visibility": "public",
+      "visibility": "private",
       "language": "Go",
       "stars": 0,
       "forks": 0,
       "card_svg_path": "generated/fragment_card_1.svg"
     },
     {
-      "name": "lem-in colony visualizer",
-      "description": "Ant colony pathfinding simulator with a 3D max-flow visualizer.",
-      "repo_url": "https://github.com/Eddy-Odero/lem-in",
+      "name": "profile-engine",
+      "description": "The Python/SVG/Jinja2 pipeline that generates this very profile README.",
+      "repo_url": "https://github.com/Eddy-Odero/profile-engine",
       "preview_url": null,
-      "icon": "network",
+      "icon": "code",
       "visibility": "public",
-      "language": "Go",
+      "language": "Python",
       "stars": 0,
       "forks": 0,
       "card_svg_path": "generated/fragment_card_2.svg"
@@ -111,519 +111,513 @@
     "Signal Uplink": "generated/header_6.svg",
     "Neural Activity": "generated/header_7.svg"
   },
-  "build_time": "2026-08-17 06:32 UTC",
+  "build_time": "2026-08-18 03:45 UTC",
   "stat_badges": [
     "![Repos: 24](https://img.shields.io/badge/Repos-24-007f8c?style=flat-square&labelColor=07090F)",
-    "![Stars: 23](https://img.shields.io/badge/Stars-23-007f8c?style=flat-square&labelColor=07090F)",
-    "![Followers: 61](https://img.shields.io/badge/Followers-61-007f8c?style=flat-square&labelColor=07090F)",
-    "![LC Solved: 45](https://img.shields.io/badge/LC_Solved-45-007f8c?style=flat-square&labelColor=07090F)"
+    "![Stars: 37](https://img.shields.io/badge/Stars-37-007f8c?style=flat-square&labelColor=07090F)",
+    "![Followers: 12](https://img.shields.io/badge/Followers-12-007f8c?style=flat-square&labelColor=07090F)",
+    "![LC Solved: 120](https://img.shields.io/badge/LC_Solved-120-007f8c?style=flat-square&labelColor=07090F)"
   ],
   "theme": "hud",
   "repo_count": 24,
-  "stars": 23,
-  "followers": 61,
+  "stars": 37,
+  "followers": 12,
   "top_languages": [
     "Go",
-    "HTML",
-    "JavaScript"
+    "JavaScript",
+    "Python"
   ],
   "recent_activity": [
-    "pushed to Eddy-Odero/profile-engine",
-    "pushed to Eddy-Odero/profile-engine",
-    "pushed to Eddy-Odero/profile-engine",
-    "pushed to Eddy-Odero/profile-engine",
-    "pushed to Eddy-Odero/profile-engine"
+    "pushed to profile-engine"
   ],
   "pinned_repos": [
-    "SatGate"
+    "SatGate",
+    "EDU-FLIX",
+    "lem-in"
   ],
-  "contributions": 1086,
+  "contributions": null,
   "heatmap": {
     "weeks": [
       [
-        1,
-        1,
-        1,
-        1,
-        1,
-        2,
-        2
-      ],
-      [
-        2,
-        1,
-        1,
-        2,
-        1,
-        1,
-        0
-      ],
-      [
-        1,
-        1,
-        0,
-        1,
-        2,
-        0,
-        1
-      ],
-      [
-        1,
-        3,
-        1,
-        4,
-        2,
-        4,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
-        0,
-        1,
-        0,
-        0
-      ],
-      [
-        0,
-        2,
-        2,
-        2,
-        2,
-        2,
-        2
-      ],
-      [
-        0,
-        2,
-        1,
-        2,
-        2,
-        2,
-        0
-      ],
-      [
-        0,
         4,
         0,
-        1,
-        1,
-        0,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
-      [
-        0,
-        1,
-        1,
-        1,
-        1,
         2,
-        0
-      ],
-      [
-        0,
-        2,
+        4,
         1,
-        1,
-        2,
-        1,
-        0
-      ],
-      [
-        0,
-        0,
-        1,
-        0,
-        2,
-        1,
-        2
-      ],
-      [
-        2,
-        1,
-        1,
-        0,
-        2,
-        0,
-        0
-      ],
-      [
-        1,
-        2,
-        1,
-        1,
-        1,
-        2,
-        1
-      ],
-      [
-        1,
-        1,
-        2,
-        2,
-        0,
-        0,
-        2
-      ],
-      [
-        2,
-        2,
-        2,
-        2,
-        0,
-        2,
-        2
-      ],
-      [
-        2,
-        2,
-        2,
-        2,
-        0,
-        1,
-        1
-      ],
-      [
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1
-      ],
-      [
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1
-      ],
-      [
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1
-      ],
-      [
-        2,
-        2,
-        1,
-        1,
-        2,
-        1,
-        0
-      ],
-      [
-        2,
-        2,
-        1,
-        1,
-        1,
-        1,
-        1
-      ],
-      [
-        1,
-        2,
-        1,
-        1,
-        2,
-        1,
-        0
-      ],
-      [
-        1,
-        1,
-        2,
-        1,
-        0,
-        0,
-        0
-      ],
-      [
-        1,
-        0,
-        0,
-        1,
-        0,
-        1,
-        1
-      ],
-      [
-        0,
-        0,
-        1,
-        1,
-        1,
-        1,
-        1
-      ],
-      [
-        1,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
-        0,
-        1,
-        0,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
-        0,
-        1,
-        0,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        2
-      ],
-      [
-        1,
-        0,
-        0,
-        0,
-        1,
-        1,
-        0
-      ],
-      [
-        1,
-        1,
-        1,
-        2,
-        0,
-        0,
-        3
-      ],
-      [
-        2,
-        1,
-        3,
-        1,
-        0,
-        1,
-        2
-      ],
-      [
-        2,
-        2,
-        2,
-        0,
-        1,
-        1,
-        2
-      ],
-      [
-        2,
-        2,
-        3,
-        0,
-        0,
-        1,
-        0
-      ],
-      [
-        0,
-        1,
-        1,
-        0,
-        0,
-        0,
-        0
+        4,
+        4
       ],
       [
         3,
         0,
-        0,
-        3,
-        0,
-        0,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
-        0,
-        2,
-        2,
-        1
-      ],
-      [
-        1,
-        1,
-        3,
-        2,
-        1,
-        1,
-        1
-      ],
-      [
-        0,
-        0,
-        1,
-        1,
-        2,
-        2,
-        2
-      ],
-      [
-        1,
-        3,
-        2,
-        1,
-        0,
-        0,
-        0
-      ],
-      [
-        0,
-        0,
-        2,
         2,
         3,
-        2,
+        3,
+        1,
         4
       ],
       [
         4,
         2,
+        3,
         1,
-        0,
-        1,
-        0,
+        3,
+        2,
         1
+      ],
+      [
+        2,
+        0,
+        1,
+        4,
+        0,
+        4,
+        2
+      ],
+      [
+        2,
+        0,
+        3,
+        1,
+        4,
+        1,
+        0
+      ],
+      [
+        3,
+        0,
+        3,
+        3,
+        2,
+        3,
+        3
+      ],
+      [
+        1,
+        1,
+        2,
+        0,
+        4,
+        3,
+        3
+      ],
+      [
+        1,
+        3,
+        2,
+        3,
+        2,
+        0,
+        3
+      ],
+      [
+        3,
+        3,
+        3,
+        1,
+        2,
+        4,
+        2
+      ],
+      [
+        2,
+        2,
+        1,
+        1,
+        4,
+        4,
+        0
+      ],
+      [
+        3,
+        4,
+        4,
+        1,
+        2,
+        2,
+        4
+      ],
+      [
+        1,
+        2,
+        3,
+        3,
+        1,
+        0,
+        3
+      ],
+      [
+        0,
+        2,
+        1,
+        2,
+        0,
+        1,
+        1
+      ],
+      [
+        3,
+        2,
+        1,
+        3,
+        1,
+        2,
+        0
+      ],
+      [
+        2,
+        0,
+        1,
+        3,
+        1,
+        4,
+        0
+      ],
+      [
+        2,
+        0,
+        3,
+        3,
+        1,
+        1,
+        3
       ],
       [
         2,
         2,
         2,
-        1,
-        1,
-        1,
-        1
-      ],
-      [
+        3,
         2,
-        2,
-        1,
-        1,
-        1,
-        1,
-        1
+        0,
+        2
       ],
       [
         4,
+        1,
+        1,
         2,
+        2,
+        4,
+        2
+      ],
+      [
+        1,
+        2,
+        3,
+        2,
+        0,
+        2,
+        2
+      ],
+      [
         3,
         4,
         1,
+        2,
+        1,
+        0,
+        4
+      ],
+      [
+        0,
+        4,
+        4,
+        3,
+        4,
+        0,
+        3
+      ],
+      [
+        4,
+        4,
+        4,
+        2,
+        2,
         1,
         2
       ],
       [
         1,
+        0,
+        4,
+        0,
         1,
-        1,
-        1,
-        1,
-        1,
+        2,
         2
       ],
       [
         3,
         1,
+        0,
+        0,
+        3,
+        2,
+        4
+      ],
+      [
+        0,
         1,
         2,
         1,
+        4,
+        4,
+        3
+      ],
+      [
+        0,
+        0,
+        3,
+        3,
         1,
-        1
+        1,
+        3
+      ],
+      [
+        0,
+        0,
+        4,
+        0,
+        0,
+        2,
+        0
+      ],
+      [
+        3,
+        4,
+        0,
+        0,
+        3,
+        0,
+        0
+      ],
+      [
+        2,
+        2,
+        3,
+        3,
+        3,
+        3,
+        2
       ],
       [
         2,
         1,
+        0,
         2,
         2,
-        1,
-        1,
-        1
+        2,
+        4
+      ],
+      [
+        4,
+        4,
+        4,
+        0,
+        3,
+        3,
+        0
+      ],
+      [
+        0,
+        3,
+        2,
+        2,
+        2,
+        2,
+        3
       ],
       [
         1,
+        3,
+        0,
+        0,
+        3,
+        2,
+        4
+      ],
+      [
+        2,
+        2,
+        0,
+        1,
+        1,
+        3,
+        2
+      ],
+      [
+        2,
+        0,
+        3,
+        4,
+        4,
+        4,
+        2
+      ],
+      [
+        1,
+        3,
+        3,
+        3,
+        2,
+        2,
+        3
+      ],
+      [
+        0,
+        3,
+        1,
+        1,
+        3,
+        1,
+        2
+      ],
+      [
+        0,
+        0,
+        2,
+        0,
+        3,
+        2,
+        3
+      ],
+      [
+        3,
+        3,
+        1,
+        0,
+        4,
+        3,
+        4
+      ],
+      [
+        3,
+        2,
+        3,
+        4,
+        2,
+        2,
+        2
+      ],
+      [
+        4,
+        2,
+        2,
+        4,
+        3,
+        1,
+        2
+      ],
+      [
+        4,
+        4,
+        3,
+        4,
+        1,
+        4,
         1
+      ],
+      [
+        3,
+        1,
+        0,
+        1,
+        0,
+        4,
+        3
+      ],
+      [
+        4,
+        1,
+        3,
+        2,
+        4,
+        4,
+        2
+      ],
+      [
+        1,
+        3,
+        3,
+        3,
+        3,
+        0,
+        4
+      ],
+      [
+        1,
+        2,
+        0,
+        3,
+        2,
+        0,
+        4
+      ],
+      [
+        0,
+        3,
+        1,
+        2,
+        4,
+        4,
+        2
+      ],
+      [
+        3,
+        3,
+        2,
+        4,
+        4,
+        0,
+        1
+      ],
+      [
+        2,
+        3,
+        3,
+        4,
+        1,
+        1,
+        3
+      ],
+      [
+        0,
+        2,
+        2,
+        3,
+        3,
+        1,
+        0
+      ],
+      [
+        0,
+        1,
+        1,
+        0,
+        2,
+        2,
+        0
+      ],
+      [
+        3,
+        3,
+        2,
+        4,
+        2,
+        2,
+        2
       ]
     ],
-    "streak": 45,
-    "current_streak": 45,
-    "longest_streak": 45,
-    "active_days": 239,
-    "total": 1086
+    "streak": 7,
+    "current_streak": 7,
+    "longest_streak": 26,
+    "active_days": 301,
+    "total": 751
   },
   "solved": {
-    "total": 45,
-    "easy": 12,
-    "medium": 22,
-    "hard": 11
+    "total": 120,
+    "easy": 55,
+    "medium": 50,
+    "hard": 15
   },
   "rating": null,
   "ranking": null,

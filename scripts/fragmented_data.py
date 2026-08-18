@@ -100,7 +100,7 @@ xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(name)}">
   </g>
   <polygon points="{outline_pts}" fill="#{theme['label_color']}" fill-opacity="0.65" stroke="#{CARD_BORDER}" stroke-width="1"/>
   <g clip-path="url(#cardclip)">
-    {_ribbon(project.get("visibility", ""), width=WIDTH)}
+    {_ribbon(project.get("visibility", ""), width=WIDTH, y_top=0, y_bottom=CHAMFER, x_right=WIDTH)}
   </g>
   {_project_icon(WIDTH / 2, icon_cy, icon_key, accent)}
   {name_elements}

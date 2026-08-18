@@ -32,8 +32,8 @@
   <g clip-path="url(#cardclip)">
     
   <g>
-    <polygon points="310,14 372,14 372,30 322,30" fill="#24FF9A"/>
-    <text x="341" y="26" font-family="Consolas, Menlo, monospace" font-size="9" font-weight="700" fill="#0a0a0d" text-anchor="middle">PUBLIC</text>
+    <polygon points="312,0 380,0 380,28 340,28" fill="#24FF9A"/>
+    <text x="346.0" y="17.0" font-family="Consolas, Menlo, monospace" font-size="9" font-weight="700" fill="#0a0a0d" text-anchor="middle">PUBLIC</text>
   </g>
   </g>
   <circle cx="190.0" cy="30" r="20" fill="#00E7FF" fill-opacity="0.13" stroke="#00E7FF" stroke-width="1.5"/><g transform="translate(181.0,23)" fill="none" stroke="#00E7FF" stroke-width="1.5"><path d="M0 0 H3 L5.5 11 H15 L17 3 H4.5"/><circle cx="7" cy="15" r="1.6" fill="#00E7FF"/><circle cx="13.5" cy="15" r="1.6" fill="#00E7FF"/></g>
