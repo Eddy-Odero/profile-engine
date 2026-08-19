@@ -57,8 +57,8 @@ from utils import (
 USERNAME = "Eddy Odero"
 GITHUB_USERNAME = "Eddy-Odero"  # swap for the real GitHub handle
 LEETCODE_USERNAME = "leetcode"  # swap for the real LeetCode handle
-TAGLINE = "Backend Developer | Golang Specialist | Kisumu, Kenya"
-ROLE = "Backend Developer"  # used by the hero card - kept separate from
+TAGLINE = "Full-Stack Developer | Golang Specialist | Kisumu, Kenya"
+ROLE = "Full-Stack Developer"  # used by the hero card - kept separate from
 LOCATION = "Kisumu, Kenya"  # TAGLINE so the card doesn't have to parse a string
 STACK = [
     "Go", "JavaScript", "TypeScript", "PHP", "Node.js", "C++",
