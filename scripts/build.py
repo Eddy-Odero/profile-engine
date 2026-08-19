@@ -290,6 +290,7 @@ MOCK_GITHUB_STATS = {
     "pinned_repos": ["SatGate", "EDU-FLIX", "lem-in"],
     "contributions": None,
     "heatmap": _mock_heatmap(),
+    "repo_details": {},
 }
 
 
@@ -352,6 +353,23 @@ def build_terminal_svg(
     return _write_svg(svg_markup, "terminal.svg")
 
 
+def _with_real_repo_stats(project: dict, repo_details: dict) -> dict:
+    """
+    Swap a project's static stars/forks placeholders for the real,
+    live numbers when available - matched by repo name (the last path
+    segment of repo_url) against repo_details, which fetch_github_stats
+    populates from the actual GitHub API response for every public
+    repo. Private repos (like EDU-FLIX here) won't have an entry -
+    that endpoint only lists public repos - so those just keep
+    whatever static value is already on the project dict.
+    """
+    repo_name = project.get("repo_url", "").rstrip("/").rsplit("/", 1)[-1]
+    real = repo_details.get(repo_name)
+    if not real:
+        return project
+    return {**project, "stars": real["stars"], "forks": real["forks"]}
+
+
 def build_context() -> dict:
     """Assemble everything the template needs into a single context dict."""
     github_stats = build_github_stats()
@@ -382,10 +400,13 @@ def build_context() -> dict:
         # version) per direct request, so the plain-card Projects section
         # and its View/Code badges are no longer wired in here.
         "fragment_cards": [
-            {**p, "card_svg_path": _write_svg(
-                fragmented_data.render_fragment_card_svg(p, THEME), f"fragment_card_{i}.svg"
-            )}
-            for i, p in enumerate(PROJECTS)
+            {
+                **(p := _with_real_repo_stats(project, combined_stats.get("repo_details", {}))),
+                "card_svg_path": _write_svg(
+                    fragmented_data.render_fragment_card_svg(p, THEME), f"fragment_card_{i}.svg"
+                ),
+            }
+            for i, project in enumerate(PROJECTS)
         ],
         "badge_view_path": _write_svg(
             project_cards.render_link_badge_svg("view", THEME), "badge_view.svg"

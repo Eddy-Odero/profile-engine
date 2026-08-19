@@ -284,6 +284,16 @@ def fetch_github_stats(username: str) -> dict:
         "pinned_repos": pinned_repos,
         "contributions": contributions,
         "heatmap": heatmap,  # None unless a real token+GraphQL call succeeded
+        # Real per-repo stars/forks, keyed by repo name - lets individual
+        # project cards show actual numbers instead of hardcoded
+        # placeholders. Only covers PUBLIC repos (this hits the public
+        # repo-listing endpoint), so a private project just won't have
+        # an entry here and the caller should fall back to whatever
+        # static value it has.
+        "repo_details": {
+            r["name"]: {"stars": r.get("stargazers_count", 0), "forks": r.get("forks_count", 0)}
+            for r in repos
+        },
     }
 
 
