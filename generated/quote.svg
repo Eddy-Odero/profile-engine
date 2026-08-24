@@ -1,4 +1,4 @@
-<svg width="540" height="104" viewBox="0 0 540 104" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Quote">
+<svg width="520" height="104" viewBox="0 0 520 104" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Quote">
   <defs>
     <clipPath id="reveal0">
       <rect x="0" y="10" width="0" height="30">
@@ -7,16 +7,16 @@
     </clipPath>
     <clipPath id="reveal1">
       <rect x="0" y="36" width="0" height="30">
-        <animate attributeName="width" values="0;0;460.3;460.3;0" keyTimes="0;0.300;0.600;0.92;1" dur="7s" repeatCount="indefinite"/>
+        <animate attributeName="width" values="0;0;93.3;93.3;0" keyTimes="0;0.300;0.600;0.92;1" dur="7s" repeatCount="indefinite"/>
       </rect>
     </clipPath>
   </defs>
-  <rect width="540" height="104" rx="10" fill="#ffffff"/>
-  <rect width="540" height="104" rx="10" fill="none" stroke="#e5e5ea" stroke-width="1"/>
+  <rect width="520" height="104" rx="10" fill="#ffffff"/>
+  <rect width="520" height="104" rx="10" fill="none" stroke="#e5e5ea" stroke-width="1"/>
   <rect width="4" height="104" fill="#FF2279"/>
   <text x="22" y="42" font-family="Consolas, Menlo, monospace" font-size="38" fill="#FF2279" fill-opacity="0.5">&#8220;</text>
-  <text x="54" y="38" clip-path="url(#reveal0)" font-family="Consolas, Menlo, monospace" font-size="16" fill="#1a1a1f">Programs must be written for people to read,</text><text x="54" y="64" clip-path="url(#reveal1)" font-family="Consolas, Menlo, monospace" font-size="16" fill="#1a1a1f">and only incidentally for machines to execute.</text>
-  <rect x="510.3" y="51" width="2.5" height="18" fill="#FF2279">
+  <text x="54" y="38" clip-path="url(#reveal0)" font-family="Consolas, Menlo, monospace" font-size="16" fill="#1a1a1f">The best error message is the one that never</text><text x="54" y="64" clip-path="url(#reveal1)" font-family="Consolas, Menlo, monospace" font-size="16" fill="#1a1a1f">shows up.</text>
+  <rect x="143.3" y="51" width="2.5" height="18" fill="#FF2279">
     <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.770;0.780;0.92;1" dur="7s" repeatCount="indefinite"/>
   </rect>
 </svg>
