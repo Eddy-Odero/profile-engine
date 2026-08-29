@@ -32,9 +32,10 @@ on:
           - minimal
           - matrix
 
-# Without this, GITHUB_TOKEN defaults to read-only on most repos created
-# since Feb 2023, and the final "git push" step fails with a 403/permission
-# error even though everything before it succeeds.
+# contents: write isn't actually needed for pushing anymore - the deploy
+# step pushes to a different repo using its own PROFILE_DEPLOY_TOKEN, not
+# this repo's GITHUB_TOKEN. Left in case build.py or a future step ever
+# needs to write back to this repo directly.
 permissions:
   contents: write
 
@@ -72,14 +73,36 @@ jobs:
           THEME: ${{ inputs.theme }}
         run: python scripts/build.py
 
-      - name: Commit changes
+      - name: Deploy generated README to profile repo
+        env:
+          # A separate PAT, NOT secrets.GITHUB_TOKEN - the default token is
+          # scoped to only this repo (profile-engine) and can't push to a
+          # different one. Create a classic PAT with the "repo" scope (or a
+          # fine-grained token scoped to just Eddy-Odero/Eddy-Odero with
+          # Contents: read-and-write), then add it as a repository secret
+          # here named PROFILE_DEPLOY_TOKEN (Settings -> Secrets and
+          # variables -> Actions -> New repository secret).
+          DEPLOY_TOKEN: ${{ secrets.PROFILE_DEPLOY_TOKEN }}
         run: |
           git config --global user.name "profile-bot"
           git config --global user.email "profile-bot@users.noreply.github.com"
+
+          # Clone the actual profile repo into a separate directory -
+          # this workflow's own checkout (profile-engine) is left
+          # untouched, since these two repos are staying separate.
+          git clone "https://x-access-token:${DEPLOY_TOKEN}@github.com/Eddy-Odero/Eddy-Odero.git" /tmp/profile-repo
+
+          # Mirror just the rendered output - README.md and the SVGs it
+          # references - not the generator's source code. rm+cp (rather
+          # than only overwriting existing files) means a project that
+          # gets removed from PROJECTS here also disappears from the
+          # deployed repo instead of leaving a stale orphaned SVG behind.
+          cp README.md /tmp/profile-repo/README.md
+          rm -rf /tmp/profile-repo/generated
+          cp -r generated /tmp/profile-repo/generated
+
+          cd /tmp/profile-repo
           git add -A
-          git diff --cached --quiet || git commit -m "chore: auto-update README"
-          # Pull-rebase in case another push landed on main since checkout,
-          # then push. On conflict (rare - only touches generated files),
-          # fail loudly rather than force-pushing over someone's edit.
+          git diff --cached --quiet || git commit -m "chore: auto-update README from profile-engine"
           git pull --rebase origin main
           git push
