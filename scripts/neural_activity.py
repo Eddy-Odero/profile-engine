@@ -417,7 +417,7 @@ font-weight="700" fill="{accent}" filter="url(#hudglow)">{value} days</text>
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Neural activity">
   <defs>{glow_filter()}{scan_defs}{glass_defs}{sky_defs}{horizon_defs}{''.join(gradient_defs)}{reflect_defs}</defs>
-  <rect width="{width}" height="{height}" rx="16" fill="#{bg}" fill-opacity="0.6"/>
+  <rect width="{width}" height="{height}" rx="16" fill="#{bg}" fill-opacity="0.97"/>
   {number_block}
   {live_chip}
   {active_text}

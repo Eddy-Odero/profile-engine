@@ -170,7 +170,7 @@ def _badge(x: float, y: float, skill: str, level: str, accent: str, bracket_colo
 
     return f"""
   <g>
-    <rect x="{x}" y="{y}" width="{CARD_WIDTH}" height="{CARD_HEIGHT}" fill="#{CARD_BG}" fill-opacity="0.3" \
+    <rect x="{x}" y="{y}" width="{CARD_WIDTH}" height="{CARD_HEIGHT}" fill="#{CARD_BG}" fill-opacity="0.94" \
 stroke="#{CARD_BORDER}" stroke-width="1"/>
     {_corner_brackets(x, y, bracket_color)}
     <circle cx="{badge_cx}" cy="{badge_cy}" r="{BADGE_RADIUS}" fill="{color}" fill-opacity="0.12" \

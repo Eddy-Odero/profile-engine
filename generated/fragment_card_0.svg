@@ -28,7 +28,7 @@
   <g clip-path="url(#cardclip)">
     <rect width="380" height="150" rx="0" fill="url(#hudgrid)"/><rect width="380" height="150" rx="0" fill="url(#hudgridbold)"/>
   </g>
-  <polygon points="0.0,0.0 352.0,0.0 380.0,28.0 380.0,150.0 28.0,150.0 0.0,122.0" fill="#07090F" fill-opacity="0.65" stroke="#2a2a33" stroke-width="1"/>
+  <polygon points="0.0,0.0 352.0,0.0 380.0,28.0 380.0,150.0 28.0,150.0 0.0,122.0" fill="#07090F" fill-opacity="0.97" stroke="#2a2a33" stroke-width="1"/>
   <g clip-path="url(#cardclip)">
     
   <g>

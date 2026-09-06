@@ -54,7 +54,7 @@
     <mask id="reflectMask">
       <rect x="24" y="288" width="780" height="60" fill="url(#reflectFade)"/>
     </mask></defs>
-  <rect width="828" height="368" rx="16" fill="#07090F" fill-opacity="0.6"/>
+  <rect width="828" height="368" rx="16" fill="#07090F" fill-opacity="0.97"/>
   
   <text x="24" y="52" font-family="Consolas, Menlo, monospace" font-size="46" font-weight="700" fill="#24FF9A" filter="url(#hudglow)">751</text>
   <text x="24" y="70" font-family="Consolas, Menlo, monospace" font-size="10" fill="#8a7fa8" letter-spacing="1">CONTRIBUTIONS_THIS_CYCLE</text>
