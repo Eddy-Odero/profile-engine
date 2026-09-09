@@ -29,7 +29,7 @@
     <clipPath id="lcglassClip">
       <rect width="820" height="262" rx="16"/>
     </clipPath></defs>
-  <rect width="820" height="262" rx="16" fill="#07090F" fill-opacity="0.97"/>
+  <rect width="820" height="262" rx="16" fill="#07090F" fill-opacity="0.6"/>
   <rect width="820" height="262" rx="16" fill="url(#hudgrid)"/><rect width="820" height="262" rx="16" fill="url(#hudgridbold)"/>
   <text x="28" y="30" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" font-weight="700" fill="#e8e6f0">Problem Difficulty</text>
   <text x="28" y="48" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6b6478">breakdown of 120 solved, all time</text>

@@ -14,11 +14,12 @@
     "PostgreSQL",
     "Docker"
   ],
-  "cursor": "\u2588",
-  "system_message": "[ERROR] sarcasm module overloaded",
-  "quote": "The best error message is the one that never shows up.",
+  "cursor": " ",
+  "system_message": "> ping github.com... 12ms",
+  "quote": "Code never lies, comments sometimes do.",
   "status": "Coffee Loading...",
-  "terminal_svg_path": "generated/terminal.svg",
+  "terminal_svg_path_dark": "generated/terminal.svg",
+  "terminal_svg_path_light": "generated/terminal_light.svg",
   "fragment_cards": [
     {
       "name": "SatGate",
@@ -30,7 +31,8 @@
       "language": "TypeScript",
       "stars": 0,
       "forks": 0,
-      "card_svg_path": "generated/fragment_card_0.svg"
+      "card_svg_path_dark": "generated/fragment_card_0.svg",
+      "card_svg_path_light": "generated/fragment_card_0_light.svg"
     },
     {
       "name": "EDU-FLIX",
@@ -42,7 +44,8 @@
       "language": "Go",
       "stars": 0,
       "forks": 0,
-      "card_svg_path": "generated/fragment_card_1.svg"
+      "card_svg_path_dark": "generated/fragment_card_1.svg",
+      "card_svg_path_light": "generated/fragment_card_1_light.svg"
     },
     {
       "name": "profile-engine",
@@ -54,7 +57,8 @@
       "language": "Python",
       "stars": 0,
       "forks": 0,
-      "card_svg_path": "generated/fragment_card_2.svg"
+      "card_svg_path_dark": "generated/fragment_card_2.svg",
+      "card_svg_path_light": "generated/fragment_card_2_light.svg"
     },
     {
       "name": "Maison POS",
@@ -66,16 +70,21 @@
       "language": "JavaScript",
       "stars": 0,
       "forks": 0,
-      "card_svg_path": "generated/fragment_card_3.svg"
+      "card_svg_path_dark": "generated/fragment_card_3.svg",
+      "card_svg_path_light": "generated/fragment_card_3_light.svg"
     }
   ],
   "badge_view_path": "generated/badge_view.svg",
   "badge_code_path": "generated/badge_code.svg",
   "badge_disabled_path": "generated/badge_disabled.svg",
-  "skill_modules_svg_path": "generated/skill_modules.svg",
-  "leetcode_panel_svg_path": "generated/leetcode_panel.svg",
-  "event_log_svg_path": "generated/event_log.svg",
-  "neural_activity_svg_path": "generated/neural_activity.svg",
+  "skill_modules_svg_path_dark": "generated/skill_modules.svg",
+  "skill_modules_svg_path_light": "generated/skill_modules_light.svg",
+  "leetcode_panel_svg_path_dark": "generated/leetcode_panel.svg",
+  "leetcode_panel_svg_path_light": "generated/leetcode_panel_light.svg",
+  "event_log_svg_path_dark": "generated/event_log.svg",
+  "event_log_svg_path_light": "generated/event_log_light.svg",
+  "neural_activity_svg_path_dark": "generated/neural_activity.svg",
+  "neural_activity_svg_path_light": "generated/neural_activity_light.svg",
   "social_links": [
     {
       "label": "Twitter",
@@ -111,7 +120,7 @@
     "Signal Uplink": "generated/header_6.svg",
     "Neural Activity": "generated/header_7.svg"
   },
-  "build_time": "2026-09-06 17:19 UTC",
+  "build_time": "2026-09-09 04:25 UTC",
   "stat_badges": [
     "![Repos: 24](https://img.shields.io/badge/Repos-24-007f8c?style=flat-square&labelColor=07090F)",
     "![Stars: 37](https://img.shields.io/badge/Stars-37-007f8c?style=flat-square&labelColor=07090F)",

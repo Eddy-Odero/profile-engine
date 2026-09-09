@@ -202,6 +202,7 @@ def render_terminal_svg(
     username: str,
     stats: dict,
     theme_name: str = DEFAULT_THEME,
+    for_light_mode: bool = False,
 ) -> str:
     """
     Build a fixed-size 820x380 SVG terminal with typewriter reveal.
@@ -210,6 +211,7 @@ def render_terminal_svg(
     """
     theme = get_theme(theme_name)
     bg = f"#{theme['label_color']}"
+    bg_opacity = 0.96 if for_light_mode else 0.65
     accent = f"#{theme['color']}"
 
     avatar_lines = avatar_ascii.split("\n")
@@ -368,7 +370,7 @@ xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(username)} termi
     {term_grid_defs}
     {glass_defs}
   </defs>
-  <rect width="{width}" height="{height}" rx="10" fill="{bg}" fill-opacity="0.97"/>
+  <rect width="{width}" height="{height}" rx="10" fill="{bg}" fill-opacity="{bg_opacity}"/>
   {term_grid_rect}
   {_title_bar(width, accent, username)}
   <g clip-path="url(#bodyClip)">

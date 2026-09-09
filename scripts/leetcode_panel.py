@@ -44,9 +44,10 @@ def _esc(text: str) -> str:
     return html.escape(text, quote=True)
 
 
-def render_leetcode_panel_svg(stats: dict, theme_name: str = DEFAULT_THEME) -> str:
+def render_leetcode_panel_svg(stats: dict, theme_name: str = DEFAULT_THEME, for_light_mode: bool = False) -> str:
     accent = "#FF2279"  # exact rose-pink sampled from the reference screenshot
     bg = get_theme(theme_name)["label_color"]
+    bg_opacity = 0.96 if for_light_mode else 0.6
 
     solved = stats.get("solved", {}) or {}
     total = solved.get("total", 0) or 0
@@ -103,7 +104,7 @@ fill="{accent}" fill-opacity="0.85"/>""")
     return f"""<svg width="{WIDTH}" height="{height}" viewBox="0 0 {WIDTH} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LeetCode stats">
   <defs>{grid_defs}{glow_filter()}{scan_defs}{glass_defs}</defs>
-  <rect width="{WIDTH}" height="{height}" rx="16" fill="#{bg}" fill-opacity="0.97"/>
+  <rect width="{WIDTH}" height="{height}" rx="16" fill="#{bg}" fill-opacity="{bg_opacity}"/>
   {grid_rect}
   <text x="{PAD_X}" y="{TITLE_Y}" font-family="Segoe UI, Helvetica, Arial, sans-serif" \
 font-size="17" font-weight="700" fill="#{TITLE_COLOR}">Problem Difficulty</text>

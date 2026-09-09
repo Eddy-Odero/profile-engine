@@ -146,7 +146,9 @@ def _corner_brackets(x: float, y: float, accent: str) -> str:
     return "".join(marks)
 
 
-def _badge(x: float, y: float, skill: str, level: str, accent: str, bracket_color: str) -> str:
+def _badge(
+    x: float, y: float, skill: str, level: str, accent: str, bracket_color: str, card_opacity: float = 0.3
+) -> str:
     color = _skill_color(skill, accent)
     badge_cx = x + CARD_WIDTH / 2
     badge_cy = y + 44
@@ -170,7 +172,7 @@ def _badge(x: float, y: float, skill: str, level: str, accent: str, bracket_colo
 
     return f"""
   <g>
-    <rect x="{x}" y="{y}" width="{CARD_WIDTH}" height="{CARD_HEIGHT}" fill="#{CARD_BG}" fill-opacity="0.94" \
+    <rect x="{x}" y="{y}" width="{CARD_WIDTH}" height="{CARD_HEIGHT}" fill="#{CARD_BG}" fill-opacity="{card_opacity}" \
 stroke="#{CARD_BORDER}" stroke-width="1"/>
     {_corner_brackets(x, y, bracket_color)}
     <circle cx="{badge_cx}" cy="{badge_cy}" r="{BADGE_RADIUS}" fill="{color}" fill-opacity="0.12" \
@@ -184,7 +186,7 @@ fill="#{MUTED}" text-anchor="middle" letter-spacing="1">{_esc(level.upper())}</t
 
 
 def render_skill_modules_svg(
-    skills: list[tuple[str, str]], theme_name: str = DEFAULT_THEME
+    skills: list[tuple[str, str]], theme_name: str = DEFAULT_THEME, for_light_mode: bool = False
 ) -> str:
     """
     Build the SVG for the skill modules grid. `skills` is a list of
@@ -194,10 +196,20 @@ def render_skill_modules_svg(
     directly from the design image, rather than the active theme's
     accent - this section's bracket color doesn't change with theme,
     matching the reference exactly.
+
+    `for_light_mode=True` renders the card backgrounds much closer to
+    opaque. The translucent 0.3 opacity is designed to let a dark page
+    background show through - on GitHub's light theme (white page)
+    that same translucency reads as a washed-out grey haze instead.
+    Rather than compromise the dark-mode look to fix that, this
+    generates a second variant meant to be shown only in light mode
+    via GitHub's #gh-light-mode-only image suffix, so each theme gets
+    the version that actually looks right for it.
     """
     theme = get_theme(theme_name)
     accent = f"#{theme['color']}"
     bracket_color = HUD_COLORS["modules"]
+    card_opacity = 0.94 if for_light_mode else 0.3
 
     if not skills:
         skills = [("more skills coming soon", "")]
@@ -213,7 +225,7 @@ def render_skill_modules_svg(
         for col_i, (skill, level) in enumerate(row):
             x = col_i * (CARD_WIDTH + CARD_GAP)
             y = row_i * (CARD_HEIGHT + CARD_GAP)
-            badges.append(_badge(x, y, skill, level, accent, bracket_color))
+            badges.append(_badge(x, y, skill, level, accent, bracket_color, card_opacity))
 
     grid_defs, grid_rect = grid_background(width, height, accent, spacing=20)
 

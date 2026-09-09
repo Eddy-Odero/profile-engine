@@ -335,14 +335,15 @@ def _write_svg(markup: str, filename: str) -> str:
 
 def build_terminal_svg(
     avatar_ascii: str, boot_sequence: str, system_message: str, status: str, stats: dict
-) -> str:
+) -> tuple[str, str]:
     """
-    Render the terminal window SVG and save it to generated/terminal.svg.
-    Returns the path as the template should reference it (relative to
-    the repo root, since that's where README.md lives).
+    Render the terminal window SVG (dark + light-mode variants) and
+    save both to generated/. Returns (dark_path, light_path); the
+    template shows whichever matches the viewer's GitHub theme via the
+    #gh-dark-mode-only / #gh-light-mode-only image suffixes.
     """
     boot_text = f"{boot_sequence}\n{system_message}"
-    svg_markup = svg_terminal.render_terminal_svg(
+    common_kwargs = dict(
         avatar_ascii=avatar_ascii,
         boot_sequence=boot_text,
         status=status,
@@ -350,7 +351,9 @@ def build_terminal_svg(
         stats={**stats, "role": ROLE, "location": LOCATION},
         theme_name=THEME,
     )
-    return _write_svg(svg_markup, "terminal.svg")
+    dark_svg = svg_terminal.render_terminal_svg(**common_kwargs, for_light_mode=False)
+    light_svg = svg_terminal.render_terminal_svg(**common_kwargs, for_light_mode=True)
+    return _write_svg(dark_svg, "terminal.svg"), _write_svg(light_svg, "terminal_light.svg")
 
 
 def _with_real_repo_stats(project: dict, repo_details: dict) -> dict:
@@ -392,9 +395,10 @@ def build_context() -> dict:
         "quote": quote,
         "status": status,
         "boot_sequence": boot_sequence,
-        "terminal_svg_path": build_terminal_svg(
+        "terminal_svg_path_dark": (_terminal_paths := build_terminal_svg(
             avatar_ascii, boot_sequence, system_message, status, combined_stats
-        ),
+        ))[0],
+        "terminal_svg_path_light": _terminal_paths[1],
         # Projects and Fragmented Data were the same real project list at two
         # levels of detail - kept only Fragmented Data (the ribbon+stats
         # version) per direct request, so the plain-card Projects section
@@ -402,8 +406,12 @@ def build_context() -> dict:
         "fragment_cards": [
             {
                 **(p := _with_real_repo_stats(project, combined_stats.get("repo_details", {}))),
-                "card_svg_path": _write_svg(
+                "card_svg_path_dark": _write_svg(
                     fragmented_data.render_fragment_card_svg(p, THEME), f"fragment_card_{i}.svg"
+                ),
+                "card_svg_path_light": _write_svg(
+                    fragmented_data.render_fragment_card_svg(p, THEME, for_light_mode=True),
+                    f"fragment_card_{i}_light.svg",
                 ),
             }
             for i, project in enumerate(PROJECTS)
@@ -417,16 +425,27 @@ def build_context() -> dict:
         "badge_disabled_path": _write_svg(
             project_cards.render_link_badge_svg("view", THEME, disabled=True), "badge_disabled.svg"
         ),
-        "skill_modules_svg_path": _write_svg(
+        "skill_modules_svg_path_dark": _write_svg(
             skill_modules.render_skill_modules_svg(SKILLS, THEME), "skill_modules.svg"
         ),
-        "leetcode_panel_svg_path": _write_svg(
+        "skill_modules_svg_path_light": _write_svg(
+            skill_modules.render_skill_modules_svg(SKILLS, THEME, for_light_mode=True),
+            "skill_modules_light.svg",
+        ),
+        "leetcode_panel_svg_path_dark": _write_svg(
             leetcode_panel.render_leetcode_panel_svg(leetcode_stats, THEME), "leetcode_panel.svg"
         ),
-        "event_log_svg_path": _write_svg(
+        "leetcode_panel_svg_path_light": _write_svg(
+            leetcode_panel.render_leetcode_panel_svg(leetcode_stats, THEME, for_light_mode=True),
+            "leetcode_panel_light.svg",
+        ),
+        "event_log_svg_path_dark": _write_svg(
             event_log.render_event_log_svg(EVENT_LOG, THEME), "event_log.svg"
         ),
-        "neural_activity_svg_path": _write_svg(
+        "event_log_svg_path_light": _write_svg(
+            event_log.render_event_log_svg(EVENT_LOG, THEME, for_light_mode=True), "event_log_light.svg"
+        ),
+        "neural_activity_svg_path_dark": _write_svg(
             neural_activity.render_neural_activity_svg(
                 combined_stats.get("heatmap", {}).get("weeks", []),
                 combined_stats.get("heatmap", {}).get("total", 0),
@@ -436,6 +455,18 @@ def build_context() -> dict:
                 THEME,
             ),
             "neural_activity.svg",
+        ),
+        "neural_activity_svg_path_light": _write_svg(
+            neural_activity.render_neural_activity_svg(
+                combined_stats.get("heatmap", {}).get("weeks", []),
+                combined_stats.get("heatmap", {}).get("total", 0),
+                combined_stats.get("heatmap", {}).get("current_streak", 0),
+                combined_stats.get("heatmap", {}).get("longest_streak", 0),
+                combined_stats.get("heatmap", {}).get("active_days", 0),
+                THEME,
+                for_light_mode=True,
+            ),
+            "neural_activity_light.svg",
         ),
         "social_links": [
             {

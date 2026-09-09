@@ -53,10 +53,11 @@ def _chamfered_points(width: float, height: float, cut: float) -> str:
     return " ".join(f"{x:.1f},{y:.1f}" for x, y in points)
 
 
-def render_fragment_card_svg(project: dict, theme_name: str = DEFAULT_THEME) -> str:
+def render_fragment_card_svg(project: dict, theme_name: str = DEFAULT_THEME, for_light_mode: bool = False) -> str:
     """Same card as render_single_project_card_svg, just wide + corner-chamfered."""
     theme = get_theme(theme_name)
     accent = f"#{theme['color']}"
+    bg_opacity = 0.96 if for_light_mode else 0.65
 
     name = project.get("name", "")
     description = project.get("description", "")
@@ -98,7 +99,7 @@ xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(name)}">
   <g clip-path="url(#cardclip)">
     {grid_rect}
   </g>
-  <polygon points="{outline_pts}" fill="#{theme['label_color']}" fill-opacity="0.97" stroke="#{CARD_BORDER}" stroke-width="1"/>
+  <polygon points="{outline_pts}" fill="#{theme['label_color']}" fill-opacity="{bg_opacity}" stroke="#{CARD_BORDER}" stroke-width="1"/>
   <g clip-path="url(#cardclip)">
     {_ribbon(project.get("visibility", ""), width=WIDTH, y_top=0, y_bottom=CHAMFER, x_right=WIDTH)}
   </g>

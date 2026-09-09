@@ -1,6 +1,7 @@
 <div align="center">
 
-![{{ username }} terminal]({{ terminal_svg_path }})
+![{{ username }} terminal]({{ terminal_svg_path_dark }}#gh-dark-mode-only)
+![{{ username }} terminal]({{ terminal_svg_path_light }}#gh-light-mode-only)
 
 <sub>~ live session · {{ username }}@github · re-renders every build ~</sub>
 
@@ -8,17 +9,20 @@
 
 ![System Modules header]({{ section_headers['System Modules'] }})
 
-![System Modules]({{ skill_modules_svg_path }})
+![System Modules]({{ skill_modules_svg_path_dark }}#gh-dark-mode-only)
+![System Modules]({{ skill_modules_svg_path_light }}#gh-light-mode-only)
 
 ![Quote]({{ quote_svg_path }})
 
 ![LeetCode Stats header]({{ section_headers['LeetCode Stats'] }})
 
-![LeetCode Stats]({{ leetcode_panel_svg_path }})
+![LeetCode Stats]({{ leetcode_panel_svg_path_dark }}#gh-dark-mode-only)
+![LeetCode Stats]({{ leetcode_panel_svg_path_light }}#gh-light-mode-only)
 
 ![Event Log header]({{ section_headers['Event Log'] }})
 
-![Event Log]({{ event_log_svg_path }})
+![Event Log]({{ event_log_svg_path_dark }}#gh-dark-mode-only)
+![Event Log]({{ event_log_svg_path_light }}#gh-light-mode-only)
 
 ![Fragmented Data header]({{ section_headers['Fragmented Data'] }})
 
@@ -30,7 +34,8 @@
 {% for project in row %}
 <td align="center">
 
-![{{ project.name }}]({{ project.card_svg_path }})
+![{{ project.name }}]({{ project.card_svg_path_dark }}#gh-dark-mode-only)
+![{{ project.name }}]({{ project.card_svg_path_light }}#gh-light-mode-only)
 
 {% if project.preview_url %}[![View]({{ badge_view_path }})]({{ project.preview_url }}){% else %}![View disabled]({{ badge_disabled_path }}){% endif %} [![Code]({{ badge_code_path }})]({{ project.repo_url }})
 
@@ -48,7 +53,8 @@
 
 ![Neural Activity header]({{ section_headers['Neural Activity'] }})
 
-![Neural Activity]({{ neural_activity_svg_path }})
+![Neural Activity]({{ neural_activity_svg_path_dark }}#gh-dark-mode-only)
+![Neural Activity]({{ neural_activity_svg_path_light }}#gh-light-mode-only)
 
 </div>
 

@@ -59,9 +59,10 @@ def _wrap(text: str, max_chars: int = 78) -> list[str]:
     return lines or [""]
 
 
-def render_event_log_svg(events: list[dict], theme_name: str = DEFAULT_THEME) -> str:
+def render_event_log_svg(events: list[dict], theme_name: str = DEFAULT_THEME, for_light_mode: bool = False) -> str:
     accent = HUD_COLORS["timeline"]
     bg = get_theme(theme_name)["label_color"]
+    bg_opacity = 0.96 if for_light_mode else 0.6
 
     # Pre-measure each entry's height so nodes land exactly on their
     # entry's vertical center regardless of how many description lines wrap.
@@ -116,7 +117,7 @@ def render_event_log_svg(events: list[dict], theme_name: str = DEFAULT_THEME) ->
     return f"""<svg width="{WIDTH}" height="{height}" viewBox="0 0 {WIDTH} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Event log">
   <defs>{bg_defs}{glow_filter()}{scan_defs}{glass_defs}</defs>
-  <rect width="{WIDTH}" height="{height}" rx="16" fill="#{bg}" fill-opacity="0.97"/>
+  <rect width="{WIDTH}" height="{height}" rx="16" fill="#{bg}" fill-opacity="{bg_opacity}"/>
   {bg_rect}
   {timeline_line}
   {''.join(parts)}

@@ -204,8 +204,10 @@ def render_neural_activity_svg(
     longest_streak: int,
     active_days: int,
     theme_name: str = DEFAULT_THEME,
+    for_light_mode: bool = False,
 ) -> str:
     accent = HUD_COLORS["activity"]
+    bg_opacity = 0.96 if for_light_mode else 0.6
     bg = get_theme(theme_name)["label_color"]
 
     width = max(len(weeks) * 15 + PANEL_PAD_X * 2, 780)
@@ -417,7 +419,7 @@ font-weight="700" fill="{accent}" filter="url(#hudglow)">{value} days</text>
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Neural activity">
   <defs>{glow_filter()}{scan_defs}{glass_defs}{sky_defs}{horizon_defs}{''.join(gradient_defs)}{reflect_defs}</defs>
-  <rect width="{width}" height="{height}" rx="16" fill="#{bg}" fill-opacity="0.97"/>
+  <rect width="{width}" height="{height}" rx="16" fill="#{bg}" fill-opacity="{bg_opacity}"/>
   {number_block}
   {live_chip}
   {active_text}
