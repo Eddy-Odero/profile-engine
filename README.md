@@ -43,7 +43,7 @@
 ![EDU-FLIX](generated/fragment_card_1.svg#gh-dark-mode-only)
 ![EDU-FLIX](generated/fragment_card_1_light.svg#gh-light-mode-only)
 
-[![View](generated/badge_view.svg)](https://edu-flix.onrender.com/) [![Code](generated/badge_code.svg)](https://github.com/Eddy-Odero/EDU-FLIX)
+[![View](generated/badge_view.svg)](https://edu-flix1.onrender.com/) [![Code](generated/badge_code.svg)](https://github.com/Eddy-Odero/EDU-FLIX)
 
 </td>
 </tr>
