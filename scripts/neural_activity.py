@@ -299,13 +299,29 @@ def render_neural_activity_svg(
         fx.append(f'<line x1="{tx:.1f}" y1="0" x2="{tx:.1f}" y2="{ty:.1f}" stroke="{hue}" stroke-opacity="0.8" stroke-width="1"/>')
         hues_used.add(hue)
     links = [(0, 2, "feat:"), (1, 3, "merge"), (2, 4, "fix:")]
+    for rank in range(3):
+        tx, ty, hue = tops[rank]
+        wk = order[rank]
+        we = end - _dt.timedelta(days=7 * (51 - wk))
+        ws = we - _dt.timedelta(days=6)
+        lab1 = f"#{rank + 1}  {tot[wk]} COMMITS"
+        lab2 = f"{ws.strftime('%b')} {ws.day} to {we.strftime('%b')} {we.day}"
+        side = 1 if rank != 1 else -1
+        bw, bh = 104, 30
+        bx0 = (tx + 14 if rank == 0 else tx + 58) if side > 0 else tx - 16 - bw
+        by0 = (88, 100, 124)[rank]
+        fx.append(
+            f'<line x1="{tx:.1f}" y1="{ty - 6:.1f}" x2="{bx0 + (0 if side > 0 else bw):.1f}" y2="{by0 + bh:.1f}" stroke="{hue}" stroke-opacity="0.8"/>'
+            f'<rect x="{bx0:.1f}" y="{by0:.1f}" width="{bw}" height="{bh}" rx="5" fill="#070b16" fill-opacity="0.92" stroke="{hue}"/>'
+            f'<text x="{bx0 + 8:.1f}" y="{by0 + 13:.1f}" font-family="Consolas, Menlo, monospace" font-size="10" font-weight="700" fill="{hue}">{lab1}</text>'
+            f'<text x="{bx0 + 8:.1f}" y="{by0 + 25:.1f}" font-family="Consolas, Menlo, monospace" font-size="8.5" fill="#9aa4b8">{lab2}</text>'
+        )
     for a, b, lab in links:
         ax, ay, ha = tops[a]
         bx, by, hb = tops[b]
         cx, cy = (ax + bx) / 2, min(ay, by) - 24 - abs(ax - bx) * 0.25
         fx.append(f'<path d="M{ax:.1f} {ay:.1f} Q{cx:.1f} {cy:.1f} {bx:.1f} {by:.1f}" fill="none" stroke="{ha}" stroke-width="1.2" stroke-opacity="0.75" stroke-dasharray="4 5">'
                   f'<animate attributeName="stroke-dashoffset" from="0" to="-18" dur="1.4s" repeatCount="indefinite"/></path>')
-        fx.append(f'<text x="{cx:.1f}" y="{cy + 6:.1f}" text-anchor="middle" font-family="Consolas, Menlo, monospace" font-size="10" fill="{ha}" opacity="0.9">{lab}</text>')
 
     for a, b in ((0, 1), (1, 2)):
         ax, ay, _ = tops[a]

@@ -84,9 +84,13 @@
 <img src="generated/neural_activity.svg#gh-dark-mode-only" alt="Neural Activity">
 <img src="generated/neural_activity_light.svg#gh-light-mode-only" alt="Neural Activity">
 
+<table align="center" width="820" cellpadding="0" cellspacing="0" border="0"><tr><td align="left">
+<a href="https://eddy-odero.github.io/profile-engine/city.html"><img src="generated/cta_city.svg" alt="Open interactive city" width="250"></a>&nbsp;&nbsp;<sub>click any building to see that week's commits</sub>
+</td></tr></table>
+
 <img src="generated/activity_status.svg#gh-dark-mode-only" alt="Status">
 <img src="generated/activity_status_light.svg#gh-light-mode-only" alt="Status">
 
 </div>
 
-<sub>Last rendered: 2026-11-19 01:31 UTC · theme: hud · auto-generated, do not edit by hand</sub>
+<sub>Last rendered: 2026-11-19 01:40 UTC · theme: hud · auto-generated, do not edit by hand</sub>

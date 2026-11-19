@@ -326,6 +326,10 @@ def build_leetcode_stats() -> dict:
         return MOCK_LEETCODE_STATS
 
 
+# Where the interactive city is served (GitHub Pages: repo Settings > Pages > main branch /docs).
+CITY_PAGE_URL = f"https://{GITHUB_USERNAME.lower()}.github.io/profile-engine/city.html"
+
+
 def _write_svg(markup: str, filename: str) -> str:
     """Write SVG markup to generated/<filename> and return the template-relative path."""
     GENERATED_DIR.mkdir(parents=True, exist_ok=True)
@@ -340,7 +344,11 @@ def _write_city_page(heat: dict) -> str:
         heat.get("longest_streak", 0), heat.get("active_days", 0), THEME,
     )
     GENERATED_DIR.mkdir(parents=True, exist_ok=True)
-    (GENERATED_DIR / "city_interactive.html").write_text(neural_activity.render_interactive_html(svg), encoding="utf-8")
+    page = neural_activity.render_interactive_html(svg)
+    (GENERATED_DIR / "city_interactive.html").write_text(page, encoding="utf-8")
+    docs = GENERATED_DIR.parent / "docs"  # GitHub Pages serves this folder
+    docs.mkdir(exist_ok=True)
+    (docs / "city.html").write_text(page, encoding="utf-8")
     return "generated/city_interactive.html"
 
 
@@ -462,6 +470,8 @@ def build_context() -> dict:
         ),
         "cta_work_svg_path": _write_svg(signal_uplink.render_cta_button_svg("See my work", True), "cta_work.svg"),
         "cta_hello_svg_path": _write_svg(signal_uplink.render_cta_button_svg("Say hello", False), "cta_hello.svg"),
+        "cta_city_svg_path": _write_svg(signal_uplink.render_cta_button_svg("Open interactive city", False, 250), "cta_city.svg"),
+        "city_page_url": CITY_PAGE_URL,
         "city_page_path": _write_city_page(combined_stats.get("heatmap", {})),
         "neural_activity_svg_path_dark": _write_svg(
             neural_activity.render_neural_activity_svg(

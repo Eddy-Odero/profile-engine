@@ -78,6 +78,10 @@
 <img src="{{ neural_activity_svg_path_dark }}#gh-dark-mode-only" alt="Neural Activity">
 <img src="{{ neural_activity_svg_path_light }}#gh-light-mode-only" alt="Neural Activity">
 
+<table align="center" width="820" cellpadding="0" cellspacing="0" border="0"><tr><td align="left">
+<a href="{{ city_page_url }}"><img src="{{ cta_city_svg_path }}" alt="Open interactive city" width="250"></a>&nbsp;&nbsp;<sub>click any building to see that week's commits</sub>
+</td></tr></table>
+
 <img src="{{ activity_status_svg_path_dark }}#gh-dark-mode-only" alt="Status">
 <img src="{{ activity_status_svg_path_light }}#gh-light-mode-only" alt="Status">
 
