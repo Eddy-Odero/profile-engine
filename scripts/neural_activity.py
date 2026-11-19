@@ -117,11 +117,11 @@ def render_neural_activity_svg(
     order = sorted(range(52), key=lambda k: -tot[k])  # rank -> week index
     rank_of = {k: r for r, k in enumerate(order)}
 
-    # lots sorted by distance from the board centre; the farthest 12 become parks
-    lots = sorted(((i, j) for i in range(_N) for j in range(_N)),
-                  key=lambda t: ((t[0] - 3.5) ** 2 + (t[1] - 3.5) ** 2, t[0] + t[1], t[0]))
-    build_lots, park_lots = lots[:52], lots[52:]
-    placed = {rank: build_lots[rank] for rank in range(52)}
+    # Date order: columns run oldest -> newest along the board's right-hand axis, so the
+    # latest week sits in the right-most column; the 12 unused lots at the start are parks.
+    lots = [(i, j) for i in range(_N) for j in range(_N)]
+    park_lots = lots[:12]
+    placed_wk = {wk: lots[12 + wk] for wk in range(52)}
 
     rng = random.Random(5)
     hues_used: set[str] = set()
@@ -236,7 +236,7 @@ def render_neural_activity_svg(
         wk = order[rank]
         c = tot[wk]
         ratio = ((c - low) / (peak - low)) ** 1.4 if peak > low else 0.0
-        i, j = placed[rank]
+        i, j = placed_wk[wk]
         r = random.Random(rank * 131 + 7)
         if rank == 0:
             hue = NEON["gold"]
@@ -254,6 +254,7 @@ def render_neural_activity_svg(
         h = 12 + ratio * 140
         if rank < 3:
             h = min(185, h * 1.18)
+        h = min(h, _P(i + 0.5, j + 0.5)[1] - 24)
         i0, i1, j0, j1 = i + m, i + 1 - m, j + m, j + 1 - m
         parts = []
         gx, gy = _P(i + 0.5, j + 0.5)
@@ -299,19 +300,19 @@ def render_neural_activity_svg(
         fx.append(f'<line x1="{tx:.1f}" y1="0" x2="{tx:.1f}" y2="{ty:.1f}" stroke="{hue}" stroke-opacity="0.8" stroke-width="1"/>')
         hues_used.add(hue)
     links = [(0, 2, "feat:"), (1, 3, "merge"), (2, 4, "fix:")]
-    for rank in range(3):
+    crowns = sorted(range(3), key=lambda r: tops[r][0])  # left to right
+    for pos, rank in enumerate(crowns):
         tx, ty, hue = tops[rank]
         wk = order[rank]
         we = end - _dt.timedelta(days=7 * (51 - wk))
         ws = we - _dt.timedelta(days=6)
         lab1 = f"#{rank + 1}  {tot[wk]} COMMITS"
         lab2 = f"{ws.strftime('%b')} {ws.day} to {we.strftime('%b')} {we.day}"
-        side = 1 if rank != 1 else -1
         bw, bh = 104, 30
-        bx0 = (tx + 14 if rank == 0 else tx + 58) if side > 0 else tx - 16 - bw
-        by0 = (88, 100, 124)[rank]
+        bx0 = min(max(8, tx - bw / 2), W - bw - 8)
+        by0 = (92, 128, 92)[pos]
         fx.append(
-            f'<line x1="{tx:.1f}" y1="{ty - 6:.1f}" x2="{bx0 + (0 if side > 0 else bw):.1f}" y2="{by0 + bh:.1f}" stroke="{hue}" stroke-opacity="0.8"/>'
+            f'<line x1="{tx:.1f}" y1="{ty - 6:.1f}" x2="{min(max(tx, bx0 + 6), bx0 + bw - 6):.1f}" y2="{by0 + bh:.1f}" stroke="{hue}" stroke-opacity="0.8"/>'
             f'<rect x="{bx0:.1f}" y="{by0:.1f}" width="{bw}" height="{bh}" rx="5" fill="#070b16" fill-opacity="0.92" stroke="{hue}"/>'
             f'<text x="{bx0 + 8:.1f}" y="{by0 + 13:.1f}" font-family="Consolas, Menlo, monospace" font-size="10" font-weight="700" fill="{hue}">{lab1}</text>'
             f'<text x="{bx0 + 8:.1f}" y="{by0 + 25:.1f}" font-family="Consolas, Menlo, monospace" font-size="8.5" fill="#9aa4b8">{lab2}</text>'
@@ -319,6 +320,8 @@ def render_neural_activity_svg(
     for a, b, lab in links:
         ax, ay, ha = tops[a]
         bx, by, hb = tops[b]
+        if abs(ax - bx) > 150:
+            continue
         cx, cy = (ax + bx) / 2, min(ay, by) - 24 - abs(ax - bx) * 0.25
         fx.append(f'<path d="M{ax:.1f} {ay:.1f} Q{cx:.1f} {cy:.1f} {bx:.1f} {by:.1f}" fill="none" stroke="{ha}" stroke-width="1.2" stroke-opacity="0.75" stroke-dasharray="4 5">'
                   f'<animate attributeName="stroke-dashoffset" from="0" to="-18" dur="1.4s" repeatCount="indefinite"/></path>')
@@ -326,6 +329,8 @@ def render_neural_activity_svg(
     for a, b in ((0, 1), (1, 2)):
         ax, ay, _ = tops[a]
         bx, by, _ = tops[b]
+        if abs(ax - bx) > 150:
+            continue
         for k, wc in enumerate(["#ff4d5a", "#26E6FF", "#24FF9A", "#FFC84D", "#B565FF"]):
             y1, y2 = ay + 34 + k * 3, by + 34 + k * 3
             fx.append(f'<path d="M{ax:.1f} {y1:.1f} C{ax:.1f} {y1 + 12:.1f} {bx:.1f} {y2 + 12:.1f} {bx:.1f} {y2:.1f}" fill="none" stroke="{wc}" stroke-width="1.4" stroke-opacity="0.8"/>')
@@ -373,7 +378,7 @@ def render_neural_activity_svg(
     {bld}
     <g pointer-events="none">{''.join(fx)}</g>
     {stat_svg}
-    <g pointer-events="none"><text x="{W - 24}" y="{H - 30}" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="11" fill="#c9d4e6" letter-spacing="1.5">1 BLOCK = 1 WEEK</text>
+    <g pointer-events="none"><text x="{W - 24}" y="{H - 30}" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="11" fill="#c9d4e6" letter-spacing="1.5">1 BLOCK = 1 WEEK  ·  NEWEST ON THE RIGHT</text>
     <text x="{W - 24}" y="{H - 16}" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" letter-spacing="1.2">TALLER + BRIGHTER = MORE COMMITS</text></g>
   </g>
   <polygon points="{pts}" fill="none" stroke="white" stroke-opacity="0.14"/>

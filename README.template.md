@@ -4,17 +4,9 @@
 <a href="{{ href }}"><picture><source media="(prefers-color-scheme: dark)" srcset="{{ hero.dark[n].path }}"><source media="(prefers-color-scheme: light)" srcset="{{ hero.light[n].path }}"><img align="top" src="{{ hero.light[n].path }}" width="{{ hero.dark[n].w }}" height="{{ hero.dark[n].h }}" alt="{{ username }}"></picture></a>
 {%- endmacro %}
 <a id="top"></a>
-<table align="center" width="820" cellpadding="0" cellspacing="0" border="0">
-<tr><td colspan="5" valign="top">{{ pic('top', '#top') }}</td></tr>
-<tr>
-<td valign="top">{{ pic('a', '#top') }}</td>
-<td valign="top">{{ pic('work', '#selected-work') }}</td>
-<td valign="top">{{ pic('gap', '#top') }}</td>
-<td valign="top">{{ pic('hello', '#signal-uplink') }}</td>
-<td valign="top">{{ pic('rest', '#top') }}</td>
-</tr>
-<tr><td colspan="5" valign="top">{{ pic('bottom', '#top') }}</td></tr>
-</table>
+{{ pic('top', '#top') }}<br>
+{{ pic('a', '#top') }}{{ pic('work', '#selected-work') }}{{ pic('gap', '#top') }}{{ pic('hello', '#signal-uplink') }}{{ pic('rest', '#top') }}<br>
+{{ pic('bottom', '#top') }}
 
 <sub>~ live session · {{ username }}@github · re-renders every build ~</sub>
 
@@ -48,32 +40,18 @@
 <a id="selected-work"></a>
 <a href="#selected-work"><picture><source media="(prefers-color-scheme: dark)" srcset="{{ fragment_heading_svg_path_dark }}"><source media="(prefers-color-scheme: light)" srcset="{{ fragment_heading_svg_path_light }}"><img src="{{ fragment_heading_svg_path_light }}" alt="Selected Work"></picture></a>
 
-</div>
-
 <br>
 
-<table align="center" width="820" cellpadding="0" cellspacing="0" border="0">
-{% for row in fragment_cards|batch(2) %}
-<tr>
-{% for project in row %}
-<td align="{{ 'left' if loop.index0 == 0 else 'right' }}" valign="top">
-<a href="{{ project.card_url }}"><img src="{{ project.card_svg_path }}" alt="{{ project.name }}" width="410"></a>
-</td>
+{% for row in fragment_cards|batch(2) %}{% for project in row %}<a href="{{ project.card_url }}"><img align="top" src="{{ project.card_svg_path }}" alt="{{ project.name }}" width="410"></a>{% endfor %}<br>
 {% endfor %}
-</tr>
-{% endfor %}
-</table>
 
-<div align="center">
 
 <br><br>
 
 <a id="signal-uplink"></a>
 <a href="#signal-uplink"><picture><source media="(prefers-color-scheme: dark)" srcset="{{ signal_heading_svg_path_dark }}"><source media="(prefers-color-scheme: light)" srcset="{{ signal_heading_svg_path_light }}"><img src="{{ signal_heading_svg_path_light }}" alt="Signal Uplink"></picture></a>
 
-<table align="center" width="820" cellpadding="0" cellspacing="0" border="0"><tr><td align="left">
-{% for link in social_links %}{% if link.url %}<a href="{{ link.url }}"><img src="{{ link.pill_svg_path }}" alt="{{ link.label }}"></a>&nbsp;{% else %}<img src="{{ link.pill_svg_path }}" alt="{{ link.label }}">&nbsp;{% endif %}{% endfor %}
-</td></tr></table>
+{% for link in social_links %}{% if link.url %}<a href="{{ link.url }}"><img align="top" src="{{ link.pill_svg_path }}" alt="{{ link.label }}"></a>{% else %}<img align="top" src="{{ link.pill_svg_path }}" alt="{{ link.label }}">{% endif %}{% endfor %}{% if pill_spacer_svg_path %}<img align="top" src="{{ pill_spacer_svg_path }}" alt="">{% endif %}
 
 <a id="s6"></a>
 <a href="#s6"><picture><source media="(prefers-color-scheme: dark)" srcset="{{ signal_status_svg_path_dark }}"><source media="(prefers-color-scheme: light)" srcset="{{ signal_status_svg_path_light }}"><img src="{{ signal_status_svg_path_light }}" alt="Status"></picture></a>
@@ -86,9 +64,7 @@
 <a id="s8"></a>
 <a href="#s8"><picture><source media="(prefers-color-scheme: dark)" srcset="{{ neural_activity_svg_path_dark }}"><source media="(prefers-color-scheme: light)" srcset="{{ neural_activity_svg_path_light }}"><img src="{{ neural_activity_svg_path_light }}" alt="Neural Activity"></picture></a>
 
-<table align="center" width="820" cellpadding="0" cellspacing="0" border="0"><tr><td align="left">
-<a href="{{ city_page_url }}"><img src="{{ cta_city_svg_path }}" alt="Open interactive city" width="250"></a>&nbsp;&nbsp;<sub>click any building to see that week's commits</sub>
-</td></tr></table>
+<a href="{{ city_page_url }}"><img align="top" src="{{ cta_city_svg_path }}" alt="Open interactive city" width="250"></a><img align="top" src="{{ city_note_svg_path }}" alt="">
 
 <a id="s9"></a>
 <a href="#s9"><picture><source media="(prefers-color-scheme: dark)" srcset="{{ activity_status_svg_path_dark }}"><source media="(prefers-color-scheme: light)" srcset="{{ activity_status_svg_path_light }}"><img src="{{ activity_status_svg_path_light }}" alt="Status"></picture></a>

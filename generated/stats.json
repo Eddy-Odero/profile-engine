@@ -14,10 +14,10 @@
     "PostgreSQL",
     "Docker"
   ],
-  "cursor": " ",
-  "system_message": "[WARNING] coffee levels critical",
-  "quote": "It's not a bug, it's an undocumented feature.",
-  "status": "Building APIs",
+  "cursor": "_",
+  "system_message": "[INFO] compiling thoughts.go",
+  "quote": "Programs must be written for people to read, and only incidentally for machines to execute.",
+  "status": "Writing Go",
   "terminal_svg_path_dark": "generated/terminal.svg",
   "terminal_svg_path_light": "generated/terminal_light.svg",
   "hero": {
@@ -162,6 +162,8 @@
   "cta_hello_svg_path": "generated/cta_hello.svg",
   "cta_city_svg_path": "generated/cta_city.svg",
   "city_page_url": "https://eddy-odero.github.io/profile-engine/city.html",
+  "city_note_svg_path": "generated/city_note.svg",
+  "pill_spacer_svg_path": "generated/pill_spacer.svg",
   "city_page_path": "generated/city_interactive.html",
   "neural_activity_svg_path_dark": "generated/neural_activity.svg",
   "neural_activity_svg_path_light": "generated/neural_activity_light.svg",
@@ -201,7 +203,7 @@
   "activity_status_svg_path_light": "generated/activity_status_light.svg",
   "quote_svg_path": "generated/quote.svg",
   "section_headers": {},
-  "build_time": "2026-11-19 07:54 UTC",
+  "build_time": "2026-11-19 08:14 UTC",
   "stat_badges": [
     "![Repos: 24](https://img.shields.io/badge/Repos-24-007f8c?style=flat-square&labelColor=07090F)",
     "![Stars: 37](https://img.shields.io/badge/Stars-37-007f8c?style=flat-square&labelColor=07090F)",

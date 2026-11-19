@@ -488,6 +488,11 @@ def build_context() -> dict:
         "cta_hello_svg_path": _write_svg(signal_uplink.render_cta_button_svg("Say hello", False), "cta_hello.svg"),
         "cta_city_svg_path": _write_svg(signal_uplink.render_cta_button_svg("Open interactive city", False, 250), "cta_city.svg"),
         "city_page_url": CITY_PAGE_URL,
+        "city_note_svg_path": _write_svg(signal_uplink.render_spacer_svg(570, 46, "click any building to see that week's commits"), "city_note.svg"),
+        "pill_spacer_svg_path": (
+            _write_svg(signal_uplink.render_spacer_svg(820 - 168 * len(SOCIAL_LINKS), 46), "pill_spacer.svg")
+            if 820 - 168 * len(SOCIAL_LINKS) > 0 else None
+        ),
         "city_page_path": _write_city_page(combined_stats.get("heatmap", {})),
         "neural_activity_svg_path_dark": _write_svg(
             neural_activity.render_neural_activity_svg(

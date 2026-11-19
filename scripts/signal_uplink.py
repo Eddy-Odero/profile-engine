@@ -129,7 +129,7 @@ def render_link_pill_svg(
 
     return f"""<svg width="{BTN_W}" height="{BTN_H}" viewBox="0 0 {BTN_W} {BTN_H}" \
 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(label)}">
-  <polygon points="{_cut_box(BTN_W, BTN_H, CUT)}" fill="{fill}" stroke="{stroke}" stroke-opacity="{stroke_op}" \
+  <polygon points="{_cut_box(BTN_W - 8, BTN_H, CUT)}" fill="{fill}" stroke="{stroke}" stroke-opacity="{stroke_op}" \
 stroke-width="1.2"/>
   {icon_svg}
   <text x="50" y="{BTN_H / 2 + 5}" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" \
@@ -195,3 +195,11 @@ role="img" aria-label="Status">
   <text x="820" y="26" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="{muted}" \
 text-anchor="end">SCROLL TO EXPLORE</text>
 </svg>"""
+
+
+def render_spacer_svg(width: int, height: int, text: str = "") -> str:
+    """Transparent filler image (optionally with a muted note) used to pad a row of images to exactly 820px."""
+    note = (f'<text x="14" y="{height / 2 + 4}" font-family="Consolas, Menlo, monospace" font-size="11" '
+            f'fill="#6b7a8c" letter-spacing="0.6">{_esc(text)}</text>') if text else ""
+    return (f'<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" xmlns="http://www.w3.org/2000/svg" '
+            f'role="img" aria-label="">{note}</svg>')
