@@ -140,6 +140,64 @@ def _scan_band(width: int, accent: str) -> str:
   <rect class="scan-band" x="0" y="{-SCAN_BAND_HEIGHT}" width="{width}" height="{SCAN_BAND_HEIGHT}" fill="url(#scanGrad)"/>"""
 
 
+# Brightness ramp used by avatar.py (index = pixel brightness), plus a few
+# block characters from the alternate hacker_blocks art.
+_RAMP = " .'`^\",:;Il!i><~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$"
+_BLOCKS = {"\u2588": 1.0, "\u2593": 0.8, "\u2592": 0.55, "\u2591": 0.3, "\u2584": 0.6, "\u2580": 0.6}
+HALFTONE_BUCKETS = 6
+
+
+def _char_brightness(ch: str) -> float | None:
+    if ch in _BLOCKS:
+        return _BLOCKS[ch]
+    idx = _RAMP.find(ch)
+    if idx < 0:
+        return None
+    return idx / (len(_RAMP) - 1)
+
+
+def _halftone_rows(avatar_lines: list[str], accent: str) -> list[str] | None:
+    """
+    Turn the ASCII portrait into a halftone dot matrix (the "Design Beyond
+    the Product" hero look): every character cell becomes two stacked dots
+    whose area follows that character's brightness, so bright areas get big
+    dots and dark areas get none. Dots are drawn as zero-length round-capped
+    path segments, grouped by size, which keeps the file small.
+
+    Returns one <g> per source row (so the typewriter reveal still works),
+    or None if the art isn't made of ramp characters (e.g. the "avatar
+    unavailable" fallback text), in which case the caller draws plain text.
+    """
+    chars = [c for line in avatar_lines for c in line if not c.isspace()]
+    if not chars:
+        return None
+    known = sum(1 for c in chars if _char_brightness(c) is not None)
+    if known / len(chars) < 0.9:
+        return None
+
+    cw, ch = CHAR_WIDTH, LINE_HEIGHT
+    max_r = cw * 0.52
+    rows = []
+    for i, line in enumerate(avatar_lines):
+        buckets: dict[int, list[str]] = {}
+        for j, c in enumerate(line):
+            b = _char_brightness(c)
+            if b is None or b < 0.07:
+                continue
+            level = min(HALFTONE_BUCKETS, max(1, round(b**0.8 * HALFTONE_BUCKETS)))
+            x = (j + 0.5) * cw
+            for frac in (0.25, 0.75):
+                y = i * ch + frac * ch
+                buckets.setdefault(level, []).append(f"M{x:.1f} {y:.1f}h0")
+        paths = "".join(
+            f'<path d="{"".join(segs)}" stroke="{accent}" stroke-width="{2 * max_r * (lvl / HALFTONE_BUCKETS) ** 0.5:.2f}" '
+            f'stroke-linecap="round" fill="none" stroke-opacity="{0.55 + 0.45 * lvl / HALFTONE_BUCKETS:.2f}"/>'
+            for lvl, segs in sorted(buckets.items())
+        )
+        rows.append(f'<g class="line line-{i}">{paths}</g>')
+    return rows
+
+
 def _dotted_row(key: str, value: str, total_chars: int = RIGHT_COL_CHARS) -> tuple[str, str, str]:
     value = str(value)
     used = len(key) + len(value) + 2
@@ -269,15 +327,18 @@ def render_terminal_svg(
     avatar_base_x = left_col_x + (left_col_w - avatar_natural_w * avatar_scale) / 2
     avatar_base_y = top_y + avatar_y_offset - FONT_SIZE * avatar_scale
 
+    halftone = _halftone_rows(avatar_lines, accent)
     avatar_elements = []
     y = FONT_SIZE
-    for i, line in enumerate(avatar_lines):
+    for i, line in enumerate(avatar_lines if halftone is None else []):
         avatar_elements.append(
             f'<text class="line line-{i}" x="0" y="{y:.1f}" filter="url(#glow)" '
             f'font-family="Consolas, Menlo, monospace" font-size="{FONT_SIZE}" '
             f'fill="{accent}" xml:space="preserve">{_esc(line)}</text>'
         )
         y += LINE_HEIGHT
+    if halftone is not None:
+        avatar_elements = [f'<g filter="url(#glow)">{"".join(halftone)}</g>']
 
     # ── Build right column with transform scaling ───────────────────
     right_base_x = right_col_x
@@ -387,4 +448,196 @@ xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(username)} termi
     {_scanline_texture(width, height)}
   </g>
   {glass_overlay}
+</svg>"""
+
+
+# ── Hero layout ("Design Beyond the Product" reference) ──────────────────
+HERO_W = 820
+HERO_H = 470
+HERO_GOLD = "#FFC84D"
+HERO_GREEN = "#24FF9A"
+HERO_PORTRAIT = (420, 30, 380, 410)  # x, y, w, h box the halftone portrait is fitted into
+
+
+def _wrap_words(text: str, max_chars: int) -> list[str]:
+    lines, cur = [], ""
+    for word in text.split():
+        if cur and len(cur) + 1 + len(word) > max_chars:
+            lines.append(cur)
+            cur = word
+        else:
+            cur = f"{cur} {word}".strip()
+    if cur:
+        lines.append(cur)
+    return lines
+
+
+def _hero_frame(w: int, h: int, c: float = 16, notch: float = 7) -> str:
+    """Notched HUD outline: cut corners plus small notches on both sides, as in the reference."""
+    m = 8
+    y1, y2 = h * 0.30, h * 0.72
+    pts = [
+        (m + c, m), (w - m - c, m), (w - m, m + c),
+        (w - m, y1), (w - m - notch, y1 + 12), (w - m - notch, y1 + 36), (w - m, y1 + 48),
+        (w - m, y2), (w - m - notch, y2 + 12), (w - m - notch, y2 + 36), (w - m, y2 + 48),
+        (w - m, h - m - c), (w - m - c, h - m), (m + c, h - m), (m, h - m - c),
+        (m, y2 + 48), (m + notch, y2 + 36), (m + notch, y2 + 12), (m, y2),
+        (m, y1 + 48), (m + notch, y1 + 36), (m + notch, y1 + 12), (m, y1),
+        (m, m + c),
+    ]
+    return " ".join(f"{x:.1f},{y:.1f}" for x, y in pts)
+
+
+def _hero_button(x: float, y: float, w: float, label: str, primary: bool) -> str:
+    c, h = 8, 40
+    pts = f"{c},0 {w},0 {w},{h - c} {w - c},{h} 0,{h} 0,{c}"
+    if primary:
+        fill, stroke, ink = HERO_GOLD, HERO_GOLD, "#07090F"
+    else:
+        fill, stroke, ink = "#0b0f18", "#ffffff", "#ffffff"
+    return (
+        f'<g transform="translate({x},{y})"><polygon points="{pts}" fill="{fill}" stroke="{stroke}" '
+        f'stroke-opacity="{1 if primary else 0.3}" stroke-width="1.2"/>'
+        f'<text x="{w / 2}" y="{h / 2 + 4.5}" font-family="Arial, Helvetica, sans-serif" font-size="12" '
+        f'font-weight="700" fill="{ink}" text-anchor="middle" letter-spacing="1">{_esc(label)}</text></g>'
+    )
+
+
+def render_hero_svg(
+    avatar_ascii: str,
+    status: str,
+    username: str,
+    stats: dict,
+    theme_name: str = DEFAULT_THEME,
+    for_light_mode: bool = False,
+) -> str:
+    """
+    The README's top section in the "Design Beyond the Product" layout:
+    corner-tagged role, big two-tone headline, paragraph and notched
+    buttons on the left, the halftone ASCII portrait on the right, a
+    notched HUD frame, and a status line along the bottom. The navigation
+    bar from the reference is left out. Buttons here are decorative (an
+    SVG shown as an image can't hold links); the real links are in the
+    Signal Uplink section.
+    """
+    theme = get_theme(theme_name)
+    bg = f"#{theme['label_color']}"
+    bg_opacity = 0.96 if for_light_mode else 0.65
+    accent = f"#{theme['color']}"
+    role = stats.get("role", "Full-Stack Developer")
+    location = stats.get("location", "")
+
+    w, h = HERO_W, HERO_H
+    lx = 52
+
+    # Portrait: fit the art into its box, bottom-aligned, then fade the edges.
+    avatar_lines = avatar_ascii.split("\n")
+    halftone = _halftone_rows(avatar_lines, accent)
+    px, py, pw, ph = HERO_PORTRAIT
+    cols = max((len(l) for l in avatar_lines), default=40)
+    nat_w, nat_h = cols * CHAR_WIDTH, len(avatar_lines) * LINE_HEIGHT
+    sc = _fit_scale(nat_w, nat_h, pw, ph)
+    ax = px + (pw - nat_w * sc) / 2
+    ay = py + (ph - nat_h * sc)
+    if halftone is None:
+        portrait = ""
+    else:
+        portrait = (
+            f'<g mask="url(#fade)"><g transform="translate({ax:.1f},{ay:.1f}) scale({sc:.4f})" '
+            f'filter="url(#glow)">{"".join(halftone)}</g></g>'
+        )
+
+    para = _wrap_words(
+        f"I am a {role.lower()} from {location}. I build fast Go backends, clean interfaces and "
+        f"tools that ship, from hackathon sprints to production systems.",
+        56,
+    )
+    para_svg = "".join(
+        f'<text x="{lx}" y="{286 + i * 19}" font-family="Segoe UI, Helvetica, Arial, sans-serif" '
+        f'font-size="12.5" fill="#c9c9d3">{_esc(line)}</text>'
+        for i, line in enumerate(para)
+    )
+    btn_y = 286 + len(para) * 19 + 12
+
+    tag_w = len(role) * 8 + 24
+    n = 6
+    tag = (
+        f'<path d="M{lx} {86 + n} V86 H{lx + n} M{lx + tag_w - n} 86 H{lx + tag_w} V{86 + n} '
+        f'M{lx + tag_w} {112 - n} V112 H{lx + tag_w - n} M{lx + n} 112 H{lx} V{112 - n}" fill="none" '
+        f'stroke="{HERO_GOLD}" stroke-width="1.3"/>'
+        f'<text x="{lx + tag_w / 2}" y="103" font-family="Consolas, Menlo, monospace" font-size="11.5" '
+        f'fill="{HERO_GOLD}" text-anchor="middle" letter-spacing="1.5">{_esc(role.upper())}</text>'
+    )
+
+    hx = 22
+    logo = (
+        f'<polygon points="{lx + 9},34 {lx + 18},39 {lx + 18},49 {lx + 9},54 {lx},49 {lx},39" fill="none" '
+        f'stroke="{HERO_GOLD}" stroke-width="2"/><circle cx="{lx + 9}" cy="44" r="3" fill="{HERO_GOLD}"/>'
+        f'<text x="{lx + 28}" y="49" font-family="Consolas, Menlo, monospace" font-size="14" font-weight="700" '
+        f'fill="white" letter-spacing="3">{_esc(username.upper())}</text>'
+    )
+
+    by = h - 38
+    status_bar = (
+        f'<circle cx="{lx + 3}" cy="{by}" r="3.5" fill="{HERO_GREEN}"/>'
+        f'<text x="{lx + 15}" y="{by + 4}" font-family="Arial, Helvetica, sans-serif" font-size="11.5" '
+        f'fill="{HERO_GREEN}">STATUS:</text>'
+        f'<text x="{lx + 66}" y="{by + 4}" font-family="Arial, Helvetica, sans-serif" font-size="11.5" '
+        f'fill="white">{_esc(status.upper())}</text>'
+        f'<rect x="{lx + 66 + len(status) * 8 + 18}" y="{by - 0.5}" width="150" height="1" fill="white" fill-opacity="0.35"/>'
+        f'<text x="{w - 52}" y="{by + 4}" font-family="Arial, Helvetica, sans-serif" font-size="11.5" '
+        f'fill="#6b7a8c" text-anchor="end">SCROLL TO EXPLORE  &#8964;</text>'
+    )
+
+    grid_defs, grid_rect = grid_background(w, h, accent, spacing=20, rx=10)
+    n_rows = len(avatar_lines)
+    reveal = "".join(f"  .line-{i} {{ animation-delay: {i * 0.05:.2f}s; }}\n" for i in range(n_rows))
+    css = f"""<style>
+  @keyframes scan-sweep {{ 0% {{ transform: translateY(0); }} 100% {{ transform: translateY({h + SCAN_BAND_HEIGHT}px); }} }}
+  @keyframes print-line {{ 0% {{ opacity: 0; }} 100% {{ opacity: 1; }} }}
+  .scan-band {{ animation: scan-sweep {SCAN_LOOP_SECONDS}s linear infinite; }}
+  .line {{ animation: print-line 0.08s ease-out both; }}
+{reveal}</style>"""
+
+    return f"""<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}" xmlns="http://www.w3.org/2000/svg" \
+role="img" aria-label="{_esc(username)} profile">
+  {css}
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="0.6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="fadeGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0.55" stop-color="white"/><stop offset="1" stop-color="black"/>
+    </radialGradient>
+    <mask id="fade" maskUnits="userSpaceOnUse" x="{px}" y="{py}" width="{pw}" height="{ph}">
+      <rect x="{px}" y="{py}" width="{pw}" height="{ph}" fill="url(#fadeGrad)"/>
+    </mask>
+    <linearGradient id="scanGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="{accent}" stop-opacity="0"/>
+      <stop offset="50%" stop-color="{accent}" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="{accent}" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="heroClip"><polygon points="{_hero_frame(w, h)}"/></clipPath>
+    {grid_defs}
+  </defs>
+  <rect width="{w}" height="{h}" rx="10" fill="{bg}" fill-opacity="{bg_opacity}"/>
+  {grid_rect}
+  <polygon points="{_hero_frame(w, h)}" fill="none" stroke="{HERO_GOLD}" stroke-opacity="0.45" stroke-width="1.2"/>
+  {logo}
+  {tag}
+  <text x="{lx}" y="158" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="800" \
+fill="white" letter-spacing="0.5">BUILD BEYOND</text>
+  <text x="{lx}" y="204" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="800" \
+fill="white" letter-spacing="0.5">THE BASICS</text>
+  <text x="{lx}" y="250" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="800" \
+fill="{HERO_GOLD}" letter-spacing="0.5">SHIP IT</text>
+  {para_svg}
+  {_hero_button(lx, btn_y, 128, "SEE MY WORK", True)}
+  {_hero_button(lx + 140, btn_y, 140, "SAY HELLO", False)}
+  {portrait}
+  {status_bar}
+  <g clip-path="url(#heroClip)">
+    <rect class="scan-band" x="0" y="{-SCAN_BAND_HEIGHT}" width="{w}" height="{SCAN_BAND_HEIGHT}" fill="url(#scanGrad)"/>
+  </g>
 </svg>"""

@@ -5,78 +5,82 @@
 
 <sub>~ live session · Eddy Odero@github · re-renders every build ~</sub>
 
-![Repos: 24](https://img.shields.io/badge/Repos-24-007f8c?style=flat-square&labelColor=07090F) ![Stars: 37](https://img.shields.io/badge/Stars-37-007f8c?style=flat-square&labelColor=07090F) ![Followers: 12](https://img.shields.io/badge/Followers-12-007f8c?style=flat-square&labelColor=07090F) ![LC Solved: 120](https://img.shields.io/badge/LC_Solved-120-007f8c?style=flat-square&labelColor=07090F)
+<br><br>
 
-![System Modules header](generated/header_2.svg)
+![Stats](generated/stats_strip.svg#gh-dark-mode-only)
+![Stats](generated/stats_strip_light.svg#gh-light-mode-only)
+
+<br><br>
 
 ![System Modules](generated/skill_modules.svg#gh-dark-mode-only)
 ![System Modules](generated/skill_modules_light.svg#gh-light-mode-only)
 
+<br><br>
+
 ![Quote](generated/quote.svg)
 
-![LeetCode Stats header](generated/header_3.svg)
+<br><br>
 
 ![LeetCode Stats](generated/leetcode_panel.svg#gh-dark-mode-only)
 ![LeetCode Stats](generated/leetcode_panel_light.svg#gh-light-mode-only)
 
-![Event Log header](generated/header_4.svg)
+<br><br>
 
 ![Event Log](generated/event_log.svg#gh-dark-mode-only)
 ![Event Log](generated/event_log_light.svg#gh-light-mode-only)
 
-![Fragmented Data header](generated/header_5.svg)
+<br><br>
+
+![Selected Work](generated/fragment_heading.svg#gh-dark-mode-only)
+![Selected Work](generated/fragment_heading_light.svg#gh-light-mode-only)
 
 </div>
 
-<table cellpadding="2" cellspacing="2" border="0">
+<br>
+
+<table width="820" cellpadding="0" cellspacing="0" border="0">
 <tr>
-<td align="center">
-
-![SatGate](generated/fragment_card_0.svg#gh-dark-mode-only)
-![SatGate](generated/fragment_card_0_light.svg#gh-light-mode-only)
-
-[![View](generated/badge_view.svg)](https://satgate-2.onrender.com/) [![Code](generated/badge_code.svg)](https://github.com/Eddy-Odero/SatGate)
-
+<td align="left" valign="top">
+<a href="https://satgate-2.onrender.com/"><img src="generated/fragment_card_0.svg" alt="SatGate" width="410"></a>
 </td>
-<td align="center">
-
-![EDU-FLIX](generated/fragment_card_1.svg#gh-dark-mode-only)
-![EDU-FLIX](generated/fragment_card_1_light.svg#gh-light-mode-only)
-
-[![View](generated/badge_view.svg)](https://edu-flix1.onrender.com/) [![Code](generated/badge_code.svg)](https://github.com/Eddy-Odero/EDU-FLIX)
-
+<td align="right" valign="top">
+<a href="https://edu-flix.onrender.com/"><img src="generated/fragment_card_1.svg" alt="EDU-FLIX" width="410"></a>
 </td>
 </tr>
 <tr>
-<td align="center">
-
-![profile-engine](generated/fragment_card_2.svg#gh-dark-mode-only)
-![profile-engine](generated/fragment_card_2_light.svg#gh-light-mode-only)
-
-![View disabled](generated/badge_disabled.svg) [![Code](generated/badge_code.svg)](https://github.com/Eddy-Odero/profile-engine)
-
+<td align="left" valign="top">
+<a href="https://github.com/Eddy-Odero/profile-engine"><img src="generated/fragment_card_2.svg" alt="profile-engine" width="410"></a>
 </td>
-<td align="center">
-
-![Maison POS](generated/fragment_card_3.svg#gh-dark-mode-only)
-![Maison POS](generated/fragment_card_3_light.svg#gh-light-mode-only)
-
-[![View](generated/badge_view.svg)](https://tinah-cosmetics.vercel.app/) [![Code](generated/badge_code.svg)](https://github.com/Eddy-Odero/Maison-POS)
-
+<td align="right" valign="top">
+<a href="https://tinah-cosmetics.vercel.app/"><img src="generated/fragment_card_3.svg" alt="Maison POS" width="410"></a>
 </td>
 </tr>
 </table>
 
 <div align="center">
 
-![Signal Uplink header](generated/header_6.svg)
+<br><br>
 
-[![Twitter](generated/pill_twitter.svg)](https://x.com/savvyoriah48) [![LinkedIn](generated/pill_linkedin.svg)](https://www.linkedin.com/in/eddy-odero-7b3332346/) [![Dev.to](generated/pill_website.svg)](https://dev.to/edd_odero) [![Email](generated/pill_email.svg)](mailto:odiwuorodero8948@gmail.com) 
-![Neural Activity header](generated/header_7.svg)
+![Signal Uplink](generated/signal_heading.svg#gh-dark-mode-only)
+![Signal Uplink](generated/signal_heading_light.svg#gh-light-mode-only)
+
+<table width="820" cellpadding="0" cellspacing="0" border="0"><tr><td align="left">
+<a href="mailto:odiwuorodero8948@gmail.com"><img src="generated/pill_email.svg" alt="Email"></a>&nbsp;<a href="https://x.com/savvyoriah48"><img src="generated/pill_twitter.svg" alt="Twitter"></a>&nbsp;<a href="https://www.linkedin.com/in/eddy-odero-7b3332346/"><img src="generated/pill_linkedin.svg" alt="LinkedIn"></a>&nbsp;<a href="https://dev.to/edd_odero"><img src="generated/pill_website.svg" alt="Dev.to"></a>&nbsp;</td></tr></table>
+
+![Status](generated/signal_status.svg#gh-dark-mode-only)
+![Status](generated/signal_status_light.svg#gh-light-mode-only)
+
+<br><br>
+
+![Neural Activity](generated/activity_heading.svg#gh-dark-mode-only)
+![Neural Activity](generated/activity_heading_light.svg#gh-light-mode-only)
 
 ![Neural Activity](generated/neural_activity.svg#gh-dark-mode-only)
 ![Neural Activity](generated/neural_activity_light.svg#gh-light-mode-only)
 
+![Status](generated/activity_status.svg#gh-dark-mode-only)
+![Status](generated/activity_status_light.svg#gh-light-mode-only)
+
 </div>
 
-<sub>Last rendered: 2026-09-09 04:25 UTC · theme: hud · auto-generated, do not edit by hand</sub>
+<sub>Last rendered: 2026-11-19 00:59 UTC · theme: hud · auto-generated, do not edit by hand</sub>

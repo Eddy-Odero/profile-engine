@@ -60,141 +60,31 @@ def _esc(text: str) -> str:
     return html.escape(text, quote=True)
 
 
-def _roof(x: float, w: float, y: float, style: int, color: str) -> str:
-    """A decorative roof accent on top of a building body - varies the
-    skyline silhouette instead of every building being a flat-top rect."""
-    cx = x + w / 2
-    if style == 1:  # thin spire/antenna
-        return f'<line x1="{cx:.1f}" y1="{y:.1f}" x2="{cx:.1f}" y2="{y-16:.1f}" stroke="{color}" stroke-width="1.2"/>'
-    if style == 2:  # domed cap
-        return f'<path d="M {x:.1f},{y:.1f} Q {cx:.1f},{y-10:.1f} {x+w:.1f},{y:.1f} Z" fill="{color}" fill-opacity="0.85"/>'
-    if style == 3:  # angled cut - one corner higher than the other
-        return f'<path d="M {x:.1f},{y:.1f} L {x:.1f},{y-2:.1f} L {x+w:.1f},{y-9:.1f} L {x+w:.1f},{y:.1f} Z" fill="{color}"/>'
-    if style == 4:  # landmark halo-ring tower, like the reference's domed towers
-        spire_h = 20
-        ring_y = y - spire_h * 0.55
-        return (
-            f'<line x1="{cx:.1f}" y1="{y:.1f}" x2="{cx:.1f}" y2="{y-spire_h:.1f}" stroke="{color}" stroke-width="1.4"/>'
-            f'<ellipse cx="{cx:.1f}" cy="{ring_y:.1f}" rx="{w*0.42:.1f}" ry="2.6" fill="none" '
-            f'stroke="{color}" stroke-width="1.3" stroke-opacity="0.9"/>'
-        )
-    return ""  # flat top, no accent
+def _rgb(h: str):
+    h = h.lstrip("#")
+    return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
 
 
-def _building(
-    x: float, w: float, base_y: float, height: float, group: str, activity: int, gradient_id: str, height_frac: float
-) -> str:
-    """One building: gradient-lit body, a glass highlight streak, a
-    roof accent, and a grid of windows lit in proportion to that
-    week's activity score (0-28). `height_frac` (0-1, this building's
-    height relative to the tallest one) biases which roof styles are
-    even eligible - elaborate halo/spire caps only show up on the
-    tallest buildings, like landmark towers standing out among plainer
-    ones, rather than every building rolling the same dice."""
-    y = base_y - height
-    accent = NEON_HEX[group]
-    win_w, win_h, gap = 4, 5, 2.5
-    cols = max(1, int((w - gap) / (win_w + gap)))
-    rows = max(1, int((height - gap) / (win_h + gap)))
-    lit_fraction = min(1.0, activity / 20)
-
-    roll = int(hashlib.md5(f"roof-{x:.0f}".encode()).hexdigest(), 16) % 10
-    if height_frac > 0.75 and roll < 3:
-        style = 4  # halo-ring landmark, tallest buildings only
-    elif height_frac > 0.55 and roll < 4:
-        style = 1  # spire
-    elif roll < 2:
-        style = 2  # dome
-    elif roll < 4:
-        style = 3  # angled cut
-    else:
-        style = 0  # flat
-    roof = _roof(x, w, y, style, accent)
-
-    # A thin brighter streak down one edge, like light catching a glass
-    # corner - the reference image's buildings all have this.
-    highlight = f'<rect x="{x+1.5:.1f}" y="{y:.1f}" width="1.4" height="{height:.1f}" fill="white" fill-opacity="0.22"/>'
-
-    windows = []
-    for r in range(rows):
-        for c in range(cols):
-            wx = x + gap + c * (win_w + gap)
-            wy = y + gap + r * (win_h + gap)
-            h = int(hashlib.md5(f"{x:.0f}-{r}-{c}".encode()).hexdigest(), 16)
-            lit = (h % 100) < lit_fraction * 100
-            if lit:
-                color_w = WINDOW_LIT if (h // 100) % 2 else WINDOW_LIT_DIM
-                windows.append(
-                    f'<rect x="{wx:.1f}" y="{wy:.1f}" width="{win_w}" height="{win_h}" '
-                    f'fill="{color_w}" fill-opacity="0.95"/>'
-                )
-            else:
-                windows.append(
-                    f'<rect x="{wx:.1f}" y="{wy:.1f}" width="{win_w}" height="{win_h}" fill="{WINDOW_DARK}"/>'
-                )
-
-    return (
-        f'<rect x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{height:.1f}" '
-        f'fill="url(#{gradient_id})" stroke="{accent}" stroke-width="1" stroke-opacity="0.8"/>'
-        + highlight
-        + roof
-        + "".join(windows)
-    )
+def _mix(a: str, b: str, t: float) -> str:
+    return "#%02x%02x%02x" % tuple(int(x + (y - x) * t) for x, y in zip(_rgb(a), _rgb(b)))
 
 
-def _plane_svg(color: str) -> str:
-    return (
-        f'<g fill="{color}" fill-opacity="0.9" filter="url(#hudglow)">'
-        f'<path d="M -10,0 L 8,-3 L -2,0 L 8,3 Z"/>'
-        f"</g>"
-    )
+NEON = {
+    "gold": "#FFC84D", "orange": "#FF8A3D", "green": "#24FF9A",
+    "cyan": "#26E6FF", "purple": "#B565FF", "blue": "#4C8DFF",
+}
+_N = 8            # lots per side
+_A = 44           # half tile width (px)
+_CX, _CY0 = 410, 118
+_FW = 0.64        # building footprint (fraction of a lot)
 
 
-def _car_svg(color: str) -> str:
-    return f"""
-    <g>
-      <rect x="-9" y="-4" width="18" height="5" rx="1.5" fill="{color}"/>
-      <path d="M -5,-4 L -3,-7 L 4,-7 L 6,-4 Z" fill="{color}"/>
-      <circle cx="-5" cy="1" r="2" fill="#111"/>
-      <circle cx="5" cy="1" r="2" fill="#111"/>
-    </g>"""
+def _P(x: float, y: float, z: float = 0.0):
+    return _CX + (x - y) * _A, _CY0 + (x + y) * _A / 2 - z
 
 
-def _chained_motion(entity_id: str, laps: list[str], lap_duration: float, initial_lead: float) -> str:
-    n = len(laps)
-    parts = []
-    for i, lap_path in enumerate(laps):
-        this_id = f"{entity_id}_lap{i}"
-        prev_id = f"{entity_id}_lap{(i - 1) % n}"
-        begin = f"{-initial_lead:.2f}s;{prev_id}.end" if i == 0 else f"{prev_id}.end"
-        parts.append(
-            f'<animateMotion id="{this_id}" path="{lap_path}" dur="{lap_duration}s" '
-            f'begin="{begin}" fill="freeze"/>'
-        )
-    return "".join(parts)
-
-
-def _fade_anim(n_laps: int, total_dur: float, begin: float) -> str:
-    edge = 0.03
-    values, keytimes = [], []
-    for lap in range(n_laps):
-        start, end = lap / n_laps, (lap + 1) / n_laps
-        values += ["0", "1", "1", "0"]
-        keytimes += [f"{start:.4f}", f"{start+edge:.4f}", f"{end-edge:.4f}", f"{end:.4f}"]
-    return (
-        f'<animate attributeName="opacity" values="{";".join(values)}" '
-        f'keyTimes="{";".join(keytimes)}" dur="{total_dur}s" begin="{begin}s" repeatCount="indefinite"/>'
-    )
-
-
-def _direction_flip_anim(n_laps: int, total_dur: float, begin: float, faces_right_by_default: bool) -> str:
-    right, left = ("1,1", "-1,1") if faces_right_by_default else ("-1,1", "1,1")
-    values = ";".join(right if i % 2 == 0 else left for i in range(n_laps)) + f";{right if n_laps % 2 == 0 else left}"
-    keytimes = ";".join(f"{i/n_laps:.4f}" for i in range(n_laps)) + ";1"
-    return (
-        f'<animateTransform attributeName="transform" type="scale" values="{values}" '
-        f'keyTimes="{keytimes}" calcMode="discrete" dur="{total_dur}s" begin="{begin}s" repeatCount="indefinite"/>'
-    )
+def _pts(*p) -> str:
+    return " ".join(f"{x:.1f},{y:.1f}" for x, y in p)
 
 
 def render_neural_activity_svg(
@@ -205,234 +95,409 @@ def render_neural_activity_svg(
     active_days: int,
     theme_name: str = DEFAULT_THEME,
     for_light_mode: bool = False,
+    end_date=None,
 ) -> str:
-    accent = HUD_COLORS["activity"]
-    bg_opacity = 0.96 if for_light_mode else 0.6
-    bg = get_theme(theme_name)["label_color"]
+    """
+    Isometric neon commit city. 52 weeks = 52 buildings on an 8x8 board.
+    The busiest weeks sit in the middle and rise highest; height AND the
+    share of lit windows, glow and neon colour all scale with that week's
+    commits. The top weeks get light beams and linking data lines.
+    Every building carries data-* attributes for the interactive page.
+    """
+    import datetime as _dt
+    import random
 
-    width = max(len(weeks) * 15 + PANEL_PAD_X * 2, 780)
-    height = PANEL_PAD_TOP + CITY_HEIGHT + REFLECTION_HEIGHT + PANEL_PAD_BOTTOM
+    W, H = 820, 500
+    end = end_date or _dt.date.today()
+    cols = [list(w[:7]) + [0] * (7 - len(w[:7])) for w in weeks][-52:]
+    cols = [[0] * 7] * (52 - len(cols)) + cols
+    tot = [sum(c) for c in cols]
+    peak = max(tot) or 1
+    low = min(tot)
+    order = sorted(range(52), key=lambda k: -tot[k])  # rank -> week index
+    rank_of = {k: r for r, k in enumerate(order)}
 
-    city_x0 = PANEL_PAD_X
-    city_w = width - PANEL_PAD_X * 2
-    street_y = PANEL_PAD_TOP + CITY_HEIGHT
+    # lots sorted by distance from the board centre; the farthest 12 become parks
+    lots = sorted(((i, j) for i in range(_N) for j in range(_N)),
+                  key=lambda t: ((t[0] - 3.5) ** 2 + (t[1] - 3.5) ** 2, t[0] + t[1], t[0]))
+    build_lots, park_lots = lots[:52], lots[52:]
+    placed = {rank: build_lots[rank] for rank in range(52)}
 
-    n = max(len(weeks), 1)
-    bldg_w = city_w / n
+    rng = random.Random(5)
+    hues_used: set[str] = set()
 
-    # One gradient per neon color group - a warm orange base (city
-    # lights bleeding up from the street, matching the horizon glow)
-    # rising through the dark body tone into the lit neon color at
-    # top, so buildings look lit from within with the same warm-to-
-    # cool blend the reference has, instead of one flat accent color.
-    gradient_defs = []
-    for group in NEON_GROUPS:
-        gid = f"bldg_{group}"
-        gradient_defs.append(f"""
-    <linearGradient id="{gid}" x1="0%" y1="100%" x2="0%" y2="0%">
-      <stop offset="0%" stop-color="{HORIZON_GLOW}" stop-opacity="0.55"/>
-      <stop offset="22%" stop-color="{NEON_DARK[group]}"/>
-      <stop offset="100%" stop-color="{NEON_HEX[group]}" stop-opacity="0.35"/>
-    </linearGradient>""")
+    # ---------- background: circuit traces + code ----------
+    circuit = []
+    dirs = {0: (1, -0.5), 1: (-1, -0.5), 2: (1, 0.5), 3: (-1, 0.5)}
+    for _ in range(46):
+        side = rng.randrange(4)
+        u = rng.uniform(0, _N)
+        ex, ey = {0: _P(u, 0), 1: _P(0, u), 2: _P(_N, u), 3: _P(u, _N)}[side]
+        dx, dy = dirs[side]
+        l1 = rng.uniform(14, 70)
+        mx, my = ex + dx * l1, ey + dy * l1
+        # turn onto the perpendicular iso axis
+        pdx, pdy = (dy * 2, dx * 2) if rng.random() < 0.5 else (-dy * 2, -dx * 2)
+        pdx, pdy = (1 if pdx > 0 else -1), (0.5 if pdy > 0 else -0.5)
+        l2 = rng.uniform(10, 50)
+        nx, ny = mx + pdx * l2, my + pdy * l2
+        col = rng.choice(["#1c6b80", "#1c6b80", "#7a5a1c"])
+        circuit.append(f'<polyline points="{ex:.0f},{ey:.0f} {mx:.0f},{my:.0f} {nx:.0f},{ny:.0f}" fill="none" stroke="{col}" stroke-opacity="0.55"/>')
+        circuit.append(f'<circle cx="{nx:.0f}" cy="{ny:.0f}" r="2" fill="{rng.choice([NEON["gold"], NEON["cyan"]])}" opacity="0.6"/>')
+    snippets = ["const commit = await git.push(branch)", "if (build.ok) deploy(main)", "for (const w of weeks) render(w)",
+                "git merge --no-ff feature/ui", "export const ship = () => run()", "await repo.fetch({ depth: 1 })",
+                "tests.pass() && release.tag()", "city.grow(commits.count)"]
+    code = "".join(
+        f'<text x="{x}" y="{y + k * 12}" font-family="Consolas, Menlo, monospace" font-size="8" fill="#7fb7d6" opacity="0.16">{_esc(snippets[(k + off) % len(snippets)])}</text>'
+        for x, y, off in ((612, 34, 0), (22, 392, 3)) for k in range(7)
+    )
 
-    buildings = []
-    heights = []
-    for week in weeks:
-        activity = sum(week)
-        heights.append(16 + (activity / 28) * (CITY_HEIGHT - 26))
-    max_h = max(heights) if heights else 1
-    for i, week in enumerate(weeks):
-        activity = sum(week)
-        bldg_h = heights[i]
-        group = NEON_GROUPS[i % len(NEON_GROUPS)]
-        x = city_x0 + i * bldg_w
-        # Slenderer towers with a visible gap between them (2px margin
-        # each side instead of 1) reads closer to the reference's tall,
-        # narrow skyscrapers than wide, barely-separated bars.
-        buildings.append(
-            _building(x + 2, bldg_w - 4, street_y, bldg_h, group, activity, f"bldg_{group}", bldg_h / max_h)
+    # ---------- platform ----------
+    T = 14
+    p0, p1, p2, p3 = _P(0, 0), _P(_N, 0), _P(_N, _N), _P(0, _N)
+    gold = NEON["gold"]
+    platform = (
+        f'<polygon points="{_pts(p3, p2, (p2[0], p2[1] + T), (p3[0], p3[1] + T))}" fill="#070b18"/>'
+        f'<polygon points="{_pts(p2, p1, (p1[0], p1[1] + T), (p2[0], p2[1] + T))}" fill="#04060e"/>'
+        f'<polygon points="{_pts(p0, p1, p2, p3)}" fill="#0a1226" stroke="{gold}" stroke-width="1.6" filter="url(#glow)"/>'
+        f'<polyline points="{_pts((p3[0], p3[1] + T), (p2[0], p2[1] + T), (p1[0], p1[1] + T))}" fill="none" stroke="{gold}" stroke-opacity="0.7"/>'
+    )
+    roads = []
+    for k in range(_N + 1):
+        a, b = _P(k, 0), _P(k, _N)
+        c, d = _P(0, k), _P(_N, k)
+        roads.append(f'<line x1="{a[0]:.1f}" y1="{a[1]:.1f}" x2="{b[0]:.1f}" y2="{b[1]:.1f}" stroke="#26E6FF" stroke-opacity="0.12"/>')
+        roads.append(f'<line x1="{c[0]:.1f}" y1="{c[1]:.1f}" x2="{d[0]:.1f}" y2="{d[1]:.1f}" stroke="#26E6FF" stroke-opacity="0.12"/>')
+    for i, j in park_lots:
+        a = _P(i + 0.12, j + 0.12); b = _P(i + 0.88, j + 0.12); c = _P(i + 0.88, j + 0.88); d = _P(i + 0.12, j + 0.88)
+        roads.append(f'<polygon points="{_pts(a, b, c, d)}" fill="#0d2230" stroke="#26E6FF" stroke-opacity="0.35"/>')
+        for tx, ty in ((0.35, 0.4), (0.65, 0.62)):
+            sx, sy = _P(i + tx, j + ty)
+            roads.append(f'<ellipse cx="{sx:.1f}" cy="{sy - 5:.1f}" rx="4.5" ry="5.5" fill="#24FF9A" fill-opacity="0.28" stroke="#24FF9A" stroke-opacity="0.8"/>'
+                         f'<rect x="{sx - 0.6:.1f}" y="{sy - 1:.1f}" width="1.2" height="3" fill="#24FF9A" opacity="0.6"/>')
+
+    # ---------- buildings ----------
+    items = []  # (depth, svg)
+    tops = {}
+
+    def box(i0, j0, i1, j1, z0, z1, hue, ratio, r, wins=True):
+        body = _mix("#0b1220", hue, 0.10 + 0.10 * ratio)
+        left = _mix(body, "#ffffff", 0.07)
+        right = _mix(body, "#000000", 0.35)
+        topc = _mix(body, hue, 0.22)
+        g = [
+            f'<polygon points="{_pts(_P(i0, j1, z0), _P(i1, j1, z0), _P(i1, j1, z1), _P(i0, j1, z1))}" fill="{left}"/>',
+            f'<polygon points="{_pts(_P(i1, j1, z0), _P(i1, j0, z0), _P(i1, j0, z1), _P(i1, j1, z1))}" fill="{right}"/>',
+            f'<polygon points="{_pts(_P(i0, j0, z1), _P(i1, j0, z1), _P(i1, j1, z1), _P(i0, j1, z1))}" fill="{topc}"/>',
+        ]
+        h = z1 - z0
+        lit_p = 0.10 + 0.85 * ratio
+        faces = (
+            (_P(i0, j1, z1), 0.5, (i1 - i0) * _A, left),
+            (_P(i1, j1, z1), -0.5, (j1 - j0) * _A, right),
         )
-    buildings_markup = "".join(buildings)
-
-    # A dimmer, more distant row of buildings behind the main skyline,
-    # for depth - like the reference's fainter background towers. Still
-    # derived from the real weekly data (adjacent weeks paired and
-    # summed) rather than invented, just rendered coarser and muted.
-    distant = []
-    pair_w = bldg_w * 2
-    for i in range(0, n - 1, 2):
-        pair_activity = sum(weeks[i]) + sum(weeks[i + 1])
-        d_h = 20 + (pair_activity / 56) * (CITY_HEIGHT - 30)
-        dx = city_x0 + i * bldg_w
-        distant.append(
-            f'<rect x="{dx:.1f}" y="{street_y-d_h:.1f}" width="{pair_w-3:.1f}" height="{d_h:.1f}" '
-            f'fill="#241a3a" fill-opacity="0.55"/>'
+        if wins:
+            for fidx, ((ox, oy), slope, fw, facecol) in enumerate(faces):
+                unlit = _mix(facecol, "#02040a", 0.55)
+                buckets: dict[str, str] = {}
+                flick = ""
+                ncol = max(1, int((fw - 3) // 7))
+                v = 5.0
+                while v + 5 <= h - 3:
+                    for k in range(ncol):
+                        if r.random() < lit_p:
+                            roll = r.random()
+                            col = (NEON["orange"] if ratio < 0.25 else hue) if roll < 0.7 else (_mix(hue, "#ffffff", 0.55) if roll < 0.85 else NEON["orange"])
+                            d = f"M{3 + k * 7} {v:.0f}h4v4.5h-4z"
+                            if len(flick) < 40 and r.random() < 0.05:
+                                flick += d
+                            else:
+                                buckets[col] = buckets.get(col, "") + d
+                        else:
+                            buckets[unlit] = buckets.get(unlit, "") + f"M{3 + k * 7} {v:.0f}h4v4.5h-4z"
+                    v += 7
+                inner = "".join(f'<path d="{d}" fill="{c}"' + ("" if c == unlit else ' opacity="0.95"') + "/>" for c, d in buckets.items())
+                if flick:
+                    inner += (f'<path d="{flick}" fill="{hue}"><animate attributeName="opacity" values="1;0.12;1" '
+                              f'dur="{r.uniform(1.6, 4):.1f}s" begin="-{r.uniform(0, 3):.1f}s" repeatCount="indefinite"/></path>')
+                g.append(f'<g transform="matrix(1,{slope},0,1,{ox:.1f},{oy:.1f})">{inner}</g>')
+        g.insert(3, f'<polygon points="{_pts(_P(i0, j1, z0), _P(i1, j1, z0), _P(i1, j1, z1), _P(i0, j1, z1))}" fill="url(#fl_{hue[1:]})"/>')
+        g.insert(4, f'<polygon points="{_pts(_P(i1, j1, z0), _P(i1, j0, z0), _P(i1, j0, z1), _P(i1, j1, z1))}" fill="url(#fl_{hue[1:]})" opacity="0.6"/>')
+        edge_op = 0.25 + 0.75 * ratio
+        fx, fy = _P(i1, j1, z0), _P(i1, j1, z1)
+        g.append(
+            f'<polyline points="{_pts(_P(i0, j1, z1), _P(i1, j1, z1), _P(i1, j0, z1))}" fill="none" stroke="{hue}" stroke-opacity="{edge_op:.2f}" stroke-width="1.2"{' filter="url(#glow)"' if ratio > 0.45 else ''}/>'
+            f'<line x1="{fx[0]:.1f}" y1="{fx[1]:.1f}" x2="{fy[0]:.1f}" y2="{fy[1]:.1f}" stroke="{hue}" stroke-opacity="{edge_op:.2f}" stroke-width="1.2"/>'
         )
-    distant_markup = "".join(distant)
+        return "".join(g)
 
-    scan_defs, scan_rect = scanline_overlay(width, height)
-    glass_defs, glass_overlay = glass_frame_rect(width, height, accent, rx=16, pattern_id="neuralglass")
+    m = (1 - _FW) / 2
+    for rank in range(52):
+        wk = order[rank]
+        c = tot[wk]
+        ratio = ((c - low) / (peak - low)) ** 1.4 if peak > low else 0.0
+        i, j = placed[rank]
+        r = random.Random(rank * 131 + 7)
+        if rank == 0:
+            hue = NEON["gold"]
+        elif rank == 1:
+            hue = NEON["orange"]
+        elif rank == 2:
+            hue = NEON["green"]
+        elif ratio > 0.45:
+            hue = r.choice([NEON["cyan"], NEON["purple"], NEON["blue"], NEON["green"]])
+        elif ratio > 0.15:
+            hue = r.choice([NEON["blue"], NEON["cyan"], NEON["purple"]])
+        else:
+            hue = NEON["blue"]
+        hues_used.add(hue)
+        h = 12 + ratio * 140
+        if rank < 3:
+            h = min(185, h * 1.18)
+        i0, i1, j0, j1 = i + m, i + 1 - m, j + m, j + 1 - m
+        parts = []
+        gx, gy = _P(i + 0.5, j + 0.5)
+        parts.append(f'<ellipse cx="{gx:.1f}" cy="{gy:.1f}" rx="40" ry="20" fill="url(#g_{hue[1:]})" opacity="{0.12 + 0.7 * ratio:.2f}"/>')
+        if h > 70:  # setback tiers like the reference towers
+            hb = h * 0.62
+            parts.append(box(i0, j0, i1, j1, 0, hb, hue, ratio, r))
+            sh = 0.13
+            if rank < 3:
+                hm = h * 0.84
+                parts.append(box(i0 + sh, j0 + sh, i1 - sh, j1 - sh, hb, hm, hue, ratio, r))
+                parts.append(box(i0 + 2 * sh, j0 + 2 * sh, i1 - 2 * sh, j1 - 2 * sh, hm, h, hue, ratio, r))
+            else:
+                parts.append(box(i0 + sh, j0 + sh, i1 - sh, j1 - sh, hb, h, hue, ratio, r))
+        else:
+            parts.append(box(i0, j0, i1, j1, 0, h, hue, ratio, r))
+        tx, ty = _P((i0 + i1) / 2, (j0 + j1) / 2, h)
+        tops[rank] = (tx, ty, hue)
+        if ratio > 0.5 and rank >= 3:  # satellite dish
+            parts.append(f'<line x1="{tx:.1f}" y1="{ty:.1f}" x2="{tx:.1f}" y2="{ty - 5:.1f}" stroke="{hue}" stroke-width="1"/>'
+                         f'<ellipse cx="{tx:.1f}" cy="{ty - 7:.1f}" rx="4" ry="2.4" fill="none" stroke="#cfe6ff" stroke-width="1"/>')
+        if rank < 3:
+            parts.append(f'<circle cx="{tx:.1f}" cy="{ty - 4:.1f}" r="9" fill="url(#g_{hue[1:]})"/><circle cx="{tx:.1f}" cy="{ty - 4:.1f}" r="3.2" fill="#fff" fill-opacity="0.9"/>')
+        if rank < 6:
+            parts.append(f'<line x1="{tx:.1f}" y1="{ty:.1f}" x2="{tx:.1f}" y2="{ty - 12:.1f}" stroke="#9aa4b8"/>'
+                         f'<circle cx="{tx:.1f}" cy="{ty - 12:.1f}" r="1.8" fill="#ff3b3b"><animate attributeName="opacity" values="1;0.1;1" dur="1.5s" begin="-{rank * 0.3:.1f}s" repeatCount="indefinite"/></circle>')
+        ws = end - _dt.timedelta(days=7 * (51 - wk) + 6)
+        we = end - _dt.timedelta(days=7 * (51 - wk))
+        label = f"{ws.strftime('%b')} {ws.day} to {we.strftime('%b')} {we.day}"
+        items.append((i + j, f'<g class="bld" tabindex="0" data-week="{label}" data-c="{c}" data-rank="{rank + 1}" '
+                             f'data-days="{",".join(str(x) for x in cols[wk])}" data-hue="{hue}">{"".join(parts)}</g>'))
+    items.sort(key=lambda t: t[0])
+    bld = "".join(s for _, s in items)
 
-    sky_gradient_id = "neuralSky"
-    sky_defs = f"""
-    <linearGradient id="{sky_gradient_id}" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="{SKY_TOP}"/>
-      <stop offset="55%" stop-color="{SKY_MID}"/>
-      <stop offset="100%" stop-color="{SKY_HORIZON}"/>
-    </linearGradient>"""
-    sky_rect = (
-        f'<rect x="{city_x0}" y="{PANEL_PAD_TOP}" width="{city_w}" height="{CITY_HEIGHT}" '
-        f'fill="url(#{sky_gradient_id})"/>'
+    # beams + data lines over the three busiest towers
+    fx = []
+    for rank in range(5):
+        tx, ty, hue = tops[rank]
+        w = 7 if rank < 3 else 4
+        op = (0.55, 0.45, 0.45, 0.3, 0.3)[rank]
+        fx.append(f'<rect x="{tx - w / 2:.1f}" y="0" width="{w}" height="{ty:.1f}" fill="url(#bm_{hue[1:]})" opacity="{op}">'
+                  f'<animate attributeName="opacity" values="{op};{min(1, op + 0.4):.2f};{op}" dur="{3 + rank * 0.7:.1f}s" repeatCount="indefinite"/></rect>')
+        fx.append(f'<line x1="{tx:.1f}" y1="0" x2="{tx:.1f}" y2="{ty:.1f}" stroke="{hue}" stroke-opacity="0.8" stroke-width="1"/>')
+        hues_used.add(hue)
+    links = [(0, 2, "feat:"), (1, 3, "merge"), (2, 4, "fix:")]
+    for a, b, lab in links:
+        ax, ay, ha = tops[a]
+        bx, by, hb = tops[b]
+        cx, cy = (ax + bx) / 2, min(ay, by) - 24 - abs(ax - bx) * 0.25
+        fx.append(f'<path d="M{ax:.1f} {ay:.1f} Q{cx:.1f} {cy:.1f} {bx:.1f} {by:.1f}" fill="none" stroke="{ha}" stroke-width="1.2" stroke-opacity="0.75" stroke-dasharray="4 5">'
+                  f'<animate attributeName="stroke-dashoffset" from="0" to="-18" dur="1.4s" repeatCount="indefinite"/></path>')
+        fx.append(f'<text x="{cx:.1f}" y="{cy + 6:.1f}" text-anchor="middle" font-family="Consolas, Menlo, monospace" font-size="10" fill="{ha}" opacity="0.9">{lab}</text>')
+
+    for a, b in ((0, 1), (1, 2)):
+        ax, ay, _ = tops[a]
+        bx, by, _ = tops[b]
+        for k, wc in enumerate(["#ff4d5a", "#26E6FF", "#24FF9A", "#FFC84D", "#B565FF"]):
+            y1, y2 = ay + 34 + k * 3, by + 34 + k * 3
+            fx.append(f'<path d="M{ax:.1f} {y1:.1f} C{ax:.1f} {y1 + 12:.1f} {bx:.1f} {y2 + 12:.1f} {bx:.1f} {y2:.1f}" fill="none" stroke="{wc}" stroke-width="1.4" stroke-opacity="0.8"/>')
+    dust = "".join(
+        f'<circle cx="{rng.uniform(10, W - 10):.0f}" cy="{rng.uniform(10, H - 10):.0f}" r="{rng.choice([0.7, 1, 1.4])}" fill="{rng.choice([NEON["gold"], NEON["cyan"], "#ffffff"])}" opacity="{rng.uniform(0.15, 0.5):.2f}"/>'
+        for _ in range(110)
+    )
+    defs = "".join(
+        f'<linearGradient id="fl_{h[1:]}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{h}" stop-opacity="0.34"/><stop offset="0.7" stop-color="{h}" stop-opacity="0.04"/><stop offset="1" stop-color="{h}" stop-opacity="0"/></linearGradient>'
+        for h in sorted(hues_used)
+    ) + "".join(
+        f'<radialGradient id="g_{h[1:]}"><stop offset="0" stop-color="{h}" stop-opacity="0.9"/><stop offset="1" stop-color="{h}" stop-opacity="0"/></radialGradient>'
+        f'<linearGradient id="bm_{h[1:]}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{h}" stop-opacity="0"/><stop offset="1" stop-color="{h}" stop-opacity="0.85"/></linearGradient>'
+        for h in sorted(hues_used)
     )
 
-    horizon_glow_id = "horizonGlow"
-    horizon_defs = f"""
-    <linearGradient id="{horizon_glow_id}" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="{HORIZON_GLOW}" stop-opacity="0"/>
-      <stop offset="100%" stop-color="{HORIZON_GLOW}" stop-opacity="0.28"/>
-    </linearGradient>"""
-    horizon_glow = (
-        f'<rect x="{city_x0}" y="{street_y-40:.1f}" width="{city_w}" height="40" '
-        f'fill="url(#{horizon_glow_id})"/>'
+    gold_t = NEON["gold"]
+    stats = [("TOTAL", total_contributions), ("STREAK", current_streak), ("LONGEST", longest_streak), ("ACTIVE DAYS", active_days)]
+    stat_svg = "".join(
+        f'<text x="{32 + k * 100}" y="58" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="800" fill="{gold_t}">{v}</text>'
+        f'<text x="{32 + k * 100}" y="76" font-family="Consolas, Menlo, monospace" font-size="10" fill="#c9d4e6" letter-spacing="1.2">{_esc(l)}</text>'
+        for k, (l, v) in enumerate(stats)
     )
+    CUT = 14
+    pts = f"0,{CUT} {CUT},0 {W - 0.5},0 {W - 0.5},{H - CUT} {W - CUT},{H} 0,{H}"
+    n = 10
+    brk = (f'<path d="M8 {8 + n} V8 H{8 + n} M{W - 8 - n} 8 H{W - 8} V{8 + n} M{W - 8} {H - 8 - n} V{H - 8} H{W - 8 - n} '
+           f'M{8 + n} {H - 8} H8 V{H - 8 - n}" fill="none" stroke="{gold_t}" stroke-width="1.4"/>')
+    return f"""<svg id="city" width="{W}" height="{H}" viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Contribution city">
+  <defs>
+    <clipPath id="pclip"><polygon points="{pts}"/></clipPath>
+    <radialGradient id="bgrad" cx="50%" cy="62%" r="70%"><stop offset="0" stop-color="#0c1630"/><stop offset="1" stop-color="#03050b"/></radialGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <radialGradient id="floor"><stop offset="0.55" stop-color="#FFC84D" stop-opacity="0.10"/><stop offset="1" stop-color="#FFC84D" stop-opacity="0"/></radialGradient>
+    {defs}
+  </defs>
+  <g clip-path="url(#pclip)">
+    <rect width="{W}" height="{H}" fill="url(#bgrad)"/>
+    {dust}
+    {''.join(circuit)}
+    {code}
+    <ellipse cx="410" cy="{_CY0 + 4.5 * _A + 6}" rx="390" ry="150" fill="url(#floor)"/>
+    {platform}
+    {''.join(roads)}
+    {bld}
+    <g pointer-events="none">{''.join(fx)}</g>
+    {stat_svg}
+    <g pointer-events="none"><text x="{W - 24}" y="{H - 30}" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="11" fill="#c9d4e6" letter-spacing="1.5">1 BLOCK = 1 WEEK</text>
+    <text x="{W - 24}" y="{H - 16}" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="9" fill="#6b7a8c" letter-spacing="1.2">TALLER + BRIGHTER = MORE COMMITS</text></g>
+  </g>
+  <polygon points="{pts}" fill="none" stroke="white" stroke-opacity="0.14"/>
+  {brk}
+</svg>"""
 
-    stars = []
-    for i in range(32):
-        h = int(hashlib.md5(f"star-{i}".encode()).hexdigest(), 16)
-        sx = city_x0 + (h % 1000) / 1000 * city_w
-        sy = PANEL_PAD_TOP + 6 + (h // 1000 % 1000) / 1000 * (CITY_HEIGHT * 0.5)
-        r = 0.6 + (h % 3) * 0.3
-        twinkle = ""
-        if i % 6 == 0:
-            twinkle = f'<animate attributeName="opacity" values="1;0.3;1" dur="{2+(i%3)}s" repeatCount="indefinite"/>'
-        stars.append(f'<circle cx="{sx:.1f}" cy="{sy:.1f}" r="{r:.1f}" fill="white">{twinkle}</circle>')
 
-    street_line = (
-        f'<line x1="{city_x0}" y1="{street_y:.1f}" x2="{city_x0+city_w}" y2="{street_y:.1f}" '
-        f'stroke="#3a2a4a" stroke-width="2"/>'
+_PAGE = """<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Commit City</title>
+<style>
+:root{--bg:#f3f5f9;--ink:#10131a;--muted:#5b6475;--card:#ffffff;--line:#d9dee8;--gold:#b7860b}
+:root:not([data-theme="light"]){}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#05070d;--ink:#eef2fa;--muted:#8a94a8;--card:#0b0f18;--line:#1f2736;--gold:#FFC84D}}
+:root[data-theme="dark"]{--bg:#05070d;--ink:#eef2fa;--muted:#8a94a8;--card:#0b0f18;--line:#1f2736;--gold:#FFC84D}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Segoe UI",system-ui,sans-serif}
+main{max-width:980px;margin:0 auto;padding:28px 16px 48px}
+.tag{font:700 12px Consolas,Menlo,monospace;letter-spacing:.25em;color:var(--gold)}
+h1{font:800 34px/1.1 Arial,Helvetica,sans-serif;margin:8px 0 6px;letter-spacing:.5px}
+p.lead{margin:0 0 18px;color:var(--muted);max-width:60ch}
+.bar{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.bar button{font:600 12px Consolas,Menlo,monospace;letter-spacing:.08em;background:var(--card);color:var(--ink);border:1px solid var(--line);padding:8px 12px;border-radius:8px;cursor:pointer}
+.bar button[aria-pressed="true"]{border-color:var(--gold);color:var(--gold)}
+.stage{position:relative;background:#03050b;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.stage svg{display:block;width:100%;height:auto}
+.bld{cursor:pointer;transition:filter .15s,opacity .2s;outline:none}
+.bld:hover,.bld:focus,.bld.pin{filter:brightness(1.7) drop-shadow(0 0 7px var(--h,#FFC84D))}
+.dim .bld:not(.on){opacity:.18}
+#tip{position:absolute;pointer-events:none;min-width:200px;background:rgba(8,12,22,.96);color:#eef2fa;border:1px solid #FFC84D;border-radius:10px;padding:12px 14px;font-size:13px;opacity:0;transform:translateY(4px);transition:opacity .12s,transform .12s;z-index:5}
+#tip.show{opacity:1;transform:none}
+#tip .w{font:700 11px Consolas,Menlo,monospace;letter-spacing:.14em;color:#FFC84D}
+#tip .n{font:800 30px/1.1 Arial,sans-serif;margin:4px 0 2px}
+#tip .r{color:#9aa4b8;font-size:12px;margin-bottom:8px}
+#tip .d{display:flex;gap:4px;align-items:flex-end;height:36px}
+#tip .d i{flex:1;background:var(--h,#FFC84D);border-radius:2px 2px 0 0;min-height:2px;opacity:.9}
+#tip .l{display:flex;gap:4px;font:9px Consolas,monospace;color:#6b7a8c;margin-top:3px}
+#tip .l span{flex:1;text-align:center}
+small{display:block;margin-top:12px;color:var(--muted)}
+</style></head><body><main>
+<div class="tag">[ NEURAL ACTIVITY ]</div>
+<h1>Commit City</h1>
+<p class="lead">Every building is one week of commits. Taller and brighter means more commits, and the busiest weeks sit in the middle. Hover, tap or tab to a building to see its week.</p>
+<div class="bar" role="group" aria-label="View">
+ <button data-f="all" aria-pressed="true">ALL WEEKS</button>
+ <button data-f="top" aria-pressed="false">TOP 10</button>
+ <button data-f="quiet" aria-pressed="false">QUIET WEEKS</button>
+ <button id="pulse" aria-pressed="true">ANIMATION ON</button>
+</div>
+<div class="stage" id="stage">__SVG__<div id="tip" role="status"></div></div>
+<small>Built from the last 52 weeks of GitHub activity. Re-generated on every profile build.</small>
+</main>
+<script>
+(function(){
+var st=document.getElementById('stage'),svg=st.querySelector('svg'),tip=document.getElementById('tip'),pin=null;
+var B=[].slice.call(svg.querySelectorAll('.bld'));
+var DAYS=['S','M','T','W','T','F','S'];
+function fill(b){
+  var d=b.dataset.days.split(',').map(Number),m=Math.max.apply(null,d)||1;
+  tip.style.setProperty('--h',b.dataset.hue);
+  tip.innerHTML='<div class="w">'+b.dataset.week.toUpperCase()+'</div><div class="n">'+b.dataset.c+' commits</div><div class="r">Rank #'+b.dataset.rank+' of 52</div><div class="d">'+d.map(function(v){return '<i style="height:'+Math.max(6,v/m*100)+'%" title="'+v+'"></i>'}).join('')+'</div><div class="l">'+DAYS.map(function(x){return '<span>'+x+'</span>'}).join('')+'</div>';
+}
+function place(e,b){
+  var r=st.getBoundingClientRect(),x,y;
+  if(e&&e.clientX!=null){x=e.clientX-r.left;y=e.clientY-r.top}else{var q=b.getBoundingClientRect();x=q.left-r.left+q.width/2;y=q.top-r.top}
+  var w=tip.offsetWidth,h=tip.offsetHeight;
+  x=Math.min(Math.max(8,x+16),r.width-w-8);y=Math.min(Math.max(8,y-h-12),r.height-h-8);
+  tip.style.left=x+'px';tip.style.top=y+'px';
+}
+function show(e,b){fill(b);place(e,b);tip.classList.add('show')}
+function hide(){if(!pin)tip.classList.remove('show')}
+B.forEach(function(b){
+  b.style.setProperty('--h',b.dataset.hue);
+  b.addEventListener('mouseenter',function(e){show(e,b)});
+  b.addEventListener('mousemove',function(e){if(!pin)place(e,b)});
+  b.addEventListener('mouseleave',hide);
+  b.addEventListener('focus',function(){show(null,b)});
+  b.addEventListener('blur',hide);
+  b.addEventListener('click',function(e){e.stopPropagation();if(pin)pin.classList.remove('pin');if(pin===b){pin=null;hide();return}pin=b;b.classList.add('pin');show(e,b)});
+});
+document.addEventListener('click',function(){if(pin){pin.classList.remove('pin');pin=null;tip.classList.remove('show')}});
+var bar=document.querySelector('.bar');
+bar.addEventListener('click',function(e){
+  var t=e.target.closest('button');if(!t)return;
+  if(t.id==='pulse'){var on=t.getAttribute('aria-pressed')==='true';on?svg.pauseAnimations():svg.unpauseAnimations();t.setAttribute('aria-pressed',String(!on));t.textContent=on?'ANIMATION OFF':'ANIMATION ON';return}
+  [].forEach.call(bar.querySelectorAll('[data-f]'),function(x){x.setAttribute('aria-pressed',String(x===t))});
+  var f=t.dataset.f;st.classList.toggle('dim',f!=='all');
+  var cs=B.map(function(b){return +b.dataset.c}).sort(function(a,b){return a-b}),q=cs[Math.floor(cs.length*0.25)];
+  B.forEach(function(b){var rk=+b.dataset.rank,c=+b.dataset.c;b.classList.toggle('on',f==='top'?rk<=10:f==='quiet'?c<=q:true)});
+});
+})();
+</script></body></html>"""
+
+
+def render_interactive_html(svg: str) -> str:
+    """Self-contained page that wraps the city SVG with hover/tap tooltips and view filters."""
+    return _PAGE.replace("__SVG__", svg)
+
+
+GOLD = HUD_COLORS["modules"]
+GREEN = "#24FF9A"
+
+
+def render_activity_heading_svg(for_light_mode: bool = False) -> str:
+    """Hero-style heading above the city: corner-marked tag, two-tone title, no paragraph."""
+    ink = "#10131a" if for_light_mode else "#ffffff"
+    tw, th, n = 170, 28, 6
+    marks = (
+        f'<path d="M0 {n} V0 H{n} M{tw - n} 0 H{tw} V{n} M{tw} {th - n} V{th} H{tw - n} M{n} {th} H0 V{th - n}" '
+        f'fill="none" stroke="{GOLD}" stroke-width="1.4"/>'
     )
+    return f"""<svg width="820" height="150" viewBox="0 0 820 150" xmlns="http://www.w3.org/2000/svg" \
+role="img" aria-label="Neural activity">
+  <defs>{glow_filter()}</defs>
+  {marks}
+  <text x="{tw / 2}" y="19" font-family="Consolas, Menlo, monospace" font-size="12" fill="{GOLD}" \
+text-anchor="middle" letter-spacing="2" filter="url(#hudglow)">NEURAL ACTIVITY</text>
+  <text x="0" y="84" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="800" \
+fill="{ink}" letter-spacing="0.5">COMMITS BECOME</text>
+  <text x="0" y="132" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="800" \
+fill="{GOLD}" letter-spacing="0.5">A LIVING CITY</text>
+</svg>"""
 
-    # Water reflection: the whole skyline flipped vertically below the
-    # street line, faded out with a gradient mask so it reads as a
-    # reflection rather than a duplicate city.
-    reflect_fade_id = "reflectFade"
-    reflect_defs = f"""
-    <linearGradient id="{reflect_fade_id}" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="white" stop-opacity="0.65"/>
-      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+
+def render_activity_status_svg(for_light_mode: bool = False) -> str:
+    """Hero-style footer line under the city."""
+    ink = "#10131a" if for_light_mode else "#ffffff"
+    muted = "#4b5563" if for_light_mode else "#6b7a8c"
+    return f"""<svg width="820" height="44" viewBox="0 0 820 44" xmlns="http://www.w3.org/2000/svg" \
+role="img" aria-label="Status">
+  <defs>
+    <linearGradient id="rule2" x1="0" x2="1">
+      <stop offset="0" stop-color="{muted}" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="{muted}" stop-opacity="0.08"/>
     </linearGradient>
-    <mask id="reflectMask">
-      <rect x="{city_x0}" y="{street_y}" width="{city_w}" height="{REFLECTION_HEIGHT}" fill="url(#{reflect_fade_id})"/>
-    </mask>"""
-    reflection = (
-        f'<g mask="url(#reflectMask)">'
-        f'<g transform="translate(0,{2*street_y:.1f}) scale(1,-1)">{buildings_markup}</g>'
-        f"</g>"
-    )
-
-    number_block = f"""
-  <text x="{PANEL_PAD_X}" y="52" font-family="Consolas, Menlo, monospace" \
-font-size="46" font-weight="700" fill="{accent}" filter="url(#hudglow)">{total_contributions}</text>
-  <text x="{PANEL_PAD_X}" y="70" font-family="Consolas, Menlo, monospace" font-size="10" \
-fill="#8a7fa8" letter-spacing="1">CONTRIBUTIONS_THIS_CYCLE</text>"""
-
-    chip_w, chip_h = 60, 20
-    chip_x = width - PANEL_PAD_X - chip_w
-    chip_y = 20
-    live_chip = f"""
-  <g>
-    <rect x="{chip_x}" y="{chip_y}" width="{chip_w}" height="{chip_h}" rx="3" \
-fill="{accent}" fill-opacity="0.12" stroke="{accent}" stroke-width="1"/>
-    <circle cx="{chip_x + 12}" cy="{chip_y + chip_h/2}" r="3" fill="{accent}" filter="url(#hudglow)"/>
-    <text x="{chip_x + 22}" y="{chip_y + chip_h/2 + 4}" font-family="Consolas, Menlo, monospace" \
-font-size="10" font-weight="700" fill="{accent}" letter-spacing="1">LIVE</text>
-  </g>"""
-
-    active_text = f"""
-  <text x="{width - PANEL_PAD_X}" y="{chip_y + chip_h + 18}" \
-font-family="Consolas, Menlo, monospace" font-size="10" fill="#8a7fa8" \
-text-anchor="end" letter-spacing="0.5">TOTAL_ACTIVE: {active_days}</text>"""
-
-    def _streak_badge(cx: float, y: float, icon: str, label: str, value: int, w: float, h: float) -> str:
-        x = cx - w / 2
-        return f"""
-  <g>
-    <rect x="{x:.1f}" y="{y}" width="{w}" height="{h}" rx="{h/2:.1f}" \
-fill="{accent}" fill-opacity="0.10" stroke="{accent}" stroke-width="1"/>
-    <text x="{x+16:.1f}" y="{y+h/2+5:.1f}" font-size="14" text-anchor="middle">{icon}</text>
-    <text x="{x+30:.1f}" y="{y+h/2-2:.1f}" font-family="Consolas, Menlo, monospace" font-size="8.5" \
-fill="#8a7fa8" letter-spacing="0.5">{label}</text>
-    <text x="{x+30:.1f}" y="{y+h/2+12:.1f}" font-family="Consolas, Menlo, monospace" font-size="13" \
-font-weight="700" fill="{accent}" filter="url(#hudglow)">{value} days</text>
-  </g>"""
-
-    badge_w, badge_h, badge_gap = 168, 34, 14
-    badges_y = 92
-    left_cx = width / 2 - badge_gap / 2 - badge_w / 2
-    right_cx = width / 2 + badge_gap / 2 + badge_w / 2
-    streak_badges = (
-        _streak_badge(left_cx, badges_y, "🔥", "CURRENT STREAK", current_streak, badge_w, badge_h)
-        + _streak_badge(right_cx, badges_y, "🏆", "LONGEST STREAK", longest_streak, badge_w, badge_h)
-    )
-
-    plane_lap_duration = 7
-    plane_y1 = PANEL_PAD_TOP + CITY_HEIGHT * 0.2
-    plane_y2 = PANEL_PAD_TOP + CITY_HEIGHT * 0.32
-    plane_laps = [
-        f"M {city_x0-20:.1f},{plane_y1:.1f} L {city_x0+city_w+20:.1f},{plane_y1-8:.1f}",
-        f"M {city_x0+city_w+20:.1f},{plane_y2:.1f} L {city_x0-20:.1f},{plane_y2-8:.1f}",
-    ]
-    plane_total_dur = plane_lap_duration * len(plane_laps)
-    planes = []
-    for i, lead in enumerate([0, 3.2]):
-        pid = f"plane{i}"
-        planes.append(f"""
-  <g opacity="0">
-    {_chained_motion(pid, plane_laps, plane_lap_duration, lead)}
-    {_fade_anim(len(plane_laps), plane_total_dur, -lead)}
-    <g>
-      {_direction_flip_anim(len(plane_laps), plane_total_dur, -lead, True)}
-      {_plane_svg("#e8e6f0")}
-    </g>
-  </g>""")
-
-    car_lap_duration = 5
-    car_y = street_y + 8
-    car_laps = [
-        f"M {city_x0-15:.1f},{car_y:.1f} L {city_x0+city_w+15:.1f},{car_y:.1f}",
-        f"M {city_x0+city_w+15:.1f},{car_y+10:.1f} L {city_x0-15:.1f},{car_y+10:.1f}",
-    ]
-    car_total_dur = car_lap_duration * len(car_laps)
-    cars = []
-    for i, (lead, color) in enumerate([(0, "#FF2279"), (2.5, "#00E7FF")]):
-        cid = f"car{i}"
-        cars.append(f"""
-  <g opacity="0">
-    {_chained_motion(cid, car_laps, car_lap_duration, lead)}
-    {_fade_anim(len(car_laps), car_total_dur, -lead)}
-    <g>
-      {_direction_flip_anim(len(car_laps), car_total_dur, -lead, True)}
-      {_car_svg(color)}
-    </g>
-  </g>""")
-
-    return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
-xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Neural activity">
-  <defs>{glow_filter()}{scan_defs}{glass_defs}{sky_defs}{horizon_defs}{''.join(gradient_defs)}{reflect_defs}</defs>
-  <rect width="{width}" height="{height}" rx="16" fill="#{bg}" fill-opacity="{bg_opacity}"/>
-  {number_block}
-  {live_chip}
-  {active_text}
-  {streak_badges}
-  {sky_rect}
-  {''.join(stars)}
-  {horizon_glow}
-  {distant_markup}
-  {buildings_markup}
-  {street_line}
-  {reflection}
-  {''.join(planes)}
-  {''.join(cars)}
-  {scan_rect}
-  {glass_overlay}
+  </defs>
+  <circle cx="6" cy="22" r="3.5" fill="{GREEN}"/>
+  <text x="18" y="26" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="{GREEN}">STATUS:</text>
+  <text x="72" y="26" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="{ink}">LIVE FROM GITHUB</text>
+  <text x="820" y="26" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="{muted}" \
+text-anchor="end">EVERY WEEK IS A BUILDING</text>
+  <rect x="200" y="21.5" width="400" height="1" fill="url(#rule2)"/>
 </svg>"""

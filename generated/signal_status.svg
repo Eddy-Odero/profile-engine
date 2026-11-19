@@ -1,0 +1,13 @@
+<svg width="820" height="44" viewBox="0 0 820 44" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Status">
+  <defs>
+    <linearGradient id="rule" x1="0" x2="1">
+      <stop offset="0" stop-color="#6b7a8c" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#6b7a8c" stop-opacity="0.08"/>
+    </linearGradient>
+  </defs>
+  <circle cx="6" cy="22" r="3.5" fill="#24FF9A"/>
+  <text x="18" y="26" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#24FF9A">STATUS:</text>
+  <text x="72" y="26" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#ffffff">OPEN FOR COLLABORATION</text>
+  <rect x="250" y="21.5" width="360" height="1" fill="url(#rule)"/>
+  <text x="820" y="26" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#6b7a8c" text-anchor="end">SCROLL TO EXPLORE</text>
+</svg>

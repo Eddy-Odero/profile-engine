@@ -1,20 +1,5 @@
-<svg width="150" height="44" viewBox="0 0 150 44" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dev.to">
-  <defs>
-    <pattern id="hudgrid" width="10" height="10" patternUnits="userSpaceOnUse">
-      <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#00E7FF" stroke-width="0.6" opacity="0.09"/>
-    </pattern>
-    <pattern id="hudgridbold" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#00E7FF" stroke-width="1" opacity="0.162"/>
-    </pattern>
-    <filter id="hudglow" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="1.4" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter></defs>
-  <rect width="150" height="44" rx="22" fill="#07090F" stroke="#00E7FF" stroke-width="1.3"/>
-  <rect width="150" height="44" rx="22" fill="url(#hudgrid)"/><rect width="150" height="44" rx="22" fill="url(#hudgridbold)"/>
-  <g transform="translate(26,22.0)" fill="none" stroke="#00E7FF" stroke-width="1.3"><circle cx="0" cy="0" r="8"/><ellipse cx="0" cy="0" rx="3.5" ry="8"/><line x1="-8" y1="0" x2="8" y2="0"/></g>
-  <text x="46" y="27.0" font-family="Consolas, Menlo, monospace" font-size="13" font-weight="600" fill="#00E7FF" filter="url(#hudglow)">Dev.to</text>
+<svg width="168" height="46" viewBox="0 0 168 46" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dev.to">
+  <polygon points="9.0,0.0 167.5,0.0 167.5,37.0 159.0,45.5 0.5,45.5 0.5,9.0" fill="#0b0f18" stroke="#ffffff" stroke-opacity="0.28" stroke-width="1.2"/>
+  <g transform="translate(28,23.0)" fill="none" stroke="#FFC84D" stroke-width="1.3"><circle cx="0" cy="0" r="8"/><ellipse cx="0" cy="0" rx="3.5" ry="8"/><line x1="-8" y1="0" x2="8" y2="0"/></g>
+  <text x="50" y="28.0" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" fill="#ffffff" letter-spacing="0.8">DEV.TO</text>
 </svg>

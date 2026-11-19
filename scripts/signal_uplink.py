@@ -20,8 +20,8 @@ from __future__ import annotations
 
 import html
 
-from hud_grid import glow_filter, grid_background
-from themes import DEFAULT_THEME, get_theme
+from hud_grid import glow_filter
+from themes import DEFAULT_THEME, HUD_COLORS
 
 PILL_WIDTH = 150
 PILL_HEIGHT = 44
@@ -90,34 +90,95 @@ _ICONS = {
 }
 
 
+GOLD = HUD_COLORS["modules"]
+GREEN = "#24FF9A"
+BTN_W = 168
+BTN_H = 46
+CUT = 9
+
+
+def _cut_box(w: float, h: float, c: float) -> str:
+    pts = [(c, 0), (w - 0.5, 0), (w - 0.5, h - c), (w - c, h - 0.5), (0.5, h - 0.5), (0.5, c)]
+    return " ".join(f"{x:.1f},{y:.1f}" for x, y in pts)
+
+
 def render_link_pill_svg(
-    label: str, icon_key: str, theme_name: str = DEFAULT_THEME, disabled: bool = False
+    label: str,
+    icon_key: str,
+    theme_name: str = DEFAULT_THEME,
+    disabled: bool = False,
+    primary: bool = False,
 ) -> str:
     """
-    Build one signal-uplink pill: icon + label. `disabled=True` renders
-    a muted, non-link-implying version (used when there's no real URL
-    for this platform yet, e.g. Discord with no invite link provided).
+    One contact button in the hero's button style: notched corners
+    (top-left and bottom-right cut), a filled gold primary button and
+    outlined dark secondary buttons. Both are opaque, so they read the
+    same on GitHub's light and dark pages. `disabled=True` renders a
+    muted version for a platform with no URL yet.
     """
-    theme = get_theme(theme_name)
-    accent = f"#{theme['color']}" if not disabled else f"#{PILL_BORDER_INACTIVE}"
-    border = accent if not disabled else f"#{PILL_BORDER_INACTIVE}"
+    if disabled:
+        fill, stroke, ink = "#07090F", f"#{PILL_BORDER_INACTIVE}", f"#{PILL_BORDER_INACTIVE}"
+    elif primary:
+        fill, stroke, ink = GOLD, GOLD, "#07090F"
+    else:
+        fill, stroke, ink = "#0b0f18", "#ffffff", "#ffffff"
+    stroke_op = 1 if (primary or disabled) else 0.28
 
     icon_fn = _ICONS.get(icon_key, _icon_website)
-    icon_cx = 26
-    icon_svg = icon_fn(icon_cx, PILL_HEIGHT / 2, accent)
+    icon_svg = icon_fn(28, BTN_H / 2, ink if (primary or disabled) else GOLD)
 
-    grid_defs, grid_rect = grid_background(PILL_WIDTH, PILL_HEIGHT, accent, spacing=10, rx=22)
-    glow_defs = glow_filter() if not disabled else ""
-    text_filter = ' filter="url(#hudglow)"' if not disabled else ""
-
-    return f"""<svg width="{PILL_WIDTH}" height="{PILL_HEIGHT}" \
-viewBox="0 0 {PILL_WIDTH} {PILL_HEIGHT}" xmlns="http://www.w3.org/2000/svg" \
-role="img" aria-label="{_esc(label)}">
-  <defs>{grid_defs}{glow_defs}</defs>
-  <rect width="{PILL_WIDTH}" height="{PILL_HEIGHT}" rx="22" fill="#{theme['label_color']}" \
-stroke="{border}" stroke-width="1.3"/>
-  {grid_rect}
+    return f"""<svg width="{BTN_W}" height="{BTN_H}" viewBox="0 0 {BTN_W} {BTN_H}" \
+xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(label)}">
+  <polygon points="{_cut_box(BTN_W, BTN_H, CUT)}" fill="{fill}" stroke="{stroke}" stroke-opacity="{stroke_op}" \
+stroke-width="1.2"/>
   {icon_svg}
-  <text x="{icon_cx + 20}" y="{PILL_HEIGHT / 2 + 5}" font-family="Consolas, Menlo, monospace" \
-font-size="13" font-weight="600" fill="{accent}"{text_filter}>{_esc(label)}</text>
+  <text x="50" y="{BTN_H / 2 + 5}" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" \
+fill="{ink}" letter-spacing="0.8">{_esc(label.upper())}</text>
+</svg>"""
+
+
+def render_signal_heading_svg(for_light_mode: bool = False) -> str:
+    """Hero-style heading, left-aligned like every other section: corner-marked tag, two-tone title, paragraph."""
+    ink = "#10131a" if for_light_mode else "#ffffff"
+    muted = "#4b5563" if for_light_mode else "#9a9aa5"
+    tw, th, n = 150, 28, 6
+    marks = (
+        f'<path d="M0 {n} V0 H{n} M{tw - n} 0 H{tw} V{n} M{tw} {th - n} V{th} H{tw - n} '
+        f'M{n} {th} H0 V{th - n}" fill="none" stroke="{GOLD}" stroke-width="1.4"/>'
+    )
+    return f"""<svg width="820" height="206" viewBox="0 0 820 206" xmlns="http://www.w3.org/2000/svg" \
+role="img" aria-label="Signal uplink">
+  <defs>{glow_filter()}</defs>
+  {marks}
+  <text x="{tw / 2}" y="19" font-family="Consolas, Menlo, monospace" font-size="12" fill="{GOLD}" text-anchor="middle" \
+letter-spacing="2" filter="url(#hudglow)">SIGNAL UPLINK</text>
+  <text x="0" y="84" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="800" \
+fill="{ink}" letter-spacing="0.5">LET&#8217;S BUILD</text>
+  <text x="0" y="132" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="800" \
+fill="{GOLD}" letter-spacing="0.5">SOMETHING BOLD</text>
+  <text x="0" y="170" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="{muted}">\
+Full-stack builds, clean interfaces, and tools that ship.</text>
+  <text x="0" y="190" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="{muted}">\
+Pick a channel below and say hello.</text>
+</svg>"""
+
+
+def render_status_bar_svg(for_light_mode: bool = False) -> str:
+    """Hero-style footer line: green status on the left, a fading rule, a hint on the right."""
+    ink = "#10131a" if for_light_mode else "#ffffff"
+    muted = "#4b5563" if for_light_mode else "#6b7a8c"
+    return f"""<svg width="820" height="44" viewBox="0 0 820 44" xmlns="http://www.w3.org/2000/svg" \
+role="img" aria-label="Status">
+  <defs>
+    <linearGradient id="rule" x1="0" x2="1">
+      <stop offset="0" stop-color="{muted}" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="{muted}" stop-opacity="0.08"/>
+    </linearGradient>
+  </defs>
+  <circle cx="6" cy="22" r="3.5" fill="{GREEN}"/>
+  <text x="18" y="26" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="{GREEN}">STATUS:</text>
+  <text x="72" y="26" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="{ink}">OPEN FOR COLLABORATION</text>
+  <rect x="250" y="21.5" width="360" height="1" fill="url(#rule)"/>
+  <text x="820" y="26" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="{muted}" \
+text-anchor="end">SCROLL TO EXPLORE</text>
 </svg>"""

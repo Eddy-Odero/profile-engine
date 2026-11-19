@@ -64,59 +64,52 @@ def _line_reveal_animate(index: int, total_lines: int, full_width: float) -> str
 
 
 def render_quote_svg(quote: str, theme_name: str = DEFAULT_THEME) -> str:
-    """Build the SVG markup for the typewriter quote card."""
-    accent = "#FF2279"  # exact rose-pink sampled from the reference screenshot,
-    # not the brighter HUD_COLORS magenta used elsewhere
+    """HUD-style quote panel: chamfered dark panel, gold bar, corner tag, big quote mark, typewriter text."""
+    gold = "#FFC84D"
+    fs, lh, cw = 20, 32, 20 * 0.62
+    W, CUT = 820, 16
+    lines = textwrap.wrap(quote, width=54)[:3] or [quote]
+    top = 84
+    H = top + len(lines) * lh + 62
+    pts = f"0,{CUT} {CUT},0 {W - 0.5},0 {W - 0.5},{H - CUT} {W - CUT},{H} 0,{H}"
 
-    lines = textwrap.wrap(quote, width=WRAP_CHARS)[:MAX_LINES]
-    if not lines:
-        lines = [quote]
-
-    max_line_len = max(len(line) for line in lines)
-    text_width = max_line_len * CHAR_WIDTH
-    width = int(text_width + PADDING_X * 2 + 24)  # +24 for the decorative quote mark
-    height = int(len(lines) * LINE_HEIGHT + PADDING_Y * 2)
-
-    clip_groups = []
+    clips, texts = [], []
     for i, line in enumerate(lines):
-        line_width = len(line) * CHAR_WIDTH + 4
-        y = PADDING_Y + i * LINE_HEIGHT
-        clip_id = f"reveal{i}"
-        clip_groups.append(
-            f"""
-    <clipPath id="{clip_id}">
-      <rect x="0" y="{y - FONT_SIZE}" width="0" height="{LINE_HEIGHT + 4}">
-        {_line_reveal_animate(i, len(lines), line_width)}
-      </rect>
-    </clipPath>"""
+        y = top + i * lh
+        lw = len(line) * cw + 4
+        clips.append(
+            f'<clipPath id="reveal{i}"><rect x="0" y="{y - fs}" width="0" height="{lh}">'
+            f"{_line_reveal_animate(i, len(lines), lw)}</rect></clipPath>"
         )
-
-    text_elements = []
-    for i, line in enumerate(lines):
-        y = PADDING_Y + i * LINE_HEIGHT + FONT_SIZE - 4
-        text_elements.append(
-            f'<text x="{PADDING_X + 24}" y="{y}" clip-path="url(#reveal{i})" '
-            f'font-family="Consolas, Menlo, monospace" '
-            f'font-size="{FONT_SIZE}" fill="#{QUOTE_TEXT_COLOR}">{_esc(line)}</text>'
+        texts.append(
+            f'<text x="100" y="{y}" clip-path="url(#reveal{i})" font-family="Consolas, Menlo, monospace" '
+            f'font-size="{fs}" fill="#ffffff">{_esc(line)}</text>'
         )
-
-    last_line_y = PADDING_Y + (len(lines) - 1) * LINE_HEIGHT + FONT_SIZE - 4
-    last_line_width = len(lines[-1]) * CHAR_WIDTH
-
-    return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
-xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Quote">
-  <defs>{''.join(clip_groups)}
+    ly = top + (len(lines) - 1) * lh
+    lx = 100 + len(lines[-1]) * cw + 3
+    by = H - 26
+    n = 8
+    brk = (
+        f'<path d="M{W - 14 - n} 14 H{W - 14} V{14 + n} M14 {H - 14 - n} V{H - 14} H{14 + n}" '
+        f'fill="none" stroke="{gold}" stroke-width="1.3"/>'
+    )
+    return f"""<svg width="{W}" height="{H}" viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Quote">
+  <defs>
+    {''.join(clips)}
+    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="2" height="6" fill="{gold}" fill-opacity="0.55"/>
+    </pattern>
   </defs>
-  <rect width="{width}" height="{height}" rx="10" fill="#{BG}"/>
-  <rect width="{width}" height="{height}" rx="10" fill="none" stroke="#{CARD_BORDER}" stroke-width="1"/>
-  <rect width="4" height="{height}" fill="{accent}"/>
-  <text x="{PADDING_X - 8}" y="{PADDING_Y + 16}" font-family="Consolas, Menlo, monospace" \
-font-size="38" fill="{accent}" fill-opacity="0.5">&#8220;</text>
-  {''.join(text_elements)}
-  <rect x="{PADDING_X + 24 + last_line_width:.1f}" y="{last_line_y - FONT_SIZE + 3}" \
-width="2.5" height="{FONT_SIZE + 2}" fill="{accent}">
-    <animate attributeName="opacity" values="0;0;1;1;0" \
-keyTimes="0;{HOLD_UNTIL_FRACTION - 0.15:.3f};{HOLD_UNTIL_FRACTION - 0.14:.3f};{HOLD_UNTIL_FRACTION};1" \
-dur="{TOTAL_CYCLE_SECONDS}s" repeatCount="indefinite"/>
+  <polygon points="{pts}" fill="#0b0f18" stroke="white" stroke-opacity="0.14"/>
+  <rect x="0" y="{CUT}" width="4" height="{H - 2 * CUT}" fill="{gold}"/>
+  <text x="36" y="38" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="{gold}" letter-spacing="3">[ DAILY SIGNAL ]</text>
+  <text x="32" y="132" font-family="Georgia, 'Times New Roman', serif" font-size="96" font-weight="700" fill="{gold}" fill-opacity="0.9">&#8220;</text>
+  {''.join(texts)}
+  <rect x="{lx:.1f}" y="{ly - fs + 3}" width="2.5" height="{fs + 2}" fill="{gold}">
+    <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;{HOLD_UNTIL_FRACTION - 0.15:.3f};{HOLD_UNTIL_FRACTION - 0.14:.3f};{HOLD_UNTIL_FRACTION};1" dur="{TOTAL_CYCLE_SECONDS}s" repeatCount="indefinite"/>
   </rect>
+  <rect x="100" y="{by}" width="40" height="2" fill="{gold}"/>
+  <rect x="146" y="{by}" width="90" height="2" fill="url(#hatch)"/>
+  <text x="{W - 32}" y="{by + 5}" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="10" fill="#6b7a8c" letter-spacing="1.5">NEW QUOTE ON EVERY BUILD</text>
+  {brk}
 </svg>"""

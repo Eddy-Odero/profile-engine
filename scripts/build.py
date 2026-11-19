@@ -333,6 +333,17 @@ def _write_svg(markup: str, filename: str) -> str:
     return f"generated/{filename}"
 
 
+def _write_city_page(heat: dict) -> str:
+    """Interactive companion page for the city (hover/tap tooltips). Not used by the README itself."""
+    svg = neural_activity.render_neural_activity_svg(
+        heat.get("weeks", []), heat.get("total", 0), heat.get("current_streak", 0),
+        heat.get("longest_streak", 0), heat.get("active_days", 0), THEME,
+    )
+    GENERATED_DIR.mkdir(parents=True, exist_ok=True)
+    (GENERATED_DIR / "city_interactive.html").write_text(neural_activity.render_interactive_html(svg), encoding="utf-8")
+    return "generated/city_interactive.html"
+
+
 def build_terminal_svg(
     avatar_ascii: str, boot_sequence: str, system_message: str, status: str, stats: dict
 ) -> tuple[str, str]:
@@ -351,8 +362,15 @@ def build_terminal_svg(
         stats={**stats, "role": ROLE, "location": LOCATION},
         theme_name=THEME,
     )
-    dark_svg = svg_terminal.render_terminal_svg(**common_kwargs, for_light_mode=False)
-    light_svg = svg_terminal.render_terminal_svg(**common_kwargs, for_light_mode=True)
+    hero_kwargs = dict(
+        avatar_ascii=avatar_ascii,
+        status=status,
+        username=USERNAME,
+        stats=common_kwargs["stats"],
+        theme_name=THEME,
+    )
+    dark_svg = svg_terminal.render_hero_svg(**hero_kwargs, for_light_mode=False)
+    light_svg = svg_terminal.render_hero_svg(**hero_kwargs, for_light_mode=True)
     return _write_svg(dark_svg, "terminal.svg"), _write_svg(light_svg, "terminal_light.svg")
 
 
@@ -403,28 +421,25 @@ def build_context() -> dict:
         # levels of detail - kept only Fragmented Data (the ribbon+stats
         # version) per direct request, so the plain-card Projects section
         # and its View/Code badges are no longer wired in here.
+        "fragment_heading_svg_path_dark": _write_svg(
+            fragmented_data.render_fragment_heading_svg(THEME), "fragment_heading.svg"
+        ),
+        "fragment_heading_svg_path_light": _write_svg(
+            fragmented_data.render_fragment_heading_svg(THEME, for_light_mode=True),
+            "fragment_heading_light.svg",
+        ),
         "fragment_cards": [
             {
                 **(p := _with_real_repo_stats(project, combined_stats.get("repo_details", {}))),
-                "card_svg_path_dark": _write_svg(
-                    fragmented_data.render_fragment_card_svg(p, THEME), f"fragment_card_{i}.svg"
+                "card_svg_path": _write_svg(
+                    fragmented_data.render_fragment_card_svg(p, THEME, index=i + 1, col=i % 2),
+                    f"fragment_card_{i}.svg",
                 ),
-                "card_svg_path_light": _write_svg(
-                    fragmented_data.render_fragment_card_svg(p, THEME, for_light_mode=True),
-                    f"fragment_card_{i}_light.svg",
-                ),
+                # The whole tile is the link: live app if there is one, else the repo.
+                "card_url": p.get("preview_url") or p.get("repo_url"),
             }
             for i, project in enumerate(PROJECTS)
         ],
-        "badge_view_path": _write_svg(
-            project_cards.render_link_badge_svg("view", THEME), "badge_view.svg"
-        ),
-        "badge_code_path": _write_svg(
-            project_cards.render_link_badge_svg("code", THEME), "badge_code.svg"
-        ),
-        "badge_disabled_path": _write_svg(
-            project_cards.render_link_badge_svg("view", THEME, disabled=True), "badge_disabled.svg"
-        ),
         "skill_modules_svg_path_dark": _write_svg(
             skill_modules.render_skill_modules_svg(SKILLS, THEME), "skill_modules.svg"
         ),
@@ -445,6 +460,7 @@ def build_context() -> dict:
         "event_log_svg_path_light": _write_svg(
             event_log.render_event_log_svg(EVENT_LOG, THEME, for_light_mode=True), "event_log_light.svg"
         ),
+        "city_page_path": _write_city_page(combined_stats.get("heatmap", {})),
         "neural_activity_svg_path_dark": _write_svg(
             neural_activity.render_neural_activity_svg(
                 combined_stats.get("heatmap", {}).get("weeks", []),
@@ -473,13 +489,42 @@ def build_context() -> dict:
                 **link,
                 "pill_svg_path": _write_svg(
                     signal_uplink.render_link_pill_svg(
-                        link["label"], link["icon"], THEME, disabled=link["url"] is None
+                        link["label"],
+                        link["icon"],
+                        THEME,
+                        disabled=link["url"] is None,
+                        primary=link["icon"] == "email",
                     ),
                     f"pill_{link['icon']}.svg",
                 ),
             }
-            for link in SOCIAL_LINKS
+            # Email first: it's the filled primary button, like the hero's main CTA.
+            for link in sorted(SOCIAL_LINKS, key=lambda l: l["icon"] != "email")
         ],
+        "signal_heading_svg_path_dark": _write_svg(
+            signal_uplink.render_signal_heading_svg(), "signal_heading.svg"
+        ),
+        "signal_heading_svg_path_light": _write_svg(
+            signal_uplink.render_signal_heading_svg(for_light_mode=True), "signal_heading_light.svg"
+        ),
+        "signal_status_svg_path_dark": _write_svg(
+            signal_uplink.render_status_bar_svg(), "signal_status.svg"
+        ),
+        "signal_status_svg_path_light": _write_svg(
+            signal_uplink.render_status_bar_svg(for_light_mode=True), "signal_status_light.svg"
+        ),
+        "activity_heading_svg_path_dark": _write_svg(
+            neural_activity.render_activity_heading_svg(), "activity_heading.svg"
+        ),
+        "activity_heading_svg_path_light": _write_svg(
+            neural_activity.render_activity_heading_svg(for_light_mode=True), "activity_heading_light.svg"
+        ),
+        "activity_status_svg_path_dark": _write_svg(
+            neural_activity.render_activity_status_svg(), "activity_status.svg"
+        ),
+        "activity_status_svg_path_light": _write_svg(
+            neural_activity.render_activity_status_svg(for_light_mode=True), "activity_status_light.svg"
+        ),
         "quote_svg_path": _write_svg(quote_card.render_quote_svg(quote, THEME), "quote.svg"),
         "section_headers": {
             name: _write_svg(
@@ -487,18 +532,21 @@ def build_context() -> dict:
             )
             for i, name in enumerate(
                 [
-                    "System Modules",
-                    "LeetCode Stats",
-                    "Event Log",
-                    "Fragmented Data",
-                    "Signal Uplink",
-                    "Neural Activity",
                 ],
-                start=2,  # SEC-1 is the terminal hero, which has no separate header
+                start=2,  # SEC-1 is the terminal hero, which has no separate header;
+                # System Modules (formerly SEC-2) now carries its own bracket-tag +
+                # heading baked into its own SVG, services-list style, so it no
+                # longer uses this generic "SEC-N TITLE" header graphic.
             )
         },
         "build_time": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
         "stat_badges": badges.build_stat_badges(combined_stats, THEME),
+        "stats_strip_svg_path_dark": _write_svg(
+            badges.render_stats_strip_svg(combined_stats, THEME), "stats_strip.svg"
+        ),
+        "stats_strip_svg_path_light": _write_svg(
+            badges.render_stats_strip_svg(combined_stats, THEME, for_light_mode=True), "stats_strip_light.svg"
+        ),
         "theme": THEME,
         **combined_stats,
     }

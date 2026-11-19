@@ -81,3 +81,63 @@ def build_stat_badges(stats: dict, theme_name: str = DEFAULT_THEME) -> list[str]
         badges.append(badge_markdown("LC Rating", rating, theme_name))
 
     return badges
+
+
+# ── Stats strip (replaces the shields.io badge row) ──────────────────────
+import html as _html
+
+from themes import HUD_COLORS
+
+STRIP_W = 820
+STRIP_H = 104
+
+
+def _fmt_stat(value) -> str:
+    if isinstance(value, (int, float)):
+        return f"{value:,.0f}"
+    return _html.escape(str(value))
+
+
+def render_stats_strip_svg(stats: dict, theme_name: str = DEFAULT_THEME, for_light_mode: bool = False) -> str:
+    """
+    One wide chamfered panel with big gold numbers and small mono labels
+    separated by thin dividers - the stats block from the "About" reference,
+    fed with live GitHub and LeetCode numbers. Opaque enough in light mode
+    to keep its white text readable.
+    """
+    gold = HUD_COLORS["modules"]
+    bg = get_theme(theme_name)["label_color"]
+    opacity = 0.96 if for_light_mode else 0.6
+    solved = (stats.get("solved") or {}).get("total", "?")
+    items = [
+        (stats.get("repo_count", "?"), "REPOS"),
+        (stats.get("stars", "?"), "STARS"),
+        (stats.get("followers", "?"), "FOLLOWERS"),
+        (solved, "LEETCODE SOLVED"),
+    ]
+    c = 14
+    pts = [(c, 0), (STRIP_W - c, 0), (STRIP_W, c), (STRIP_W, STRIP_H - c), (STRIP_W - c, STRIP_H),
+           (c, STRIP_H), (0, STRIP_H - c), (0, c)]
+    poly = " ".join(f"{x:.1f},{y:.1f}" for x, y in pts)
+    col_w = STRIP_W / len(items)
+    cells = []
+    for i, (value, label) in enumerate(items):
+        cx = i * col_w + 36
+        if i:
+            cells.append(
+                f'<line x1="{i * col_w:.1f}" y1="22" x2="{i * col_w:.1f}" y2="{STRIP_H - 22}" '
+                f'stroke="white" stroke-opacity="0.12"/>'
+            )
+        cells.append(
+            f'<text x="{cx:.1f}" y="60" font-family="Arial, Helvetica, sans-serif" font-size="40" '
+            f'font-weight="800" fill="{gold}">{_fmt_stat(value)}</text>'
+            f'<text x="{cx:.1f}" y="82" font-family="Consolas, Menlo, monospace" font-size="10" '
+            f'fill="#9a9aa5" letter-spacing="1.5">{label}</text>'
+        )
+    return f"""<svg width="{STRIP_W}" height="{STRIP_H}" viewBox="0 0 {STRIP_W} {STRIP_H}" \
+xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Profile stats">
+  <polygon points="{poly}" fill="#{bg}" fill-opacity="{opacity}" stroke="white" stroke-opacity="0.14"/>
+  <path d="M1 {c + 8} V{c} L{c} 1 H{c + 8} M{STRIP_W - c - 8} {STRIP_H - 1} H{STRIP_W - c} L{STRIP_W - 1} {STRIP_H - c} \
+V{STRIP_H - c - 8}" fill="none" stroke="{gold}" stroke-width="1.6"/>
+  {''.join(cells)}
+</svg>"""

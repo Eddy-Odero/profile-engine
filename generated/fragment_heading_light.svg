@@ -1,0 +1,15 @@
+<svg width="820" height="132" viewBox="0 0 820 132" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Selected work">
+  <defs>
+    <filter id="hudglow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="1.4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter></defs>
+  <text x="0" y="18" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="#FFC84D" letter-spacing="3" filter="url(#hudglow)">[ SELECTED WORK ]</text>
+  <text x="0" y="64" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="800" fill="#10131a" letter-spacing="0.5">CRAFTED DIGITAL</text>
+  <text x="0" y="106" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="800" fill="#FFC84D" letter-spacing="0.5">EXPERIENCES</text>
+  <text x="820" y="74" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#4b5563" text-anchor="end">A curated collection of projects shaped with</text>
+  <text x="820" y="94" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#4b5563" text-anchor="end">strong structure, clean code, and futuristic design.</text>
+</svg>

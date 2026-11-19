@@ -14,12 +14,14 @@
     "PostgreSQL",
     "Docker"
   ],
-  "cursor": " ",
-  "system_message": "> ping github.com... 12ms",
+  "cursor": "_",
+  "system_message": "[OK] all systems caffeinated",
   "quote": "Code never lies, comments sometimes do.",
-  "status": "Coffee Loading...",
+  "status": "Deploying Services",
   "terminal_svg_path_dark": "generated/terminal.svg",
   "terminal_svg_path_light": "generated/terminal_light.svg",
+  "fragment_heading_svg_path_dark": "generated/fragment_heading.svg",
+  "fragment_heading_svg_path_light": "generated/fragment_heading_light.svg",
   "fragment_cards": [
     {
       "name": "SatGate",
@@ -31,8 +33,8 @@
       "language": "TypeScript",
       "stars": 0,
       "forks": 0,
-      "card_svg_path_dark": "generated/fragment_card_0.svg",
-      "card_svg_path_light": "generated/fragment_card_0_light.svg"
+      "card_svg_path": "generated/fragment_card_0.svg",
+      "card_url": "https://satgate-2.onrender.com/"
     },
     {
       "name": "EDU-FLIX",
@@ -44,8 +46,8 @@
       "language": "Go",
       "stars": 0,
       "forks": 0,
-      "card_svg_path_dark": "generated/fragment_card_1.svg",
-      "card_svg_path_light": "generated/fragment_card_1_light.svg"
+      "card_svg_path": "generated/fragment_card_1.svg",
+      "card_url": "https://edu-flix.onrender.com/"
     },
     {
       "name": "profile-engine",
@@ -55,10 +57,10 @@
       "icon": "code",
       "visibility": "public",
       "language": "Python",
-      "stars": 0,
+      "stars": 19,
       "forks": 0,
-      "card_svg_path_dark": "generated/fragment_card_2.svg",
-      "card_svg_path_light": "generated/fragment_card_2_light.svg"
+      "card_svg_path": "generated/fragment_card_2.svg",
+      "card_url": "https://github.com/Eddy-Odero/profile-engine"
     },
     {
       "name": "Maison POS",
@@ -70,22 +72,26 @@
       "language": "JavaScript",
       "stars": 0,
       "forks": 0,
-      "card_svg_path_dark": "generated/fragment_card_3.svg",
-      "card_svg_path_light": "generated/fragment_card_3_light.svg"
+      "card_svg_path": "generated/fragment_card_3.svg",
+      "card_url": "https://tinah-cosmetics.vercel.app/"
     }
   ],
-  "badge_view_path": "generated/badge_view.svg",
-  "badge_code_path": "generated/badge_code.svg",
-  "badge_disabled_path": "generated/badge_disabled.svg",
   "skill_modules_svg_path_dark": "generated/skill_modules.svg",
   "skill_modules_svg_path_light": "generated/skill_modules_light.svg",
   "leetcode_panel_svg_path_dark": "generated/leetcode_panel.svg",
   "leetcode_panel_svg_path_light": "generated/leetcode_panel_light.svg",
   "event_log_svg_path_dark": "generated/event_log.svg",
   "event_log_svg_path_light": "generated/event_log_light.svg",
+  "city_page_path": "generated/city_interactive.html",
   "neural_activity_svg_path_dark": "generated/neural_activity.svg",
   "neural_activity_svg_path_light": "generated/neural_activity_light.svg",
   "social_links": [
+    {
+      "label": "Email",
+      "icon": "email",
+      "url": "mailto:odiwuorodero8948@gmail.com",
+      "pill_svg_path": "generated/pill_email.svg"
+    },
     {
       "label": "Twitter",
       "icon": "twitter",
@@ -103,46 +109,47 @@
       "icon": "website",
       "url": "https://dev.to/edd_odero",
       "pill_svg_path": "generated/pill_website.svg"
-    },
-    {
-      "label": "Email",
-      "icon": "email",
-      "url": "mailto:odiwuorodero8948@gmail.com",
-      "pill_svg_path": "generated/pill_email.svg"
     }
   ],
+  "signal_heading_svg_path_dark": "generated/signal_heading.svg",
+  "signal_heading_svg_path_light": "generated/signal_heading_light.svg",
+  "signal_status_svg_path_dark": "generated/signal_status.svg",
+  "signal_status_svg_path_light": "generated/signal_status_light.svg",
+  "activity_heading_svg_path_dark": "generated/activity_heading.svg",
+  "activity_heading_svg_path_light": "generated/activity_heading_light.svg",
+  "activity_status_svg_path_dark": "generated/activity_status.svg",
+  "activity_status_svg_path_light": "generated/activity_status_light.svg",
   "quote_svg_path": "generated/quote.svg",
-  "section_headers": {
-    "System Modules": "generated/header_2.svg",
-    "LeetCode Stats": "generated/header_3.svg",
-    "Event Log": "generated/header_4.svg",
-    "Fragmented Data": "generated/header_5.svg",
-    "Signal Uplink": "generated/header_6.svg",
-    "Neural Activity": "generated/header_7.svg"
-  },
-  "build_time": "2026-09-09 04:25 UTC",
+  "section_headers": {},
+  "build_time": "2026-11-19 00:59 UTC",
   "stat_badges": [
-    "![Repos: 24](https://img.shields.io/badge/Repos-24-007f8c?style=flat-square&labelColor=07090F)",
-    "![Stars: 37](https://img.shields.io/badge/Stars-37-007f8c?style=flat-square&labelColor=07090F)",
-    "![Followers: 12](https://img.shields.io/badge/Followers-12-007f8c?style=flat-square&labelColor=07090F)",
-    "![LC Solved: 120](https://img.shields.io/badge/LC_Solved-120-007f8c?style=flat-square&labelColor=07090F)"
+    "![Repos: 30](https://img.shields.io/badge/Repos-30-007f8c?style=flat-square&labelColor=07090F)",
+    "![Stars: 22](https://img.shields.io/badge/Stars-22-007f8c?style=flat-square&labelColor=07090F)",
+    "![Followers: 113](https://img.shields.io/badge/Followers-113-007f8c?style=flat-square&labelColor=07090F)",
+    "![LC Solved: 45](https://img.shields.io/badge/LC_Solved-45-007f8c?style=flat-square&labelColor=07090F)"
   ],
+  "stats_strip_svg_path_dark": "generated/stats_strip.svg",
+  "stats_strip_svg_path_light": "generated/stats_strip_light.svg",
   "theme": "hud",
-  "repo_count": 24,
-  "stars": 37,
-  "followers": 12,
+  "repo_count": 30,
+  "stars": 22,
+  "followers": 113,
   "top_languages": [
-    "Go",
     "JavaScript",
-    "Python"
+    "HTML",
+    "Go"
   ],
   "recent_activity": [
-    "pushed to profile-engine"
+    "created Eddy-Odero/ALIOX",
+    "created Eddy-Odero/star-hunters",
+    "created Eddy-Odero/star-hunters",
+    "created Eddy-Odero/star-hunters",
+    "opened a PR on Eddy-Odero/star-hunters"
   ],
   "pinned_repos": [
-    "SatGate",
-    "EDU-FLIX",
-    "lem-in"
+    "profile-engine",
+    "Eddy-Odero",
+    "admin-dashboard-php"
   ],
   "contributions": null,
   "heatmap": {
@@ -622,12 +629,117 @@
     "active_days": 301,
     "total": 751
   },
-  "repo_details": {},
+  "repo_details": {
+    "admin-dashboard-php": {
+      "stars": 0,
+      "forks": 0
+    },
+    "ALIOX": {
+      "stars": 0,
+      "forks": 0
+    },
+    "Blue-talk": {
+      "stars": 0,
+      "forks": 0
+    },
+    "build-applications-w-copilot-agent-mode": {
+      "stars": 0,
+      "forks": 0
+    },
+    "Eddy-Odero": {
+      "stars": 3,
+      "forks": 0
+    },
+    "Fumigation-website": {
+      "stars": 0,
+      "forks": 0
+    },
+    "getting-started-with-github-copilot": {
+      "stars": 0,
+      "forks": 0
+    },
+    "git-reloaded": {
+      "stars": 0,
+      "forks": 0
+    },
+    "Introduction-to-Algorithms-Go": {
+      "stars": 0,
+      "forks": 0
+    },
+    "Introduction-to-Golang-beginner-projects": {
+      "stars": 0,
+      "forks": 1
+    },
+    "Introduction-to-js-beginner": {
+      "stars": 0,
+      "forks": 0
+    },
+    "Netflix": {
+      "stars": 0,
+      "forks": 0
+    },
+    "Point_of_sale": {
+      "stars": 0,
+      "forks": 0
+    },
+    "portfolio": {
+      "stars": 0,
+      "forks": 0
+    },
+    "profile-engine": {
+      "stars": 19,
+      "forks": 0
+    },
+    "Rating-page": {
+      "stars": 0,
+      "forks": 0
+    },
+    "simple-library-": {
+      "stars": 0,
+      "forks": 0
+    },
+    "skills-communicate-using-markdown": {
+      "stars": 0,
+      "forks": 0
+    },
+    "skills-github-pages": {
+      "stars": 0,
+      "forks": 0
+    },
+    "skills-introduction-to-git": {
+      "stars": 0,
+      "forks": 0
+    },
+    "skills-introduction-to-github": {
+      "stars": 0,
+      "forks": 0
+    },
+    "skills-resolve-merge-conflicts": {
+      "stars": 0,
+      "forks": 0
+    },
+    "skills-review-pull-requests": {
+      "stars": 0,
+      "forks": 0
+    },
+    "star-hunters": {
+      "stars": 0,
+      "forks": 0
+    },
+    "Student-management-system": {
+      "stars": 0,
+      "forks": 0
+    },
+    "virtual-cat": {
+      "stars": 0,
+      "forks": 0
+    }
+  },
   "solved": {
-    "total": 120,
-    "easy": 55,
-    "medium": 50,
-    "hard": 15
+    "total": 45,
+    "easy": 12,
+    "medium": 22,
+    "hard": 11
   },
   "rating": null,
   "ranking": null,
