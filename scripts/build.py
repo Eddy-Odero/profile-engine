@@ -340,12 +340,21 @@ def _write_svg(markup: str, filename: str) -> str:
     return f"generated/{filename}"
 
 
+def _city_inputs(heat: dict) -> dict:
+    """Arguments for the city renderer: real daily counts and dates when GitHub provided them."""
+    return dict(
+        weeks=heat.get("week_counts") or heat.get("weeks", []),
+        total_contributions=heat.get("total", 0),
+        current_streak=heat.get("current_streak", 0),
+        longest_streak=heat.get("longest_streak", 0),
+        active_days=heat.get("active_days", 0),
+        week_dates=heat.get("week_dates"),
+    )
+
+
 def _write_city_page(heat: dict) -> str:
     """Interactive companion page for the city (hover/tap tooltips). Not used by the README itself."""
-    svg = neural_activity.render_neural_activity_svg(
-        heat.get("weeks", []), heat.get("total", 0), heat.get("current_streak", 0),
-        heat.get("longest_streak", 0), heat.get("active_days", 0), THEME,
-    )
+    svg = neural_activity.render_neural_activity_svg(**_city_inputs(heat), theme_name=THEME)
     GENERATED_DIR.mkdir(parents=True, exist_ok=True)
     page = neural_activity.render_interactive_html(svg)
     (GENERATED_DIR / "city_interactive.html").write_text(page, encoding="utf-8")
@@ -483,26 +492,11 @@ def build_context() -> dict:
         ),
         "city_page_path": _write_city_page(combined_stats.get("heatmap", {})),
         "neural_activity_svg_path_dark": _write_svg(
-            neural_activity.render_neural_activity_svg(
-                combined_stats.get("heatmap", {}).get("weeks", []),
-                combined_stats.get("heatmap", {}).get("total", 0),
-                combined_stats.get("heatmap", {}).get("current_streak", 0),
-                combined_stats.get("heatmap", {}).get("longest_streak", 0),
-                combined_stats.get("heatmap", {}).get("active_days", 0),
-                THEME,
-            ),
+            neural_activity.render_neural_activity_svg(**_city_inputs(combined_stats.get("heatmap", {})), theme_name=THEME),
             "neural_activity.svg",
         ),
         "neural_activity_svg_path_light": _write_svg(
-            neural_activity.render_neural_activity_svg(
-                combined_stats.get("heatmap", {}).get("weeks", []),
-                combined_stats.get("heatmap", {}).get("total", 0),
-                combined_stats.get("heatmap", {}).get("current_streak", 0),
-                combined_stats.get("heatmap", {}).get("longest_streak", 0),
-                combined_stats.get("heatmap", {}).get("active_days", 0),
-                THEME,
-                for_light_mode=True,
-            ),
+            neural_activity.render_neural_activity_svg(**_city_inputs(combined_stats.get("heatmap", {})), theme_name=THEME, for_light_mode=True),
             "neural_activity_light.svg",
         ),
         "social_links": [

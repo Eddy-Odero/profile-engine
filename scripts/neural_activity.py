@@ -96,6 +96,7 @@ def render_neural_activity_svg(
     theme_name: str = DEFAULT_THEME,
     for_light_mode: bool = False,
     end_date=None,
+    week_dates: list | None = None,
 ) -> str:
     """
     Isometric neon commit city. 52 weeks = 52 buildings on an 8x8 board.
@@ -122,6 +123,16 @@ def render_neural_activity_svg(
     lots = [(i, j) for i in range(_N) for j in range(_N)]
     park_lots = lots[:12]
     placed_wk = {wk: lots[12 + wk] for wk in range(52)}
+
+    # Real calendar weeks: GitHub weeks run Sunday to Saturday, and the newest one ends today.
+    real = [[_dt.date.fromisoformat(d) for d in w] for w in week_dates][-52:] if week_dates else None
+    sunday_now = end - _dt.timedelta(days=(end.weekday() + 1) % 7)
+
+    def _week_span(wk):
+        if real and len(real) == 52 and real[wk]:
+            return min(real[wk]), max(real[wk])
+        start = sunday_now - _dt.timedelta(days=7 * (51 - wk))
+        return start, min(start + _dt.timedelta(days=6), end)
 
     rng = random.Random(5)
     hues_used: set[str] = set()
@@ -281,8 +292,7 @@ def render_neural_activity_svg(
         if rank < 6:
             parts.append(f'<line x1="{tx:.1f}" y1="{ty:.1f}" x2="{tx:.1f}" y2="{ty - 12:.1f}" stroke="#9aa4b8"/>'
                          f'<circle cx="{tx:.1f}" cy="{ty - 12:.1f}" r="1.8" fill="#ff3b3b"><animate attributeName="opacity" values="1;0.1;1" dur="1.5s" begin="-{rank * 0.3:.1f}s" repeatCount="indefinite"/></circle>')
-        ws = end - _dt.timedelta(days=7 * (51 - wk) + 6)
-        we = end - _dt.timedelta(days=7 * (51 - wk))
+        ws, we = _week_span(wk)
         label = f"{ws.strftime('%b')} {ws.day} to {we.strftime('%b')} {we.day}"
         items.append((i + j, f'<g class="bld" tabindex="0" data-week="{label}" data-c="{c}" data-rank="{rank + 1}" '
                              f'data-days="{",".join(str(x) for x in cols[wk])}" data-hue="{hue}">{"".join(parts)}</g>'))
@@ -304,8 +314,7 @@ def render_neural_activity_svg(
     for pos, rank in enumerate(crowns):
         tx, ty, hue = tops[rank]
         wk = order[rank]
-        we = end - _dt.timedelta(days=7 * (51 - wk))
-        ws = we - _dt.timedelta(days=6)
+        ws, we = _week_span(wk)
         lab1 = f"#{rank + 1}  {tot[wk]} COMMITS"
         lab2 = f"{ws.strftime('%b')} {ws.day} to {we.strftime('%b')} {we.day}"
         bw, bh = 104, 30

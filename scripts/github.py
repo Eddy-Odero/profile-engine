@@ -245,6 +245,10 @@ def calendar_to_heatmap(calendar: list[list[dict]]) -> dict:
 
     return {
         "weeks": weeks_levels,
+        # Real numbers for the Commit City: raw daily counts and real calendar dates per week
+        # (GitHub weeks run Sunday to Saturday; the newest week ends today).
+        "week_counts": [[day["contributionCount"] for day in week] for week in calendar],
+        "week_dates": [[day["date"] for day in week] for week in calendar],
         "streak": current_streak,  # kept for backward compat (Dimensional Stats' Max Streak card)
         "current_streak": current_streak,
         "longest_streak": longest_streak,
