@@ -21,14 +21,12 @@
 <br><br>
 
 <a id="s1"></a>
-<a href="#s1"><img src="{{ stats_strip_svg_path_dark }}#gh-dark-mode-only" alt="Stats"></a>
-<a href="#s1"><img src="{{ stats_strip_svg_path_light }}#gh-light-mode-only" alt="Stats"></a>
+<a href="#s1"><picture><source media="(prefers-color-scheme: dark)" srcset="{{ stats_strip_svg_path_dark }}"><source media="(prefers-color-scheme: light)" srcset="{{ stats_strip_svg_path_light }}"><img src="{{ stats_strip_svg_path_light }}" alt="Stats"></picture></a>
 
 <br><br>
 
 <a id="s2"></a>
-<a href="#s2"><img src="{{ skill_modules_svg_path_dark }}#gh-dark-mode-only" alt="System Modules"></a>
-<a href="#s2"><img src="{{ skill_modules_svg_path_light }}#gh-light-mode-only" alt="System Modules"></a>
+<a href="#s2"><picture><source media="(prefers-color-scheme: dark)" srcset="{{ skill_modules_svg_path_dark }}"><source media="(prefers-color-scheme: light)" srcset="{{ skill_modules_svg_path_light }}"><img src="{{ skill_modules_svg_path_light }}" alt="System Modules"></picture></a>
 
 <br><br>
 
@@ -38,20 +36,17 @@
 <br><br>
 
 <a id="s4"></a>
-<a href="#s4"><img src="{{ leetcode_panel_svg_path_dark }}#gh-dark-mode-only" alt="LeetCode Stats"></a>
-<a href="#s4"><img src="{{ leetcode_panel_svg_path_light }}#gh-light-mode-only" alt="LeetCode Stats"></a>
+<a href="#s4"><picture><source media="(prefers-color-scheme: dark)" srcset="{{ leetcode_panel_svg_path_dark }}"><source media="(prefers-color-scheme: light)" srcset="{{ leetcode_panel_svg_path_light }}"><img src="{{ leetcode_panel_svg_path_light }}" alt="LeetCode Stats"></picture></a>
 
 <br><br>
 
 <a id="s5"></a>
-<a href="#s5"><img src="{{ event_log_svg_path_dark }}#gh-dark-mode-only" alt="Event Log"></a>
-<a href="#s5"><img src="{{ event_log_svg_path_light }}#gh-light-mode-only" alt="Event Log"></a>
+<a href="#s5"><picture><source media="(prefers-color-scheme: dark)" srcset="{{ event_log_svg_path_dark }}"><source media="(prefers-color-scheme: light)" srcset="{{ event_log_svg_path_light }}"><img src="{{ event_log_svg_path_light }}" alt="Event Log"></picture></a>
 
 <br><br>
 
 <a id="selected-work"></a>
-<a href="#selected-work"><img src="{{ fragment_heading_svg_path_dark }}#gh-dark-mode-only" alt="Selected Work"></a>
-<a href="#selected-work"><img src="{{ fragment_heading_svg_path_light }}#gh-light-mode-only" alt="Selected Work"></a>
+<a href="#selected-work"><picture><source media="(prefers-color-scheme: dark)" srcset="{{ fragment_heading_svg_path_dark }}"><source media="(prefers-color-scheme: light)" srcset="{{ fragment_heading_svg_path_light }}"><img src="{{ fragment_heading_svg_path_light }}" alt="Selected Work"></picture></a>
 
 </div>
 
@@ -74,34 +69,29 @@
 <br><br>
 
 <a id="signal-uplink"></a>
-<a href="#signal-uplink"><img src="{{ signal_heading_svg_path_dark }}#gh-dark-mode-only" alt="Signal Uplink"></a>
-<a href="#signal-uplink"><img src="{{ signal_heading_svg_path_light }}#gh-light-mode-only" alt="Signal Uplink"></a>
+<a href="#signal-uplink"><picture><source media="(prefers-color-scheme: dark)" srcset="{{ signal_heading_svg_path_dark }}"><source media="(prefers-color-scheme: light)" srcset="{{ signal_heading_svg_path_light }}"><img src="{{ signal_heading_svg_path_light }}" alt="Signal Uplink"></picture></a>
 
 <table align="center" width="820" cellpadding="0" cellspacing="0" border="0"><tr><td align="left">
 {% for link in social_links %}{% if link.url %}<a href="{{ link.url }}"><img src="{{ link.pill_svg_path }}" alt="{{ link.label }}"></a>&nbsp;{% else %}<img src="{{ link.pill_svg_path }}" alt="{{ link.label }}">&nbsp;{% endif %}{% endfor %}
 </td></tr></table>
 
 <a id="s6"></a>
-<a href="#s6"><img src="{{ signal_status_svg_path_dark }}#gh-dark-mode-only" alt="Status"></a>
-<a href="#s6"><img src="{{ signal_status_svg_path_light }}#gh-light-mode-only" alt="Status"></a>
+<a href="#s6"><picture><source media="(prefers-color-scheme: dark)" srcset="{{ signal_status_svg_path_dark }}"><source media="(prefers-color-scheme: light)" srcset="{{ signal_status_svg_path_light }}"><img src="{{ signal_status_svg_path_light }}" alt="Status"></picture></a>
 
 <br><br>
 
 <a id="s7"></a>
-<a href="#s7"><img src="{{ activity_heading_svg_path_dark }}#gh-dark-mode-only" alt="Neural Activity"></a>
-<a href="#s7"><img src="{{ activity_heading_svg_path_light }}#gh-light-mode-only" alt="Neural Activity"></a>
+<a href="#s7"><picture><source media="(prefers-color-scheme: dark)" srcset="{{ activity_heading_svg_path_dark }}"><source media="(prefers-color-scheme: light)" srcset="{{ activity_heading_svg_path_light }}"><img src="{{ activity_heading_svg_path_light }}" alt="Neural Activity"></picture></a>
 
 <a id="s8"></a>
-<a href="#s8"><img src="{{ neural_activity_svg_path_dark }}#gh-dark-mode-only" alt="Neural Activity"></a>
-<a href="#s8"><img src="{{ neural_activity_svg_path_light }}#gh-light-mode-only" alt="Neural Activity"></a>
+<a href="#s8"><picture><source media="(prefers-color-scheme: dark)" srcset="{{ neural_activity_svg_path_dark }}"><source media="(prefers-color-scheme: light)" srcset="{{ neural_activity_svg_path_light }}"><img src="{{ neural_activity_svg_path_light }}" alt="Neural Activity"></picture></a>
 
 <table align="center" width="820" cellpadding="0" cellspacing="0" border="0"><tr><td align="left">
 <a href="{{ city_page_url }}"><img src="{{ cta_city_svg_path }}" alt="Open interactive city" width="250"></a>&nbsp;&nbsp;<sub>click any building to see that week's commits</sub>
 </td></tr></table>
 
 <a id="s9"></a>
-<a href="#s9"><img src="{{ activity_status_svg_path_dark }}#gh-dark-mode-only" alt="Status"></a>
-<a href="#s9"><img src="{{ activity_status_svg_path_light }}#gh-light-mode-only" alt="Status"></a>
+<a href="#s9"><picture><source media="(prefers-color-scheme: dark)" srcset="{{ activity_status_svg_path_dark }}"><source media="(prefers-color-scheme: light)" srcset="{{ activity_status_svg_path_light }}"><img src="{{ activity_status_svg_path_light }}" alt="Status"></picture></a>
 
 </div>
 

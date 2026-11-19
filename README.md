@@ -18,14 +18,12 @@
 <br><br>
 
 <a id="s1"></a>
-<a href="#s1"><img src="generated/stats_strip.svg#gh-dark-mode-only" alt="Stats"></a>
-<a href="#s1"><img src="generated/stats_strip_light.svg#gh-light-mode-only" alt="Stats"></a>
+<a href="#s1"><picture><source media="(prefers-color-scheme: dark)" srcset="generated/stats_strip.svg"><source media="(prefers-color-scheme: light)" srcset="generated/stats_strip_light.svg"><img src="generated/stats_strip_light.svg" alt="Stats"></picture></a>
 
 <br><br>
 
 <a id="s2"></a>
-<a href="#s2"><img src="generated/skill_modules.svg#gh-dark-mode-only" alt="System Modules"></a>
-<a href="#s2"><img src="generated/skill_modules_light.svg#gh-light-mode-only" alt="System Modules"></a>
+<a href="#s2"><picture><source media="(prefers-color-scheme: dark)" srcset="generated/skill_modules.svg"><source media="(prefers-color-scheme: light)" srcset="generated/skill_modules_light.svg"><img src="generated/skill_modules_light.svg" alt="System Modules"></picture></a>
 
 <br><br>
 
@@ -35,20 +33,17 @@
 <br><br>
 
 <a id="s4"></a>
-<a href="#s4"><img src="generated/leetcode_panel.svg#gh-dark-mode-only" alt="LeetCode Stats"></a>
-<a href="#s4"><img src="generated/leetcode_panel_light.svg#gh-light-mode-only" alt="LeetCode Stats"></a>
+<a href="#s4"><picture><source media="(prefers-color-scheme: dark)" srcset="generated/leetcode_panel.svg"><source media="(prefers-color-scheme: light)" srcset="generated/leetcode_panel_light.svg"><img src="generated/leetcode_panel_light.svg" alt="LeetCode Stats"></picture></a>
 
 <br><br>
 
 <a id="s5"></a>
-<a href="#s5"><img src="generated/event_log.svg#gh-dark-mode-only" alt="Event Log"></a>
-<a href="#s5"><img src="generated/event_log_light.svg#gh-light-mode-only" alt="Event Log"></a>
+<a href="#s5"><picture><source media="(prefers-color-scheme: dark)" srcset="generated/event_log.svg"><source media="(prefers-color-scheme: light)" srcset="generated/event_log_light.svg"><img src="generated/event_log_light.svg" alt="Event Log"></picture></a>
 
 <br><br>
 
 <a id="selected-work"></a>
-<a href="#selected-work"><img src="generated/fragment_heading.svg#gh-dark-mode-only" alt="Selected Work"></a>
-<a href="#selected-work"><img src="generated/fragment_heading_light.svg#gh-light-mode-only" alt="Selected Work"></a>
+<a href="#selected-work"><picture><source media="(prefers-color-scheme: dark)" srcset="generated/fragment_heading.svg"><source media="(prefers-color-scheme: light)" srcset="generated/fragment_heading_light.svg"><img src="generated/fragment_heading_light.svg" alt="Selected Work"></picture></a>
 
 </div>
 
@@ -78,34 +73,29 @@
 <br><br>
 
 <a id="signal-uplink"></a>
-<a href="#signal-uplink"><img src="generated/signal_heading.svg#gh-dark-mode-only" alt="Signal Uplink"></a>
-<a href="#signal-uplink"><img src="generated/signal_heading_light.svg#gh-light-mode-only" alt="Signal Uplink"></a>
+<a href="#signal-uplink"><picture><source media="(prefers-color-scheme: dark)" srcset="generated/signal_heading.svg"><source media="(prefers-color-scheme: light)" srcset="generated/signal_heading_light.svg"><img src="generated/signal_heading_light.svg" alt="Signal Uplink"></picture></a>
 
 <table align="center" width="820" cellpadding="0" cellspacing="0" border="0"><tr><td align="left">
 <a href="mailto:odiwuorodero8948@gmail.com"><img src="generated/pill_email.svg" alt="Email"></a>&nbsp;<a href="https://x.com/savvyoriah48"><img src="generated/pill_twitter.svg" alt="Twitter"></a>&nbsp;<a href="https://www.linkedin.com/in/eddy-odero-7b3332346/"><img src="generated/pill_linkedin.svg" alt="LinkedIn"></a>&nbsp;<a href="https://dev.to/edd_odero"><img src="generated/pill_website.svg" alt="Dev.to"></a>&nbsp;</td></tr></table>
 
 <a id="s6"></a>
-<a href="#s6"><img src="generated/signal_status.svg#gh-dark-mode-only" alt="Status"></a>
-<a href="#s6"><img src="generated/signal_status_light.svg#gh-light-mode-only" alt="Status"></a>
+<a href="#s6"><picture><source media="(prefers-color-scheme: dark)" srcset="generated/signal_status.svg"><source media="(prefers-color-scheme: light)" srcset="generated/signal_status_light.svg"><img src="generated/signal_status_light.svg" alt="Status"></picture></a>
 
 <br><br>
 
 <a id="s7"></a>
-<a href="#s7"><img src="generated/activity_heading.svg#gh-dark-mode-only" alt="Neural Activity"></a>
-<a href="#s7"><img src="generated/activity_heading_light.svg#gh-light-mode-only" alt="Neural Activity"></a>
+<a href="#s7"><picture><source media="(prefers-color-scheme: dark)" srcset="generated/activity_heading.svg"><source media="(prefers-color-scheme: light)" srcset="generated/activity_heading_light.svg"><img src="generated/activity_heading_light.svg" alt="Neural Activity"></picture></a>
 
 <a id="s8"></a>
-<a href="#s8"><img src="generated/neural_activity.svg#gh-dark-mode-only" alt="Neural Activity"></a>
-<a href="#s8"><img src="generated/neural_activity_light.svg#gh-light-mode-only" alt="Neural Activity"></a>
+<a href="#s8"><picture><source media="(prefers-color-scheme: dark)" srcset="generated/neural_activity.svg"><source media="(prefers-color-scheme: light)" srcset="generated/neural_activity_light.svg"><img src="generated/neural_activity_light.svg" alt="Neural Activity"></picture></a>
 
 <table align="center" width="820" cellpadding="0" cellspacing="0" border="0"><tr><td align="left">
 <a href="https://eddy-odero.github.io/profile-engine/city.html"><img src="generated/cta_city.svg" alt="Open interactive city" width="250"></a>&nbsp;&nbsp;<sub>click any building to see that week's commits</sub>
 </td></tr></table>
 
 <a id="s9"></a>
-<a href="#s9"><img src="generated/activity_status.svg#gh-dark-mode-only" alt="Status"></a>
-<a href="#s9"><img src="generated/activity_status_light.svg#gh-light-mode-only" alt="Status"></a>
+<a href="#s9"><picture><source media="(prefers-color-scheme: dark)" srcset="generated/activity_status.svg"><source media="(prefers-color-scheme: light)" srcset="generated/activity_status_light.svg"><img src="generated/activity_status_light.svg" alt="Status"></picture></a>
 
 </div>
 
-<sub>Last rendered: 2026-11-19 05:43 UTC · theme: hud · auto-generated, do not edit by hand</sub>
+<sub>Last rendered: 2026-11-19 07:54 UTC · theme: hud · auto-generated, do not edit by hand</sub>
