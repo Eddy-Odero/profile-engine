@@ -1,43 +1,57 @@
 <div align="center">
 
-<img src="{{ terminal_svg_path_dark }}#gh-dark-mode-only" alt="{{ username }} terminal">
-<img src="{{ terminal_svg_path_light }}#gh-light-mode-only" alt="{{ username }} terminal">
-
-<table align="center" width="820" cellpadding="0" cellspacing="0" border="0"><tr><td align="left">
-<a href="#selected-work"><img src="{{ cta_work_svg_path }}" alt="See my work" width="170"></a>&nbsp;&nbsp;<a href="#signal-uplink"><img src="{{ cta_hello_svg_path }}" alt="Say hello" width="170"></a>
-</td></tr></table>
+{% macro pic(n, href) -%}
+<a href="{{ href }}"><picture><source media="(prefers-color-scheme: dark)" srcset="{{ hero.dark[n].path }}"><source media="(prefers-color-scheme: light)" srcset="{{ hero.light[n].path }}"><img align="top" src="{{ hero.light[n].path }}" width="{{ hero.dark[n].w }}" height="{{ hero.dark[n].h }}" alt="{{ username }}"></picture></a>
+{%- endmacro %}
+<a id="top"></a>
+<table align="center" width="820" cellpadding="0" cellspacing="0" border="0">
+<tr><td colspan="5" valign="top">{{ pic('top', '#top') }}</td></tr>
+<tr>
+<td valign="top">{{ pic('a', '#top') }}</td>
+<td valign="top">{{ pic('work', '#selected-work') }}</td>
+<td valign="top">{{ pic('gap', '#top') }}</td>
+<td valign="top">{{ pic('hello', '#signal-uplink') }}</td>
+<td valign="top">{{ pic('rest', '#top') }}</td>
+</tr>
+<tr><td colspan="5" valign="top">{{ pic('bottom', '#top') }}</td></tr>
+</table>
 
 <sub>~ live session · {{ username }}@github · re-renders every build ~</sub>
 
 <br><br>
 
-<img src="{{ stats_strip_svg_path_dark }}#gh-dark-mode-only" alt="Stats">
-<img src="{{ stats_strip_svg_path_light }}#gh-light-mode-only" alt="Stats">
+<a id="s1"></a>
+<a href="#s1"><img src="{{ stats_strip_svg_path_dark }}#gh-dark-mode-only" alt="Stats"></a>
+<a href="#s1"><img src="{{ stats_strip_svg_path_light }}#gh-light-mode-only" alt="Stats"></a>
 
 <br><br>
 
-<img src="{{ skill_modules_svg_path_dark }}#gh-dark-mode-only" alt="System Modules">
-<img src="{{ skill_modules_svg_path_light }}#gh-light-mode-only" alt="System Modules">
+<a id="s2"></a>
+<a href="#s2"><img src="{{ skill_modules_svg_path_dark }}#gh-dark-mode-only" alt="System Modules"></a>
+<a href="#s2"><img src="{{ skill_modules_svg_path_light }}#gh-light-mode-only" alt="System Modules"></a>
 
 <br><br>
 
-<img src="{{ quote_svg_path }}" alt="Quote">
+<a id="s3"></a>
+<a href="#s3"><img src="{{ quote_svg_path }}" alt="Quote"></a>
 
 <br><br>
 
-<img src="{{ leetcode_panel_svg_path_dark }}#gh-dark-mode-only" alt="LeetCode Stats">
-<img src="{{ leetcode_panel_svg_path_light }}#gh-light-mode-only" alt="LeetCode Stats">
+<a id="s4"></a>
+<a href="#s4"><img src="{{ leetcode_panel_svg_path_dark }}#gh-dark-mode-only" alt="LeetCode Stats"></a>
+<a href="#s4"><img src="{{ leetcode_panel_svg_path_light }}#gh-light-mode-only" alt="LeetCode Stats"></a>
 
 <br><br>
 
-<img src="{{ event_log_svg_path_dark }}#gh-dark-mode-only" alt="Event Log">
-<img src="{{ event_log_svg_path_light }}#gh-light-mode-only" alt="Event Log">
+<a id="s5"></a>
+<a href="#s5"><img src="{{ event_log_svg_path_dark }}#gh-dark-mode-only" alt="Event Log"></a>
+<a href="#s5"><img src="{{ event_log_svg_path_light }}#gh-light-mode-only" alt="Event Log"></a>
 
 <br><br>
 
 <a id="selected-work"></a>
-<img src="{{ fragment_heading_svg_path_dark }}#gh-dark-mode-only" alt="Selected Work">
-<img src="{{ fragment_heading_svg_path_light }}#gh-light-mode-only" alt="Selected Work">
+<a href="#selected-work"><img src="{{ fragment_heading_svg_path_dark }}#gh-dark-mode-only" alt="Selected Work"></a>
+<a href="#selected-work"><img src="{{ fragment_heading_svg_path_light }}#gh-light-mode-only" alt="Selected Work"></a>
 
 </div>
 
@@ -60,30 +74,34 @@
 <br><br>
 
 <a id="signal-uplink"></a>
-<img src="{{ signal_heading_svg_path_dark }}#gh-dark-mode-only" alt="Signal Uplink">
-<img src="{{ signal_heading_svg_path_light }}#gh-light-mode-only" alt="Signal Uplink">
+<a href="#signal-uplink"><img src="{{ signal_heading_svg_path_dark }}#gh-dark-mode-only" alt="Signal Uplink"></a>
+<a href="#signal-uplink"><img src="{{ signal_heading_svg_path_light }}#gh-light-mode-only" alt="Signal Uplink"></a>
 
 <table align="center" width="820" cellpadding="0" cellspacing="0" border="0"><tr><td align="left">
 {% for link in social_links %}{% if link.url %}<a href="{{ link.url }}"><img src="{{ link.pill_svg_path }}" alt="{{ link.label }}"></a>&nbsp;{% else %}<img src="{{ link.pill_svg_path }}" alt="{{ link.label }}">&nbsp;{% endif %}{% endfor %}
 </td></tr></table>
 
-<img src="{{ signal_status_svg_path_dark }}#gh-dark-mode-only" alt="Status">
-<img src="{{ signal_status_svg_path_light }}#gh-light-mode-only" alt="Status">
+<a id="s6"></a>
+<a href="#s6"><img src="{{ signal_status_svg_path_dark }}#gh-dark-mode-only" alt="Status"></a>
+<a href="#s6"><img src="{{ signal_status_svg_path_light }}#gh-light-mode-only" alt="Status"></a>
 
 <br><br>
 
-<img src="{{ activity_heading_svg_path_dark }}#gh-dark-mode-only" alt="Neural Activity">
-<img src="{{ activity_heading_svg_path_light }}#gh-light-mode-only" alt="Neural Activity">
+<a id="s7"></a>
+<a href="#s7"><img src="{{ activity_heading_svg_path_dark }}#gh-dark-mode-only" alt="Neural Activity"></a>
+<a href="#s7"><img src="{{ activity_heading_svg_path_light }}#gh-light-mode-only" alt="Neural Activity"></a>
 
-<img src="{{ neural_activity_svg_path_dark }}#gh-dark-mode-only" alt="Neural Activity">
-<img src="{{ neural_activity_svg_path_light }}#gh-light-mode-only" alt="Neural Activity">
+<a id="s8"></a>
+<a href="#s8"><img src="{{ neural_activity_svg_path_dark }}#gh-dark-mode-only" alt="Neural Activity"></a>
+<a href="#s8"><img src="{{ neural_activity_svg_path_light }}#gh-light-mode-only" alt="Neural Activity"></a>
 
 <table align="center" width="820" cellpadding="0" cellspacing="0" border="0"><tr><td align="left">
 <a href="{{ city_page_url }}"><img src="{{ cta_city_svg_path }}" alt="Open interactive city" width="250"></a>&nbsp;&nbsp;<sub>click any building to see that week's commits</sub>
 </td></tr></table>
 
-<img src="{{ activity_status_svg_path_dark }}#gh-dark-mode-only" alt="Status">
-<img src="{{ activity_status_svg_path_light }}#gh-light-mode-only" alt="Status">
+<a id="s9"></a>
+<a href="#s9"><img src="{{ activity_status_svg_path_dark }}#gh-dark-mode-only" alt="Status"></a>
+<a href="#s9"><img src="{{ activity_status_svg_path_light }}#gh-light-mode-only" alt="Status"></a>
 
 </div>
 

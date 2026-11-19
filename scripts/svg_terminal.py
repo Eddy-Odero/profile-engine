@@ -510,6 +510,7 @@ def render_hero_svg(
     stats: dict,
     theme_name: str = DEFAULT_THEME,
     for_light_mode: bool = False,
+    crop: tuple | None = None,
 ) -> str:
     """
     The README's top section in the "Design Beyond the Product" layout:
@@ -618,7 +619,12 @@ def render_hero_svg(
   .slice {{ animation: gl-s {GLITCH_LOOP_SECONDS}s linear infinite; opacity: 0; }}
 {reveal}</style>"""
 
-    return f"""<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}" xmlns="http://www.w3.org/2000/svg" \
+    if crop:  # draw only a rectangle of the hero (used to slice it into linkable pieces)
+        cx0, cy0, cw0, ch0 = crop
+        head = f'<svg width="{cw0}" height="{ch0}" viewBox="{cx0} {cy0} {cw0} {ch0}"'
+    else:
+        head = f'<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}"'
+    return f"""{head} xmlns="http://www.w3.org/2000/svg" \
 role="img" aria-label="{_esc(username)} profile">
   {css}
   <defs>
@@ -652,9 +658,27 @@ fill="white" letter-spacing="0.5">THE BASICS</text>
   <text x="{lx}" y="250" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="800" \
 fill="{HERO_GOLD}" letter-spacing="0.5">SHIP IT</text>
   {para_svg}
+  {_hero_button(lx, btn_y, 128, "SEE MY WORK", True)}
+  {_hero_button(lx + 140, btn_y, 140, "SAY HELLO", False)}
   {portrait}
   {status_bar}
   <g clip-path="url(#heroClip)">
     <rect class="scan-band" x="0" y="{-SCAN_BAND_HEIGHT}" width="{w}" height="{SCAN_BAND_HEIGHT}" fill="url(#scanGrad)"/>
   </g>
 </svg>"""
+
+
+def hero_button_row(stats: dict) -> tuple[int, int]:
+    """(y, height) of the hero's button row, matching render_hero_svg's layout."""
+    role = stats.get("role", "Full-Stack Developer")
+    location = stats.get("location", "")
+    para = _wrap_words(
+        f"I am a {role.lower()} from {location}. I build fast Go backends, clean interfaces and "
+        f"tools that ship, from hackathon sprints to production systems.",
+        56,
+    )
+    return 286 + len(para) * 19 + 12, 40
+
+
+# x edges of the button row cells: margin | SEE MY WORK | gap | SAY HELLO | rest
+HERO_CELL_EDGES = (0, 52, 180, 192, 332, HERO_W)
