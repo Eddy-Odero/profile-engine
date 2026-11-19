@@ -15,8 +15,8 @@
     "Docker"
   ],
   "cursor": "_",
-  "system_message": "segmentation fault (core dumped) - just kidding",
-  "quote": "Make it work, make it right, make it fast.",
+  "system_message": "[INFO] compiling thoughts.go",
+  "quote": "The best error message is the one that never shows up.",
   "status": "Coffee Loading...",
   "terminal_svg_path_dark": "generated/terminal.svg",
   "terminal_svg_path_light": "generated/terminal_light.svg",
@@ -57,7 +57,7 @@
       "icon": "code",
       "visibility": "public",
       "language": "Python",
-      "stars": 19,
+      "stars": 0,
       "forks": 0,
       "card_svg_path": "generated/fragment_card_2.svg",
       "card_url": "https://github.com/Eddy-Odero/profile-engine"
@@ -123,35 +123,31 @@
   "activity_status_svg_path_light": "generated/activity_status_light.svg",
   "quote_svg_path": "generated/quote.svg",
   "section_headers": {},
-  "build_time": "2026-11-19 05:47 UTC",
+  "build_time": "2026-11-19 01:31 UTC",
   "stat_badges": [
-    "![Repos: 30](https://img.shields.io/badge/Repos-30-007f8c?style=flat-square&labelColor=07090F)",
-    "![Stars: 22](https://img.shields.io/badge/Stars-22-007f8c?style=flat-square&labelColor=07090F)",
-    "![Followers: 113](https://img.shields.io/badge/Followers-113-007f8c?style=flat-square&labelColor=07090F)",
-    "![LC Solved: 45](https://img.shields.io/badge/LC_Solved-45-007f8c?style=flat-square&labelColor=07090F)"
+    "![Repos: 24](https://img.shields.io/badge/Repos-24-007f8c?style=flat-square&labelColor=07090F)",
+    "![Stars: 37](https://img.shields.io/badge/Stars-37-007f8c?style=flat-square&labelColor=07090F)",
+    "![Followers: 12](https://img.shields.io/badge/Followers-12-007f8c?style=flat-square&labelColor=07090F)",
+    "![LC Solved: 120](https://img.shields.io/badge/LC_Solved-120-007f8c?style=flat-square&labelColor=07090F)"
   ],
   "stats_strip_svg_path_dark": "generated/stats_strip.svg",
   "stats_strip_svg_path_light": "generated/stats_strip_light.svg",
   "theme": "hud",
-  "repo_count": 30,
-  "stars": 22,
-  "followers": 113,
+  "repo_count": 24,
+  "stars": 37,
+  "followers": 12,
   "top_languages": [
-    "HTML",
+    "Go",
     "JavaScript",
-    "Go"
+    "Python"
   ],
   "recent_activity": [
-    "pushed to Eddy-Odero/Eddy-Odero",
-    "pushed to Eddy-Odero/Eddy-Odero",
-    "created Eddy-Odero/ALIOX",
-    "created Eddy-Odero/star-hunters",
-    "created Eddy-Odero/star-hunters"
+    "pushed to profile-engine"
   ],
   "pinned_repos": [
-    "profile-engine",
-    "Eddy-Odero",
-    "admin-dashboard-php"
+    "SatGate",
+    "EDU-FLIX",
+    "lem-in"
   ],
   "contributions": null,
   "heatmap": {
@@ -631,117 +627,12 @@
     "active_days": 301,
     "total": 751
   },
-  "repo_details": {
-    "admin-dashboard-php": {
-      "stars": 0,
-      "forks": 0
-    },
-    "ALIOX": {
-      "stars": 0,
-      "forks": 0
-    },
-    "Blue-talk": {
-      "stars": 0,
-      "forks": 0
-    },
-    "build-applications-w-copilot-agent-mode": {
-      "stars": 0,
-      "forks": 0
-    },
-    "Eddy-Odero": {
-      "stars": 3,
-      "forks": 0
-    },
-    "Fumigation-website": {
-      "stars": 0,
-      "forks": 0
-    },
-    "getting-started-with-github-copilot": {
-      "stars": 0,
-      "forks": 0
-    },
-    "git-reloaded": {
-      "stars": 0,
-      "forks": 0
-    },
-    "Introduction-to-Algorithms-Go": {
-      "stars": 0,
-      "forks": 0
-    },
-    "Introduction-to-Golang-beginner-projects": {
-      "stars": 0,
-      "forks": 1
-    },
-    "Introduction-to-js-beginner": {
-      "stars": 0,
-      "forks": 0
-    },
-    "Netflix": {
-      "stars": 0,
-      "forks": 0
-    },
-    "Point_of_sale": {
-      "stars": 0,
-      "forks": 0
-    },
-    "portfolio": {
-      "stars": 0,
-      "forks": 0
-    },
-    "profile-engine": {
-      "stars": 19,
-      "forks": 0
-    },
-    "Rating-page": {
-      "stars": 0,
-      "forks": 0
-    },
-    "simple-library-": {
-      "stars": 0,
-      "forks": 0
-    },
-    "skills-communicate-using-markdown": {
-      "stars": 0,
-      "forks": 0
-    },
-    "skills-github-pages": {
-      "stars": 0,
-      "forks": 0
-    },
-    "skills-introduction-to-git": {
-      "stars": 0,
-      "forks": 0
-    },
-    "skills-introduction-to-github": {
-      "stars": 0,
-      "forks": 0
-    },
-    "skills-resolve-merge-conflicts": {
-      "stars": 0,
-      "forks": 0
-    },
-    "skills-review-pull-requests": {
-      "stars": 0,
-      "forks": 0
-    },
-    "star-hunters": {
-      "stars": 0,
-      "forks": 0
-    },
-    "Student-management-system": {
-      "stars": 0,
-      "forks": 0
-    },
-    "virtual-cat": {
-      "stars": 0,
-      "forks": 0
-    }
-  },
+  "repo_details": {},
   "solved": {
-    "total": 45,
-    "easy": 12,
-    "medium": 22,
-    "hard": 11
+    "total": 120,
+    "easy": 55,
+    "medium": 50,
+    "hard": 15
   },
   "rating": null,
   "ranking": null,
