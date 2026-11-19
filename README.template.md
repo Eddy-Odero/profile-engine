@@ -1,12 +1,7 @@
 <div align="center">
 
-{% macro pic(n, href) -%}
-<a href="{{ href }}"><picture><source media="(prefers-color-scheme: dark)" srcset="{{ hero.dark[n].path }}"><source media="(prefers-color-scheme: light)" srcset="{{ hero.light[n].path }}"><img align="top" src="{{ hero.light[n].path }}" width="{{ hero.dark[n].w }}" height="{{ hero.dark[n].h }}" alt="{{ username }}"></picture></a>
-{%- endmacro %}
 <a id="top"></a>
-{{ pic('top', '#top') }}<br>
-{{ pic('a', '#top') }}{{ pic('work', '#selected-work') }}{{ pic('gap', '#top') }}{{ pic('hello', '#signal-uplink') }}{{ pic('rest', '#top') }}<br>
-{{ pic('bottom', '#top') }}
+<a href="#top"><picture><source media="(prefers-color-scheme: dark)" srcset="{{ terminal_svg_path_dark }}"><source media="(prefers-color-scheme: light)" srcset="{{ terminal_svg_path_light }}"><img src="{{ terminal_svg_path_light }}" alt="{{ username }}"></picture></a>
 
 <sub>~ live session · {{ username }}@github · re-renders every build ~</sub>
 
@@ -37,7 +32,7 @@
 
 <br><br>
 
-<a id="selected-work"></a>
+<a id="selected-work" name="selected-work"></a>
 <a href="#selected-work"><picture><source media="(prefers-color-scheme: dark)" srcset="{{ fragment_heading_svg_path_dark }}"><source media="(prefers-color-scheme: light)" srcset="{{ fragment_heading_svg_path_light }}"><img src="{{ fragment_heading_svg_path_light }}" alt="Selected Work"></picture></a>
 
 <br>
@@ -48,7 +43,7 @@
 
 <br><br>
 
-<a id="signal-uplink"></a>
+<a id="signal-uplink" name="signal-uplink"></a>
 <a href="#signal-uplink"><picture><source media="(prefers-color-scheme: dark)" srcset="{{ signal_heading_svg_path_dark }}"><source media="(prefers-color-scheme: light)" srcset="{{ signal_heading_svg_path_light }}"><img src="{{ signal_heading_svg_path_light }}" alt="Signal Uplink"></picture></a>
 
 {% for link in social_links %}{% if link.url %}<a href="{{ link.url }}"><img align="top" src="{{ link.pill_svg_path }}" alt="{{ link.label }}"></a>{% else %}<img align="top" src="{{ link.pill_svg_path }}" alt="{{ link.label }}">{% endif %}{% endfor %}{% if pill_spacer_svg_path %}<img align="top" src="{{ pill_spacer_svg_path }}" alt="">{% endif %}

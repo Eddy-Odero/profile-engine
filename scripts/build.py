@@ -382,18 +382,6 @@ def build_terminal_svg(
     )
     dark_svg = svg_terminal.render_hero_svg(**hero_kwargs, for_light_mode=False)
     light_svg = svg_terminal.render_hero_svg(**hero_kwargs, for_light_mode=True)
-    # Slice the hero into pieces so the two buttons can be real links:
-    # top band, a row of cells (margin | button | gap | button | rest), bottom band.
-    by, bh = svg_terminal.hero_button_row(common_kwargs["stats"])
-    edges = svg_terminal.HERO_CELL_EDGES
-    W, H = svg_terminal.HERO_W, svg_terminal.HERO_H
-    for mode, light in (("dark", False), ("light", True)):
-        pieces = {"top": (0, 0, W, by), "bottom": (0, by + bh, W, H - by - bh)}
-        for k, name in enumerate(["a", "work", "gap", "hello", "rest"]):
-            pieces[name] = (edges[k], by, edges[k + 1] - edges[k], bh)
-        for name, crop in pieces.items():
-            svg = svg_terminal.render_hero_svg(**hero_kwargs, for_light_mode=light, crop=crop)
-            HERO_SLICES.setdefault(mode, {})[name] = {"path": _write_svg(svg, f"hero_{name}_{mode}.svg"), "w": crop[2], "h": crop[3]}
     return _write_svg(dark_svg, "terminal.svg"), _write_svg(light_svg, "terminal_light.svg")
 
 
@@ -440,7 +428,6 @@ def build_context() -> dict:
             avatar_ascii, boot_sequence, system_message, status, combined_stats
         ))[0],
         "terminal_svg_path_light": _terminal_paths[1],
-        "hero": HERO_SLICES,
         # Projects and Fragmented Data were the same real project list at two
         # levels of detail - kept only Fragmented Data (the ribbon+stats
         # version) per direct request, so the plain-card Projects section
@@ -485,6 +472,7 @@ def build_context() -> dict:
             event_log.render_event_log_svg(EVENT_LOG, THEME, for_light_mode=True), "event_log_light.svg"
         ),
         "cta_work_svg_path": _write_svg(signal_uplink.render_cta_button_svg("See my work", True), "cta_work.svg"),
+        "cta_spacer_svg_path": _write_svg(signal_uplink.render_spacer_svg(820 - 340, 46), "cta_spacer.svg"),
         "cta_hello_svg_path": _write_svg(signal_uplink.render_cta_button_svg("Say hello", False), "cta_hello.svg"),
         "cta_city_svg_path": _write_svg(signal_uplink.render_cta_button_svg("Open interactive city", False, 250), "cta_city.svg"),
         "city_page_url": CITY_PAGE_URL,

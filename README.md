@@ -1,9 +1,7 @@
 <div align="center">
 
 <a id="top"></a>
-<a href="#top"><picture><source media="(prefers-color-scheme: dark)" srcset="generated/hero_top_dark.svg"><source media="(prefers-color-scheme: light)" srcset="generated/hero_top_light.svg"><img align="top" src="generated/hero_top_light.svg" width="820" height="355" alt="Eddy Odero"></picture></a><br>
-<a href="#top"><picture><source media="(prefers-color-scheme: dark)" srcset="generated/hero_a_dark.svg"><source media="(prefers-color-scheme: light)" srcset="generated/hero_a_light.svg"><img align="top" src="generated/hero_a_light.svg" width="52" height="40" alt="Eddy Odero"></picture></a><a href="#selected-work"><picture><source media="(prefers-color-scheme: dark)" srcset="generated/hero_work_dark.svg"><source media="(prefers-color-scheme: light)" srcset="generated/hero_work_light.svg"><img align="top" src="generated/hero_work_light.svg" width="128" height="40" alt="Eddy Odero"></picture></a><a href="#top"><picture><source media="(prefers-color-scheme: dark)" srcset="generated/hero_gap_dark.svg"><source media="(prefers-color-scheme: light)" srcset="generated/hero_gap_light.svg"><img align="top" src="generated/hero_gap_light.svg" width="12" height="40" alt="Eddy Odero"></picture></a><a href="#signal-uplink"><picture><source media="(prefers-color-scheme: dark)" srcset="generated/hero_hello_dark.svg"><source media="(prefers-color-scheme: light)" srcset="generated/hero_hello_light.svg"><img align="top" src="generated/hero_hello_light.svg" width="140" height="40" alt="Eddy Odero"></picture></a><a href="#top"><picture><source media="(prefers-color-scheme: dark)" srcset="generated/hero_rest_dark.svg"><source media="(prefers-color-scheme: light)" srcset="generated/hero_rest_light.svg"><img align="top" src="generated/hero_rest_light.svg" width="488" height="40" alt="Eddy Odero"></picture></a><br>
-<a href="#top"><picture><source media="(prefers-color-scheme: dark)" srcset="generated/hero_bottom_dark.svg"><source media="(prefers-color-scheme: light)" srcset="generated/hero_bottom_light.svg"><img align="top" src="generated/hero_bottom_light.svg" width="820" height="75" alt="Eddy Odero"></picture></a>
+<a href="#top"><picture><source media="(prefers-color-scheme: dark)" srcset="generated/terminal.svg"><source media="(prefers-color-scheme: light)" srcset="generated/terminal_light.svg"><img src="generated/terminal_light.svg" alt="Eddy Odero"></picture></a>
 
 <sub>~ live session · Eddy Odero@github · re-renders every build ~</sub>
 
@@ -34,7 +32,7 @@
 
 <br><br>
 
-<a id="selected-work"></a>
+<a id="selected-work" name="selected-work"></a>
 <a href="#selected-work"><picture><source media="(prefers-color-scheme: dark)" srcset="generated/fragment_heading.svg"><source media="(prefers-color-scheme: light)" srcset="generated/fragment_heading_light.svg"><img src="generated/fragment_heading_light.svg" alt="Selected Work"></picture></a>
 
 <br>
@@ -45,7 +43,7 @@
 
 <br><br>
 
-<a id="signal-uplink"></a>
+<a id="signal-uplink" name="signal-uplink"></a>
 <a href="#signal-uplink"><picture><source media="(prefers-color-scheme: dark)" srcset="generated/signal_heading.svg"><source media="(prefers-color-scheme: light)" srcset="generated/signal_heading_light.svg"><img src="generated/signal_heading_light.svg" alt="Signal Uplink"></picture></a>
 
 <a href="mailto:odiwuorodero8948@gmail.com"><img align="top" src="generated/pill_email.svg" alt="Email"></a><a href="https://x.com/savvyoriah48"><img align="top" src="generated/pill_twitter.svg" alt="Twitter"></a><a href="https://www.linkedin.com/in/eddy-odero-7b3332346/"><img align="top" src="generated/pill_linkedin.svg" alt="LinkedIn"></a><a href="https://dev.to/edd_odero"><img align="top" src="generated/pill_website.svg" alt="Dev.to"></a><img align="top" src="generated/pill_spacer.svg" alt="">
@@ -67,4 +65,4 @@
 
 </div>
 
-<sub>Last rendered: 2026-11-19 08:14 UTC · theme: hud · auto-generated, do not edit by hand</sub>
+<sub>Last rendered: 2026-11-19 08:46 UTC · theme: hud · auto-generated, do not edit by hand</sub>

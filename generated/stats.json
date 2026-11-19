@@ -14,88 +14,12 @@
     "PostgreSQL",
     "Docker"
   ],
-  "cursor": "_",
-  "system_message": "[INFO] compiling thoughts.go",
-  "quote": "Programs must be written for people to read, and only incidentally for machines to execute.",
+  "cursor": "\u2588",
+  "system_message": "> uptime: 3 days, 14 hours, still debugging",
+  "quote": "Simplicity is the soul of efficiency.",
   "status": "Writing Go",
   "terminal_svg_path_dark": "generated/terminal.svg",
   "terminal_svg_path_light": "generated/terminal_light.svg",
-  "hero": {
-    "dark": {
-      "top": {
-        "path": "generated/hero_top_dark.svg",
-        "w": 820,
-        "h": 355
-      },
-      "bottom": {
-        "path": "generated/hero_bottom_dark.svg",
-        "w": 820,
-        "h": 75
-      },
-      "a": {
-        "path": "generated/hero_a_dark.svg",
-        "w": 52,
-        "h": 40
-      },
-      "work": {
-        "path": "generated/hero_work_dark.svg",
-        "w": 128,
-        "h": 40
-      },
-      "gap": {
-        "path": "generated/hero_gap_dark.svg",
-        "w": 12,
-        "h": 40
-      },
-      "hello": {
-        "path": "generated/hero_hello_dark.svg",
-        "w": 140,
-        "h": 40
-      },
-      "rest": {
-        "path": "generated/hero_rest_dark.svg",
-        "w": 488,
-        "h": 40
-      }
-    },
-    "light": {
-      "top": {
-        "path": "generated/hero_top_light.svg",
-        "w": 820,
-        "h": 355
-      },
-      "bottom": {
-        "path": "generated/hero_bottom_light.svg",
-        "w": 820,
-        "h": 75
-      },
-      "a": {
-        "path": "generated/hero_a_light.svg",
-        "w": 52,
-        "h": 40
-      },
-      "work": {
-        "path": "generated/hero_work_light.svg",
-        "w": 128,
-        "h": 40
-      },
-      "gap": {
-        "path": "generated/hero_gap_light.svg",
-        "w": 12,
-        "h": 40
-      },
-      "hello": {
-        "path": "generated/hero_hello_light.svg",
-        "w": 140,
-        "h": 40
-      },
-      "rest": {
-        "path": "generated/hero_rest_light.svg",
-        "w": 488,
-        "h": 40
-      }
-    }
-  },
   "fragment_heading_svg_path_dark": "generated/fragment_heading.svg",
   "fragment_heading_svg_path_light": "generated/fragment_heading_light.svg",
   "fragment_cards": [
@@ -159,6 +83,7 @@
   "event_log_svg_path_dark": "generated/event_log.svg",
   "event_log_svg_path_light": "generated/event_log_light.svg",
   "cta_work_svg_path": "generated/cta_work.svg",
+  "cta_spacer_svg_path": "generated/cta_spacer.svg",
   "cta_hello_svg_path": "generated/cta_hello.svg",
   "cta_city_svg_path": "generated/cta_city.svg",
   "city_page_url": "https://eddy-odero.github.io/profile-engine/city.html",
@@ -203,7 +128,7 @@
   "activity_status_svg_path_light": "generated/activity_status_light.svg",
   "quote_svg_path": "generated/quote.svg",
   "section_headers": {},
-  "build_time": "2026-11-19 08:14 UTC",
+  "build_time": "2026-11-19 08:46 UTC",
   "stat_badges": [
     "![Repos: 24](https://img.shields.io/badge/Repos-24-007f8c?style=flat-square&labelColor=07090F)",
     "![Stars: 37](https://img.shields.io/badge/Stars-37-007f8c?style=flat-square&labelColor=07090F)",

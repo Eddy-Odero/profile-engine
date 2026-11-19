@@ -1,5 +1,5 @@
 <svg width="250" height="46" viewBox="0 0 250 46" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Open interactive city">
-  <polygon points="9.0,0.0 249.5,0.0 249.5,37.0 241.0,45.5 0.5,45.5 0.5,9.0" fill="#0b0f18" stroke="#ffffff" stroke-opacity="0.28" stroke-width="1.2"/>
+  <polygon points="9.0,0.0 241.5,0.0 241.5,37.0 233.0,45.5 0.5,45.5 0.5,9.0" fill="#0b0f18" stroke="#ffffff" stroke-opacity="0.28" stroke-width="1.2"/>
   <text x="22" y="28.0" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" fill="#ffffff" letter-spacing="0.8">OPEN INTERACTIVE CITY</text>
-  <path d="M220 23.0 H234 M229 18.0 L234 23.0 L229 28.0" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M212 23.0 H226 M221 18.0 L226 23.0 L221 28.0" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
