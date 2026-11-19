@@ -542,9 +542,20 @@ def render_hero_svg(
     if halftone is None:
         portrait = ""
     else:
+        # The portrait is defined once and drawn several times: the base, a
+        # magenta and a white ghost that flash apart for a split second, and
+        # a horizontal slice that slips sideways - the glitch burst.
+        band_y = py + ph * 0.36
         portrait = (
-            f'<g mask="url(#fade)"><g transform="translate({ax:.1f},{ay:.1f}) scale({sc:.4f})" '
+            f'<defs><g id="ptsrc"><g transform="translate({ax:.1f},{ay:.1f}) scale({sc:.4f})" '
             f'filter="url(#glow)">{"".join(halftone)}</g></g>'
+            f'<filter id="tintM"><feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 0.15  0 0 0 0 0.55  0 0 0 1 0"/></filter>'
+            f'<filter id="tintW"><feColorMatrix type="matrix" values="0 0 0 0 0.85  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0"/></filter>'
+            f'<clipPath id="sliceClip"><rect x="{px}" y="{band_y:.0f}" width="{pw}" height="34"/></clipPath></defs>'
+            f'<g mask="url(#fade)"><g class="glitch"><use href="#ptsrc"/>'
+            f'<use href="#ptsrc" class="ghost-m" filter="url(#tintM)"/>'
+            f'<use href="#ptsrc" class="ghost-w" filter="url(#tintW)"/>'
+            f'<g clip-path="url(#sliceClip)"><use href="#ptsrc" class="slice"/></g></g></g>'
         )
 
     para = _wrap_words(
@@ -597,6 +608,14 @@ def render_hero_svg(
   @keyframes print-line {{ 0% {{ opacity: 0; }} 100% {{ opacity: 1; }} }}
   .scan-band {{ animation: scan-sweep {SCAN_LOOP_SECONDS}s linear infinite; }}
   .line {{ animation: print-line 0.08s ease-out both; }}
+  @keyframes gl-main {{ 0%,86% {{ transform: translate(0,0); }} 87% {{ transform: translate(4px,0); }} 88% {{ transform: translate(-4px,1px); }} 89% {{ transform: translate(3px,-1px); }} 90%,93% {{ transform: translate(0,0); }} 94% {{ transform: translate(-2px,0); }} 95%,100% {{ transform: translate(0,0); }} }}
+  @keyframes gl-m {{ 0%,86% {{ opacity: 0; }} 87%,90% {{ opacity: 0.75; transform: translate(-6px,0); }} 91%,93% {{ opacity: 0; }} 94% {{ opacity: 0.6; transform: translate(5px,0); }} 95%,100% {{ opacity: 0; }} }}
+  @keyframes gl-w {{ 0%,86% {{ opacity: 0; }} 87%,90% {{ opacity: 0.55; transform: translate(6px,0); }} 91%,100% {{ opacity: 0; }} }}
+  @keyframes gl-s {{ 0%,87% {{ opacity: 0; transform: translate(0,0); }} 88% {{ opacity: 1; transform: translate(14px,0); }} 89% {{ opacity: 1; transform: translate(-10px,0); }} 90%,100% {{ opacity: 0; transform: translate(0,0); }} }}
+  .glitch {{ animation: gl-main {GLITCH_LOOP_SECONDS}s linear infinite; }}
+  .ghost-m {{ animation: gl-m {GLITCH_LOOP_SECONDS}s linear infinite; opacity: 0; }}
+  .ghost-w {{ animation: gl-w {GLITCH_LOOP_SECONDS}s linear infinite; opacity: 0; }}
+  .slice {{ animation: gl-s {GLITCH_LOOP_SECONDS}s linear infinite; opacity: 0; }}
 {reveal}</style>"""
 
     return f"""<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}" xmlns="http://www.w3.org/2000/svg" \

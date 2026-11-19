@@ -469,16 +469,14 @@ def render_activity_heading_svg(for_light_mode: bool = False) -> str:
         f'<path d="M0 {n} V0 H{n} M{tw - n} 0 H{tw} V{n} M{tw} {th - n} V{th} H{tw - n} M{n} {th} H0 V{th - n}" '
         f'fill="none" stroke="{GOLD}" stroke-width="1.4"/>'
     )
-    return f"""<svg width="820" height="150" viewBox="0 0 820 150" xmlns="http://www.w3.org/2000/svg" \
+    return f"""<svg width="820" height="100" viewBox="0 0 820 100" xmlns="http://www.w3.org/2000/svg" \
 role="img" aria-label="Neural activity">
   <defs>{glow_filter()}</defs>
   {marks}
   <text x="{tw / 2}" y="19" font-family="Consolas, Menlo, monospace" font-size="12" fill="{GOLD}" \
 text-anchor="middle" letter-spacing="2" filter="url(#hudglow)">NEURAL ACTIVITY</text>
-  <text x="0" y="84" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="800" \
-fill="{ink}" letter-spacing="0.5">COMMITS BECOME</text>
-  <text x="0" y="132" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="800" \
-fill="{GOLD}" letter-spacing="0.5">A LIVING CITY</text>
+  <text x="0" y="84" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="800" letter-spacing="0.5">\
+<tspan fill="{ink}">COMMIT </tspan><tspan fill="{GOLD}">CITY</tspan></text>
 </svg>"""
 
 
