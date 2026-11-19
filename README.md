@@ -1,44 +1,49 @@
 <div align="center">
 
-![Eddy Odero terminal](generated/terminal.svg#gh-dark-mode-only)
-![Eddy Odero terminal](generated/terminal_light.svg#gh-light-mode-only)
+<img src="generated/terminal.svg#gh-dark-mode-only" alt="Eddy Odero terminal">
+<img src="generated/terminal_light.svg#gh-light-mode-only" alt="Eddy Odero terminal">
+
+<table align="center" width="820" cellpadding="0" cellspacing="0" border="0"><tr><td align="left">
+<a href="#selected-work"><img src="generated/cta_work.svg" alt="See my work" width="170"></a>&nbsp;&nbsp;<a href="#signal-uplink"><img src="generated/cta_hello.svg" alt="Say hello" width="170"></a>
+</td></tr></table>
 
 <sub>~ live session · Eddy Odero@github · re-renders every build ~</sub>
 
 <br><br>
 
-![Stats](generated/stats_strip.svg#gh-dark-mode-only)
-![Stats](generated/stats_strip_light.svg#gh-light-mode-only)
+<img src="generated/stats_strip.svg#gh-dark-mode-only" alt="Stats">
+<img src="generated/stats_strip_light.svg#gh-light-mode-only" alt="Stats">
 
 <br><br>
 
-![System Modules](generated/skill_modules.svg#gh-dark-mode-only)
-![System Modules](generated/skill_modules_light.svg#gh-light-mode-only)
+<img src="generated/skill_modules.svg#gh-dark-mode-only" alt="System Modules">
+<img src="generated/skill_modules_light.svg#gh-light-mode-only" alt="System Modules">
 
 <br><br>
 
-![Quote](generated/quote.svg)
+<img src="generated/quote.svg" alt="Quote">
 
 <br><br>
 
-![LeetCode Stats](generated/leetcode_panel.svg#gh-dark-mode-only)
-![LeetCode Stats](generated/leetcode_panel_light.svg#gh-light-mode-only)
+<img src="generated/leetcode_panel.svg#gh-dark-mode-only" alt="LeetCode Stats">
+<img src="generated/leetcode_panel_light.svg#gh-light-mode-only" alt="LeetCode Stats">
 
 <br><br>
 
-![Event Log](generated/event_log.svg#gh-dark-mode-only)
-![Event Log](generated/event_log_light.svg#gh-light-mode-only)
+<img src="generated/event_log.svg#gh-dark-mode-only" alt="Event Log">
+<img src="generated/event_log_light.svg#gh-light-mode-only" alt="Event Log">
 
 <br><br>
 
-![Selected Work](generated/fragment_heading.svg#gh-dark-mode-only)
-![Selected Work](generated/fragment_heading_light.svg#gh-light-mode-only)
+<a id="selected-work"></a>
+<img src="generated/fragment_heading.svg#gh-dark-mode-only" alt="Selected Work">
+<img src="generated/fragment_heading_light.svg#gh-light-mode-only" alt="Selected Work">
 
 </div>
 
 <br>
 
-<table width="820" cellpadding="0" cellspacing="0" border="0">
+<table align="center" width="820" cellpadding="0" cellspacing="0" border="0">
 <tr>
 <td align="left" valign="top">
 <a href="https://satgate-2.onrender.com/"><img src="generated/fragment_card_0.svg" alt="SatGate" width="410"></a>
@@ -61,26 +66,27 @@
 
 <br><br>
 
-![Signal Uplink](generated/signal_heading.svg#gh-dark-mode-only)
-![Signal Uplink](generated/signal_heading_light.svg#gh-light-mode-only)
+<a id="signal-uplink"></a>
+<img src="generated/signal_heading.svg#gh-dark-mode-only" alt="Signal Uplink">
+<img src="generated/signal_heading_light.svg#gh-light-mode-only" alt="Signal Uplink">
 
-<table width="820" cellpadding="0" cellspacing="0" border="0"><tr><td align="left">
+<table align="center" width="820" cellpadding="0" cellspacing="0" border="0"><tr><td align="left">
 <a href="mailto:odiwuorodero8948@gmail.com"><img src="generated/pill_email.svg" alt="Email"></a>&nbsp;<a href="https://x.com/savvyoriah48"><img src="generated/pill_twitter.svg" alt="Twitter"></a>&nbsp;<a href="https://www.linkedin.com/in/eddy-odero-7b3332346/"><img src="generated/pill_linkedin.svg" alt="LinkedIn"></a>&nbsp;<a href="https://dev.to/edd_odero"><img src="generated/pill_website.svg" alt="Dev.to"></a>&nbsp;</td></tr></table>
 
-![Status](generated/signal_status.svg#gh-dark-mode-only)
-![Status](generated/signal_status_light.svg#gh-light-mode-only)
+<img src="generated/signal_status.svg#gh-dark-mode-only" alt="Status">
+<img src="generated/signal_status_light.svg#gh-light-mode-only" alt="Status">
 
 <br><br>
 
-![Neural Activity](generated/activity_heading.svg#gh-dark-mode-only)
-![Neural Activity](generated/activity_heading_light.svg#gh-light-mode-only)
+<img src="generated/activity_heading.svg#gh-dark-mode-only" alt="Neural Activity">
+<img src="generated/activity_heading_light.svg#gh-light-mode-only" alt="Neural Activity">
 
-![Neural Activity](generated/neural_activity.svg#gh-dark-mode-only)
-![Neural Activity](generated/neural_activity_light.svg#gh-light-mode-only)
+<img src="generated/neural_activity.svg#gh-dark-mode-only" alt="Neural Activity">
+<img src="generated/neural_activity_light.svg#gh-light-mode-only" alt="Neural Activity">
 
-![Status](generated/activity_status.svg#gh-dark-mode-only)
-![Status](generated/activity_status_light.svg#gh-light-mode-only)
+<img src="generated/activity_status.svg#gh-dark-mode-only" alt="Status">
+<img src="generated/activity_status_light.svg#gh-light-mode-only" alt="Status">
 
 </div>
 
-<sub>Last rendered: 2026-11-19 00:59 UTC · theme: hud · auto-generated, do not edit by hand</sub>
+<sub>Last rendered: 2026-11-19 01:27 UTC · theme: hud · auto-generated, do not edit by hand</sub>

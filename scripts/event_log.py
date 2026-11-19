@@ -151,11 +151,8 @@ fill="none" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
 letter-spacing="0.4">GOT AN IDEA?</text>
     <text x="78" y="50" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" fill="#9a9aa5">\
 Tell me what you are building</text>
-    <text x="78" y="73" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" fill="{gold}" \
-letter-spacing="0.5">SAY HELLO</text>
-    <rect x="156" y="61" width="16" height="16" rx="3" fill="none" stroke="{gold}" stroke-width="1.3"/>
-    <path d="M160 69 H168 M165 66 L168 69 L165 72" fill="none" stroke="{gold}" stroke-width="1.3" \
-stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="78" y="73" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="700" fill="{gold}" \
+letter-spacing="0.8">REACH OUT BELOW</text>
   </g>"""
 
     return f"""<svg width="{WIDTH}" height="{height}" viewBox="0 0 {WIDTH} {height}" \

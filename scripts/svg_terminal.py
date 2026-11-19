@@ -633,8 +633,6 @@ fill="white" letter-spacing="0.5">THE BASICS</text>
   <text x="{lx}" y="250" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="800" \
 fill="{HERO_GOLD}" letter-spacing="0.5">SHIP IT</text>
   {para_svg}
-  {_hero_button(lx, btn_y, 128, "SEE MY WORK", True)}
-  {_hero_button(lx + 140, btn_y, 140, "SAY HELLO", False)}
   {portrait}
   {status_bar}
   <g clip-path="url(#heroClip)">

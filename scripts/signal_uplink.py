@@ -137,6 +137,19 @@ fill="{ink}" letter-spacing="0.8">{_esc(label.upper())}</text>
 </svg>"""
 
 
+def render_cta_button_svg(label: str, primary: bool = False) -> str:
+    """Hero call-to-action button as its own image so the template can wrap it in a real link."""
+    w, h = 170, 46
+    fill, stroke, ink, op = (GOLD, GOLD, "#07090F", 1) if primary else ("#0b0f18", "#ffffff", "#ffffff", 0.28)
+    arrow = (f'<path d="M{w - 30} {h / 2} H{w - 16} M{w - 21} {h / 2 - 5} L{w - 16} {h / 2} L{w - 21} {h / 2 + 5}" '
+             f'fill="none" stroke="{ink}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>')
+    return f"""<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{_esc(label)}">
+  <polygon points="{_cut_box(w, h, CUT)}" fill="{fill}" stroke="{stroke}" stroke-opacity="{op}" stroke-width="1.2"/>
+  <text x="22" y="{h / 2 + 5}" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" fill="{ink}" letter-spacing="0.8">{_esc(label.upper())}</text>
+  {arrow}
+</svg>"""
+
+
 def render_signal_heading_svg(for_light_mode: bool = False) -> str:
     """Hero-style heading, left-aligned like every other section: corner-marked tag, two-tone title, paragraph."""
     ink = "#10131a" if for_light_mode else "#ffffff"

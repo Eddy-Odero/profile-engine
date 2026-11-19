@@ -1,20 +1,20 @@
-<svg width="820" height="178" viewBox="0 0 820 178" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Quote">
+<svg width="820" height="242" viewBox="0 0 820 242" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Quote">
   <defs>
-    <clipPath id="reveal0"><rect x="0" y="64" width="0" height="32"><animate attributeName="width" values="0;0;487.6;487.6;0" keyTimes="0;0.000;0.600;0.92;1" dur="7s" repeatCount="indefinite"/></rect></clipPath>
+    <clipPath id="reveal0"><rect x="0" y="64" width="0" height="32"><animate attributeName="width" values="0;0;636.4;636.4;0" keyTimes="0;0.000;0.200;0.92;1" dur="7s" repeatCount="indefinite"/></rect></clipPath><clipPath id="reveal1"><rect x="0" y="96" width="0" height="32"><animate attributeName="width" values="0;0;611.6;611.6;0" keyTimes="0;0.200;0.400;0.92;1" dur="7s" repeatCount="indefinite"/></rect></clipPath><clipPath id="reveal2"><rect x="0" y="128" width="0" height="32"><animate attributeName="width" values="0;0;90.8;90.8;0" keyTimes="0;0.400;0.600;0.92;1" dur="7s" repeatCount="indefinite"/></rect></clipPath>
     <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
       <rect width="2" height="6" fill="#FFC84D" fill-opacity="0.55"/>
     </pattern>
   </defs>
-  <polygon points="0,16 16,0 819.5,0 819.5,162 804,178 0,178" fill="#0b0f18" stroke="white" stroke-opacity="0.14"/>
-  <rect x="0" y="16" width="4" height="146" fill="#FFC84D"/>
+  <polygon points="0,16 16,0 819.5,0 819.5,226 804,242 0,242" fill="#0b0f18" stroke="white" stroke-opacity="0.14"/>
+  <rect x="0" y="16" width="4" height="210" fill="#FFC84D"/>
   <text x="36" y="38" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="#FFC84D" letter-spacing="3">[ DAILY SIGNAL ]</text>
   <text x="32" y="132" font-family="Georgia, 'Times New Roman', serif" font-size="96" font-weight="700" fill="#FFC84D" fill-opacity="0.9">&#8220;</text>
-  <text x="100" y="84" clip-path="url(#reveal0)" font-family="Consolas, Menlo, monospace" font-size="20" fill="#ffffff">Code never lies, comments sometimes do.</text>
-  <rect x="586.6" y="67" width="2.5" height="22" fill="#FFC84D">
+  <text x="100" y="84" clip-path="url(#reveal0)" font-family="Consolas, Menlo, monospace" font-size="20" fill="#ffffff">There are only two hard things in computer science:</text><text x="100" y="116" clip-path="url(#reveal1)" font-family="Consolas, Menlo, monospace" font-size="20" fill="#ffffff">cache invalidation, naming things, and off-by-one</text><text x="100" y="148" clip-path="url(#reveal2)" font-family="Consolas, Menlo, monospace" font-size="20" fill="#ffffff">errors.</text>
+  <rect x="189.8" y="131" width="2.5" height="22" fill="#FFC84D">
     <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.770;0.780;0.92;1" dur="7s" repeatCount="indefinite"/>
   </rect>
-  <rect x="100" y="152" width="40" height="2" fill="#FFC84D"/>
-  <rect x="146" y="152" width="90" height="2" fill="url(#hatch)"/>
-  <text x="788" y="157" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="10" fill="#6b7a8c" letter-spacing="1.5">NEW QUOTE ON EVERY BUILD</text>
-  <path d="M798 14 H806 V22 M14 156 V164 H22" fill="none" stroke="#FFC84D" stroke-width="1.3"/>
+  <rect x="100" y="216" width="40" height="2" fill="#FFC84D"/>
+  <rect x="146" y="216" width="90" height="2" fill="url(#hatch)"/>
+  <text x="788" y="221" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="10" fill="#6b7a8c" letter-spacing="1.5">NEW QUOTE ON EVERY BUILD</text>
+  <path d="M798 14 H806 V22 M14 220 V228 H22" fill="none" stroke="#FFC84D" stroke-width="1.3"/>
 </svg>

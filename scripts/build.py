@@ -460,6 +460,8 @@ def build_context() -> dict:
         "event_log_svg_path_light": _write_svg(
             event_log.render_event_log_svg(EVENT_LOG, THEME, for_light_mode=True), "event_log_light.svg"
         ),
+        "cta_work_svg_path": _write_svg(signal_uplink.render_cta_button_svg("See my work", True), "cta_work.svg"),
+        "cta_hello_svg_path": _write_svg(signal_uplink.render_cta_button_svg("Say hello", False), "cta_hello.svg"),
         "city_page_path": _write_city_page(combined_stats.get("heatmap", {})),
         "neural_activity_svg_path_dark": _write_svg(
             neural_activity.render_neural_activity_svg(

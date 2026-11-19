@@ -1,0 +1,5 @@
+<svg width="170" height="46" viewBox="0 0 170 46" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="See my work">
+  <polygon points="9.0,0.0 169.5,0.0 169.5,37.0 161.0,45.5 0.5,45.5 0.5,9.0" fill="#FFC84D" stroke="#FFC84D" stroke-opacity="1" stroke-width="1.2"/>
+  <text x="22" y="28.0" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" fill="#07090F" letter-spacing="0.8">SEE MY WORK</text>
+  <path d="M140 23.0 H154 M149 18.0 L154 23.0 L149 28.0" fill="none" stroke="#07090F" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
