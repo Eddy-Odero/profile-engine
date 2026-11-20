@@ -78,7 +78,7 @@ jobs:
           git config user.name "profile-bot"
           git config user.email "profile-bot@users.noreply.github.com"
           git add docs/city.html
-          git diff --cached --quiet || (git commit -m "chore: update interactive city page [skip ci]" && git pull --rebase origin main && git push)
+          git diff --cached --quiet || (git commit -m "chore: update interactive city page [skip ci]" && git pull --rebase --autostash origin main && git push)
 
       - name: Deploy generated README to profile repo
         env:
