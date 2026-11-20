@@ -111,6 +111,18 @@ def render_neural_activity_svg(
     W, H = 820, 500
     end = end_date or _dt.date.today()
     cols = [list(w[:7]) + [0] * (7 - len(w[:7])) for w in weeks][-52:]
+    slot_dates = [[""] * 7 for _ in range(52)]
+    if week_dates and len(week_dates) >= 52 and len(weeks) == len(week_dates):
+        # Put every real day under its true weekday (Sunday first), so a partial first
+        # or last week leaves the missing days empty instead of shifting the others.
+        cols = []
+        for w_counts, w_dates in zip(weeks[-52:], week_dates[-52:]):
+            row, drow = [0] * 7, [""] * 7
+            for c, dstr in zip(w_counts, w_dates):
+                idx = (_dt.date.fromisoformat(dstr).weekday() + 1) % 7
+                row[idx], drow[idx] = c, dstr
+            cols.append(row)
+            slot_dates[len(cols) - 1] = drow
     cols = [[0] * 7] * (52 - len(cols)) + cols
     tot = [sum(c) for c in cols]
     peak = max(tot) or 1
@@ -295,7 +307,7 @@ def render_neural_activity_svg(
         ws, we = _week_span(wk)
         label = f"{ws.strftime('%b')} {ws.day} to {we.strftime('%b')} {we.day}"
         items.append((i + j, f'<g class="bld" tabindex="0" data-week="{label}" data-c="{c}" data-rank="{rank + 1}" '
-                             f'data-days="{",".join(str(x) for x in cols[wk])}" data-hue="{hue}">{"".join(parts)}</g>'))
+                             f'data-days="{",".join(str(x) for x in cols[wk])}" data-dates="{",".join(slot_dates[wk])}" data-hue="{hue}">{"".join(parts)}</g>'))
     items.sort(key=lambda t: t[0])
     bld = "".join(s for _, s in items)
 
@@ -446,9 +458,11 @@ var st=document.getElementById('stage'),svg=st.querySelector('svg'),tip=document
 var B=[].slice.call(svg.querySelectorAll('.bld'));
 var DAYS=['S','M','T','W','T','F','S'];
 function fill(b){
-  var d=b.dataset.days.split(',').map(Number),m=Math.max.apply(null,d)||1;
+  var d=b.dataset.days.split(',').map(Number),ds=(b.dataset.dates||'').split(','),m=Math.max.apply(null,d)||1,hasD=ds.some(Boolean);
+  var MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],WD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   tip.style.setProperty('--h',b.dataset.hue);
-  tip.innerHTML='<div class="w">'+b.dataset.week.toUpperCase()+'</div><div class="n">'+b.dataset.c+' commits</div><div class="r">Rank #'+b.dataset.rank+' of 52</div><div class="d">'+d.map(function(v){return '<i style="height:'+Math.max(6,v/m*100)+'%" title="'+v+'"></i>'}).join('')+'</div><div class="l">'+DAYS.map(function(x){return '<span>'+x+'</span>'}).join('')+'</div>';
+  function nm(i){var s=ds[i];if(!s)return '';var t=s.split('-');return WD[i]+' '+MO[+t[1]-1]+' '+(+t[2])}
+  tip.innerHTML='<div class="w">'+b.dataset.week.toUpperCase()+'</div><div class="n">'+b.dataset.c+' commits</div><div class="r">Rank #'+b.dataset.rank+' of 52</div><div class="d">'+d.map(function(v,i){return hasD&&!ds[i]?'<i style="height:2px;opacity:.25" title="no data"></i>':'<i style="height:'+Math.max(6,v/m*100)+'%" title="'+(nm(i)?nm(i)+': ':'')+v+'"></i>'}).join('')+'</div><div class="l">'+DAYS.map(function(x){return '<span>'+x+'</span>'}).join('')+'</div>';
 }
 function place(e,b){
   var r=st.getBoundingClientRect(),x,y;

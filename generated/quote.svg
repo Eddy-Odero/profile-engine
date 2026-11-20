@@ -1,6 +1,6 @@
 <svg width="820" height="178" viewBox="0 0 820 178" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Quote">
   <defs>
-    <clipPath id="reveal0"><rect x="0" y="64" width="0" height="32"><animate attributeName="width" values="0;0;487.6;487.6;0" keyTimes="0;0.000;0.600;0.92;1" dur="7s" repeatCount="indefinite"/></rect></clipPath>
+    <clipPath id="reveal0"><rect x="0" y="64" width="0" height="32"><animate attributeName="width" values="0;0;462.8;462.8;0" keyTimes="0;0.000;0.600;0.92;1" dur="7s" repeatCount="indefinite"/></rect></clipPath>
     <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
       <rect width="2" height="6" fill="#FFC84D" fill-opacity="0.55"/>
     </pattern>
@@ -9,8 +9,8 @@
   <rect x="0" y="16" width="4" height="146" fill="#FFC84D"/>
   <text x="36" y="38" font-family="Consolas, Menlo, monospace" font-size="12" font-weight="700" fill="#FFC84D" letter-spacing="3">[ DAILY SIGNAL ]</text>
   <text x="32" y="132" font-family="Georgia, 'Times New Roman', serif" font-size="96" font-weight="700" fill="#FFC84D" fill-opacity="0.9">&#8220;</text>
-  <text x="100" y="84" clip-path="url(#reveal0)" font-family="Consolas, Menlo, monospace" font-size="20" fill="#ffffff">Code never lies, comments sometimes do.</text>
-  <rect x="586.6" y="67" width="2.5" height="22" fill="#FFC84D">
+  <text x="100" y="84" clip-path="url(#reveal0)" font-family="Consolas, Menlo, monospace" font-size="20" fill="#ffffff">Simplicity is the soul of efficiency.</text>
+  <rect x="561.8" y="67" width="2.5" height="22" fill="#FFC84D">
     <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.770;0.780;0.92;1" dur="7s" repeatCount="indefinite"/>
   </rect>
   <rect x="100" y="152" width="40" height="2" fill="#FFC84D"/>
