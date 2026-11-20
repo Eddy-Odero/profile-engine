@@ -412,7 +412,6 @@ _PAGE = """<!doctype html>
 <title>Commit City</title>
 <style>
 :root{--bg:#f3f5f9;--ink:#10131a;--muted:#5b6475;--card:#ffffff;--line:#d9dee8;--gold:#b7860b}
-:root:not([data-theme="light"]){}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#05070d;--ink:#eef2fa;--muted:#8a94a8;--card:#0b0f18;--line:#1f2736;--gold:#FFC84D}}
 :root[data-theme="dark"]{--bg:#05070d;--ink:#eef2fa;--muted:#8a94a8;--card:#0b0f18;--line:#1f2736;--gold:#FFC84D}
 *{box-sizing:border-box}
