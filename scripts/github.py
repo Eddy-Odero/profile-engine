@@ -27,6 +27,8 @@ Usage:
 
 from __future__ import annotations
 
+import sys
+
 import requests
 
 from utils import github_headers
@@ -164,6 +166,7 @@ def fetch_graphql_extras(username: str) -> dict | None:
     """
     headers = github_headers()
     if "Authorization" not in headers:
+        print("[github] no GITHUB_TOKEN set - contribution calendar unavailable, city will use SAMPLE data", file=sys.stderr)
         return None
 
     try:
@@ -174,15 +177,19 @@ def fetch_graphql_extras(username: str) -> dict | None:
             timeout=10,
         )
         resp.raise_for_status()
-        data = resp.json()["data"]["user"]
+        payload = resp.json()
+        if payload.get("errors") or not (payload.get("data") or {}).get("user"):
+            raise RuntimeError(f"GraphQL returned no user data: {payload.get('errors') or payload}")
+        data = payload["data"]["user"]
         calendar = data["contributionsCollection"]["contributionCalendar"]
         return {
             "contributions": calendar["totalContributions"],
             "calendar": [week["contributionDays"] for week in calendar["weeks"]],
             "pinned": [node["name"] for node in data["pinnedItems"]["nodes"]],
         }
-    except Exception:
+    except Exception as exc:
         # GraphQL is a nice-to-have here, not essential - REST fallback covers us.
+        print(f"[github] GraphQL contribution calendar failed ({exc}) - city will use SAMPLE data", file=sys.stderr)
         return None
 
 
@@ -247,6 +254,7 @@ def calendar_to_heatmap(calendar: list[list[dict]]) -> dict:
         "weeks": weeks_levels,
         # Real numbers for the Commit City: raw daily counts and real calendar dates per week
         # (GitHub weeks run Sunday to Saturday; the newest week ends today).
+        "source": "github",
         "week_counts": [[day["contributionCount"] for day in week] for week in calendar],
         "week_dates": [[day["date"] for day in week] for week in calendar],
         "streak": current_streak,  # kept for backward compat (Dimensional Stats' Max Streak card)

@@ -272,6 +272,7 @@ def _mock_heatmap(weeks: int = 52) -> dict:
         else:
             running = 0
     return {
+        "source": "mock",
         "weeks": grid,
         "streak": current_streak,
         "current_streak": current_streak,
@@ -352,11 +353,16 @@ def _city_inputs(heat: dict) -> dict:
     )
 
 
+def _city_is_sample(heat: dict) -> bool:
+    return heat.get("source") != "github"
+
+
 def _write_city_page(heat: dict) -> str:
     """Interactive companion page for the city (hover/tap tooltips). Not used by the README itself."""
     svg = neural_activity.render_neural_activity_svg(**_city_inputs(heat), theme_name=THEME)
     GENERATED_DIR.mkdir(parents=True, exist_ok=True)
-    page = neural_activity.render_interactive_html(svg)
+    page = neural_activity.render_interactive_html(svg, sample=_city_is_sample(heat))
+    print(f"[city] page built from {'SAMPLE' if _city_is_sample(heat) else 'REAL GitHub'} data", file=sys.stderr)
     (GENERATED_DIR / "city_interactive.html").write_text(page, encoding="utf-8")
     docs = GENERATED_DIR.parent / "docs"  # GitHub Pages serves this folder
     docs.mkdir(exist_ok=True)

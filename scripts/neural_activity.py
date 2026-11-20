@@ -496,9 +496,11 @@ bar.addEventListener('click',function(e){
 </script></body></html>"""
 
 
-def render_interactive_html(svg: str) -> str:
+def render_interactive_html(svg: str, sample: bool = False) -> str:
     """Self-contained page that wraps the city SVG with hover/tap tooltips and view filters."""
-    return _PAGE.replace("__SVG__", svg)
+    note = ("<small><b>Sample data.</b> The build could not read your GitHub contributions (no token or the call failed), "
+            "so this city shows placeholder weeks.</small>") if sample else ""
+    return _PAGE.replace("__SVG__", svg).replace("<small>Built from", note + "<small>Built from", 1)
 
 
 GOLD = HUD_COLORS["modules"]
