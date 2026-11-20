@@ -113,7 +113,7 @@ PROJECTS = [
         "name": "EDU-FLIX",
         "description": "Netflix-style streaming platform built with Go and SQLite/Turso.",
         "repo_url": f"https://github.com/{GITHUB_USERNAME}/EDU-FLIX",
-        "preview_url": "https://edu-flix.onrender.com/",
+        "preview_url": "https://edu-flix1.onrender.com/",
         "icon": "play",
         "visibility": "private",
         "language": "Go",
