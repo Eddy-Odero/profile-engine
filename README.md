@@ -37,7 +37,7 @@
 
 <br>
 
-<a href="https://satgate-2.onrender.com/"><img align="top" src="generated/fragment_card_0.svg" alt="SatGate" width="410"></a><a href="https://edu-flix1.onrender.com/"><img align="top" src="generated/fragment_card_1.svg" alt="EDU-FLIX" width="410"></a><br>
+<a href="https://satgate-2.onrender.com/"><img align="top" src="generated/fragment_card_0.svg" alt="SatGate" width="410"></a><a href="https://edu-flix.onrender.com/"><img align="top" src="generated/fragment_card_1.svg" alt="EDU-FLIX" width="410"></a><br>
 <a href="https://github.com/Eddy-Odero/profile-engine"><img align="top" src="generated/fragment_card_2.svg" alt="profile-engine" width="410"></a><a href="https://tinah-cosmetics.vercel.app/"><img align="top" src="generated/fragment_card_3.svg" alt="Maison POS" width="410"></a><br>
 
 
