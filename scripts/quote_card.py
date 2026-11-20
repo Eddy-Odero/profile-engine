@@ -76,9 +76,9 @@ def render_quote_svg(quote: str, theme_name: str = DEFAULT_THEME) -> str:
     clips, texts = [], []
     for i, line in enumerate(lines):
         y = top + i * lh
-        lw = len(line) * cw + 4
+        lw = len(line) * cw * 1.1 + 12  # a little slack so wider fallback fonts are never cut
         clips.append(
-            f'<clipPath id="reveal{i}"><rect x="0" y="{y - fs}" width="0" height="{lh}">'
+            f'<clipPath id="reveal{i}"><rect x="100" y="{y - fs}" width="0" height="{lh}">'
             f"{_line_reveal_animate(i, len(lines), lw)}</rect></clipPath>"
         )
         texts.append(
