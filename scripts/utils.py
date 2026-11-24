@@ -70,7 +70,7 @@ def build_boot_sequence(filename: str = "boot.txt") -> str:
 
 def random_ascii_art(subdir: str = "ascii/avatars") -> str:
     """
-    Pick a random .txt file from an assets subdirectory (default:
+    Pick the next .txt file, rotating daily, from an assets subdirectory (default:
     assets/ascii/avatars/) and return its content.
 
     This is the rotation-pool pattern: any .txt file dropped into that
@@ -84,7 +84,13 @@ def random_ascii_art(subdir: str = "ascii/avatars") -> str:
     if not candidates:
         raise FileNotFoundError(f"No .txt files found in {pool_dir}")
 
-    chosen = random.choice(candidates)
+    # Rotate in order, one step per day (UTC). Stateless, so it works on a
+    # fresh CI runner: every build on the same day shows the same piece, and
+    # each piece comes up exactly once per cycle, in filename order.
+    import datetime
+
+    day = datetime.datetime.now(datetime.timezone.utc).date().toordinal()
+    chosen = candidates[day % len(candidates)]
     return chosen.read_text(encoding="utf-8").rstrip("\n")
 
 
